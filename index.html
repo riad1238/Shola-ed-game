@@ -170,7 +170,44 @@ const questionBank = {
 };
 
 const languageText={en:{hero:"Big learning.<br>Small games.",intro:"Explore school subjects, challenge yourself with quick quizzes, and create fresh practice questions with our AI-style game maker.",start:"Start learning →",choose:"Choose your adventure",pick:"Pick a subject to start a quiz.",creator:"AI Game Creator",topic:"Quiz topic",subject:"Subject",create:"✨ Create my quiz",settings:"⚙️ Game settings",grade:"My grade",difficulty:"Difficulty"},ar:{hero:"تعلّم كبير.<br>ألعاب صغيرة.",intro:"استكشف المواد الدراسية وتحدَّ نفسك بالاختبارات القصيرة وأنشئ أسئلة تدريبية.",start:"ابدأ التعلّم ←",choose:"اختر مغامرتك",pick:"اختر مادة لبدء الاختبار.",creator:"منشئ الألعاب التعليمية",topic:"موضوع الاختبار",subject:"المادة",create:"✨ أنشئ اختباري",settings:"⚙️ إعدادات اللعبة",grade:"صفي الدراسي",difficulty:"مستوى الصعوبة"}};
-function setLanguage(){const ar=$("language").value==="ar",t=languageText[ar?"ar":"en"];document.documentElement.lang=ar?"ar":"en";document.document.documentElement.dir=ar?"rtl":"ltr";document.body.style.direction=ar?"rtl":"ltr";$("home").querySelector(".hero h1").innerHTML=t.hero;$("home").querySelector(".hero p").textContent=t.intro;$("startBtn").textContent=t.start;$("home").querySelector(".section-title h2").textContent=t.choose;$("home").querySelector(".section-title p").textContent=t.pick;$("home").querySelectorAll(".section-title h2")[1].textContent=t.creator;document.querySelector('label[for="topic"]').textContent=t.topic;document.querySelector('label[for="customSubject"]').textContent=t.subject;$("createBtn").textContent=t.create;$("home").querySelector(".settings-side h3").textContent=t.settings;document.querySelector('label[for="grade"]').textContent=t.grade;document.querySelector('label[for="difficulty"]').textContent=t.difficulty;}
+function setLanguage(){
+ const ar=$("language").value==="ar", t=languageText[ar?"ar":"en"];
+ document.documentElement.lang=ar?"ar":"en";
+ document.documentElement.dir=ar?"rtl":"ltr";
+ document.body.style.direction=ar?"rtl":"ltr";
+ const set=(selector,en,arabic)=>{const el=document.querySelector(selector);if(el)el.textContent=ar?arabic:en;};
+ const setAll=(selector,en,arabic)=>{const els=document.querySelectorAll(selector);els.forEach((el,i)=>{if(i<en.length)el.textContent=ar?arabic[i]:en[i];});};
+ $("home").querySelector(".hero h1").innerHTML=t.hero;
+ $("home").querySelector(".hero p").textContent=t.intro;
+ $("startBtn").textContent=t.start;
+ setAll("#home .section-title h2",["Choose your adventure","AI Game Creator"],["اختر مغامرتك","منشئ الألعاب التعليمية"]);
+ setAll("#home .section-title p",["Pick a subject to start a quiz.","Make a new practice quiz for any topic."],["اختر مادة لبدء الاختبار.","أنشئ اختباراً تدريبياً جديداً لأي موضوع."]);
+ setAll("#home .cards h3",["Math Mission","Science Squad","Word Wizard","Arabic Adventures","Islamic Studies","Geography Explorer"],["مهمة الرياضيات","فريق العلوم","ساحر الكلمات","مغامرات اللغة العربية","الدراسات الإسلامية","مستكشف الجغرافيا"]);
+ setAll("#home .cards p",["Practice numbers, arithmetic, and problem-solving.","Explore nature, space, energy, and the human body.","Build vocabulary and practice English skills.","Practice Arabic letters, words, and language skills.","Learn about Islamic values and knowledge.","Explore countries, maps, continents, and oceans."],["تدرّب على الأعداد والحساب وحل المسائل.","استكشف الطبيعة والفضاء والطاقة وجسم الإنسان.","طوّر مفرداتك ومهارات اللغة الإنجليزية.","تدرّب على الحروف والكلمات واللغة العربية.","تعلّم القيم والمعارف الإسلامية.","استكشف البلدان والخرائط والقارات والمحيطات."]);
+ setAll("#home .cards button",["Play math","Play science","Play English","Play Arabic","Play Islamic Studies","Play Geography"],["العب الرياضيات","العب العلوم","العب الإنجليزية","العب العربية","العب الدراسات الإسلامية","العب الجغرافيا"]);
+ set("label[for=topic]","Quiz topic","موضوع الاختبار");set("label[for=customSubject]","Subject","المادة");
+ set("label[for=grade]","My grade","صفي الدراسي");set("label[for=difficulty]","Difficulty","مستوى الصعوبة");
+ $("createBtn").textContent=ar?"✨ أنشئ اختباري":"✨ Create my quiz";
+ $("home .settings-side h3")?.textContent;
+ const settings=document.querySelector(".settings-side h3");if(settings)settings.textContent=ar?"⚙️ إعدادات اللعبة":"⚙️ Game settings";
+ const settingsP=document.querySelector(".settings-side p");if(settingsP)settingsP.textContent=ar?"اختر صفك الدراسي ومستوى التحدي.":"Set your school grade and challenge level.";
+ const customHint=$("creatorMessage");if(customHint)customHint.textContent=ar?"اختر الصف ومستوى الصعوبة من الجانب. يستخدم هذا العرض أسئلة جاهزة، وليس ذكاءً اصطناعياً متصلاً.":"Choose your grade and difficulty on the side. This demo uses built-in questions; connect a secure AI backend to generate brand-new questions.";
+ setAll("#dashboard .cards h3",["Math Mission","Science Squad","Word Wizard","Arabic Adventures","Islamic Studies","Geography Explorer"],["مهمة الرياضيات","فريق العلوم","ساحر الكلمات","مغامرات اللغة العربية","الدراسات الإسلامية","مستكشف الجغرافيا"]);
+ setAll("#dashboard .cards p",["Sharpen your number skills.","Discover how the world works.","Train your language skills.","Practice Arabic letters and words.","Learn about Islamic values and knowledge.","Explore countries, maps, and continents."],["طوّر مهاراتك في الأعداد.","اكتشف كيف يعمل العالم.","درّب مهاراتك اللغوية.","تدرّب على الحروف والكلمات العربية.","تعلّم القيم والمعارف الإسلامية.","استكشف البلدان والخرائط والقارات."]);
+ setAll("#dashboard .cards button",["Play","Play","Play","Play","Play","Play"],["العب","العب","العب","العب","العب","العب"]);
+ set(" #dashboard .section-title h2","Pick a game","اختر لعبة");set("#dashboard .section-title p","Your next mission is waiting.","مهمتك التالية بانتظارك.");
+ set(" #dashboard #goCreator","Create a quiz ✨","أنشئ اختباراً ✨");
+ set("#authTitle",ar?"Welcome back!":"Welcome back!",ar?"مرحباً بعودتك!":"Welcome back!");
+ set("#auth .pill","STUDENT AREA","منطقة الطالب");
+ set("#auth .muted","Enter a nickname and password to continue, or create a demo account.","أدخل اسماً وكلمة مرور للمتابعة أو أنشئ حساباً تجريبياً.");
+ set('label[for="username"]',"Student username","اسم المستخدم");set('label[for="password"]',"Password","كلمة المرور");
+ set("#authSubmit","Create demo account","إنشاء حساب تجريبي");set("#switchAuth","Already have a demo account? Sign in","لديك حساب تجريبي؟ سجّل الدخول");
+ set("#backHome","← Back to home","← العودة للرئيسية");set("#logout","Sign out","تسجيل الخروج");
+ set("#quizSubject","SCIENCE MISSION","مهمة العلوم");set("#quitQuiz","Exit quiz","الخروج من الاختبار");
+ set("#nextQuestion","Check answer","تحقّق من الإجابة");
+ const footer=document.querySelector(".footer");if(footer)footer.textContent=ar?"LearnQuest AI • تعلّم شيئاً جديداً كل يوم 🌈":"LearnQuest AI • Learn something new every day 🌈";
+}
+
 function getUsers(){try{return JSON.parse(localStorage.getItem(demoUsersKey)||"{}")}catch{return {}}}
 function saveUsers(users){localStorage.setItem(demoUsersKey,JSON.stringify(users))}
 function showSection(name){["home","auth","dashboard","quizScreen"].forEach(id=>$(id).classList.toggle("hidden",id!==name));window.scrollTo({top:0,behavior:"smooth"});updateTop()}
