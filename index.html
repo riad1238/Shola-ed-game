@@ -14,7 +14,7 @@
 <div class="shell">
   <header class="topbar">
     <div class="brand-stack"><div class="brand"><div class="logo">🚀</div> LearnQuest <span class="tag">AI LEARNING</span></div><div class="byline">Made by Riad Tabbakha · 5-B</div></div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end"><span class="school-tag">🏫 Shola School App</span><div id="topActions"><button class="secondary" id="signInTop">Student sign in</button></div></div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end"><label for="language" class="muted" style="margin:0">Language / اللغة</label><select id="language" aria-label="Language" style="padding:9px;border:1px solid var(--line);border-radius:12px;background:white"><option value="en">English</option><option value="ar">العربية</option></select><span class="school-tag">🏫 Shola School App</span><div id="topActions"><button class="secondary" id="signInTop">Student sign in</button></div></div>
   </header>
 
   <section id="home">
@@ -27,12 +27,15 @@
       <article class="card"><div class="subject-icon math">🔢</div><h3>Math Mission</h3><p>Practice numbers, arithmetic, and problem-solving.</p><button class="primary play-subject" data-subject="Math">Play math</button></article>
       <article class="card"><div class="subject-icon science">🧪</div><h3>Science Squad</h3><p>Explore nature, space, energy, and the human body.</p><button class="primary play-subject" data-subject="Science">Play science</button></article>
       <article class="card"><div class="subject-icon english">📚</div><h3>Word Wizard</h3><p>Build vocabulary and practice English skills.</p><button class="primary play-subject" data-subject="English">Play English</button></article>
+      <article class="card"><div class="subject-icon english">🔤</div><h3>Arabic Adventures</h3><p>Practice Arabic letters, words, and language skills.</p><button class="primary play-subject" data-subject="Arabic">Play Arabic</button></article>
+      <article class="card"><div class="subject-icon science">🕌</div><h3>Islamic Studies</h3><p>Learn about Islamic values and knowledge.</p><button class="primary play-subject" data-subject="Islamic Studies">Play Islamic Studies</button></article>
+      <article class="card"><div class="subject-icon math">🌍</div><h3>Geography Explorer</h3><p>Explore countries, maps, continents, and oceans.</p><button class="primary play-subject" data-subject="Geography">Play Geography</button></article>
     </div>
     <div class="section-title"><div><h2>AI Game Creator</h2><p>Make a new practice quiz for any topic.</p></div><span class="pill">Question generator</span></div>
     <div class="panel creator-layout">
       <div>
         <div class="field"><label for="topic">Quiz topic</label><input id="topic" placeholder="e.g. planets, fractions, verbs" maxlength="80" value="The solar system"></div>
-        <div class="field"><label for="customSubject">Subject</label><select id="customSubject"><option>Science</option><option>Math</option><option>English</option><option>General Knowledge</option></select></div>
+        <div class="field"><label for="customSubject">Subject</label><select id="customSubject"><option>Science</option><option>Math</option><option>English</option><option>Arabic</option><option>Islamic Studies</option><option>Geography</option><option>General Knowledge</option></select></div>
         <button class="primary" id="createBtn">✨ Create my quiz</button>
         <p class="muted" id="creatorMessage">Choose your grade and difficulty on the side. This demo uses built-in questions; connect a secure AI backend to generate brand-new questions.</p>
       </div>
@@ -69,6 +72,9 @@
         <article class="card"><div class="subject-icon math">🔢</div><h3>Math Mission</h3><p>Sharpen your number skills.</p><button class="primary play-subject" data-subject="Math">Play</button></article>
         <article class="card"><div class="subject-icon science">🧪</div><h3>Science Squad</h3><p>Discover how the world works.</p><button class="primary play-subject" data-subject="Science">Play</button></article>
         <article class="card"><div class="subject-icon english">📚</div><h3>Word Wizard</h3><p>Train your language skills.</p><button class="primary play-subject" data-subject="English">Play</button></article>
+        <article class="card"><div class="subject-icon english">🔤</div><h3>Arabic Adventures</h3><p>Practice Arabic letters and words.</p><button class="primary play-subject" data-subject="Arabic">Play</button></article>
+        <article class="card"><div class="subject-icon science">🕌</div><h3>Islamic Studies</h3><p>Learn about Islamic values and knowledge.</p><button class="primary play-subject" data-subject="Islamic Studies">Play</button></article>
+        <article class="card"><div class="subject-icon math">🌍</div><h3>Geography Explorer</h3><p>Explore countries, maps, and continents.</p><button class="primary play-subject" data-subject="Geography">Play</button></article>
       </div>
       <div class="section-title"><div><h2>Make a custom quiz</h2><p>Use the AI Game Creator on the home page.</p></div><button class="secondary" id="goCreator">Create a quiz ✨</button></div>
     </div>
@@ -98,27 +104,73 @@ const questionBank = {
   {q:"What is 45 + 28?",a:["63","73","83","72"],correct:1,why:"45 + 20 = 65, then + 8 = 73."},
   {q:"Which fraction is equal to one half?",a:["2/3","3/8","4/8","1/4"],correct:2,why:"4/8 simplifies to 1/2."},
   {q:"What is 100 − 37?",a:["73","67","63","53"],correct:2,why:"100 − 37 = 63."},
-  {q:"A triangle has how many sides?",a:["2","3","4","5"],correct:1,why:"A triangle has three sides."}],
+  {q:"A triangle has how many sides?",a:["2","3","4","5"],correct:1,why:"A triangle has three sides."},
+  {q:"What is 9 × 8?",a:["72","64","81","69"],correct:0,why:"9 times 8 equals 72."},
+  {q:"What is 1,000 − 275?",a:["725","735","825","625"],correct:0,why:"1,000 minus 275 equals 725."},
+  {q:"How many minutes are in 2 hours?",a:["60","90","120","180"],correct:2,why:"Each hour has 60 minutes."},
+  {q:"What is the perimeter of a square with sides of 4 cm?",a:["8 cm","12 cm","16 cm","20 cm"],correct:2,why:"Four sides of 4 cm make 16 cm."}],
  Science:[
   {q:"Which planet is known as the Red Planet?",a:["Venus","Mars","Jupiter","Mercury"],correct:1,why:"Iron-rich dust gives Mars its reddish color."},
   {q:"What do plants absorb from the air?",a:["Oxygen only","Helium","Carbon dioxide","Hydrogen"],correct:2,why:"Plants use carbon dioxide during photosynthesis."},
   {q:"Which star is closest to Earth?",a:["Sirius","The Sun","Polaris","Vega"],correct:1,why:"The Sun is our nearest star."},
   {q:"What is water's chemical formula?",a:["CO₂","O₂","NaCl","H₂O"],correct:3,why:"A water molecule has two hydrogen atoms and one oxygen atom."},
-  {q:"Which part of the body pumps blood?",a:["Lungs","Brain","Heart","Stomach"],correct:2,why:"The heart pumps blood around the body."}],
+  {q:"Which part of the body pumps blood?",a:["Lungs","Brain","Heart","Stomach"],correct:2,why:"The heart pumps blood around the body."},
+  {q:"What force pulls objects toward Earth?",a:["Gravity","Sound","Light","Heat"],correct:0,why:"Gravity pulls objects toward Earth."},
+  {q:"Which state of matter has a fixed shape?",a:["Gas","Liquid","Solid","Steam"],correct:2,why:"Solids keep their own shape."},
+  {q:"What do bees collect from flowers?",a:["Sand","Nectar","Stones","Leaves"],correct:1,why:"Bees collect nectar from flowers."},
+  {q:"Which organ helps us breathe?",a:["Lungs","Stomach","Kidneys","Skin"],correct:0,why:"The lungs help us breathe."}],
  English:[
   {q:"Which word is a noun?",a:["Quickly","Happiness","Jump","Blue"],correct:1,why:"Happiness is a noun naming a feeling."},
   {q:"What is the opposite of 'ancient'?",a:["Old","Historic","Modern","Past"],correct:2,why:"Modern means relating to the present or recent times."},
   {q:"Choose the correct spelling.",a:["Beutiful","Beautifull","Beautiful","Butiful"],correct:2,why:"Beautiful is spelled B-E-A-U-T-I-F-U-L."},
   {q:"Which word is a verb?",a:["Swim","Table","Green","Soft"],correct:0,why:"Swim is an action word."},
-  {q:"What is the plural of 'child'?",a:["Childs","Children","Childes","Childrens"],correct:1,why:"The plural of child is children."}],
+  {q:"What is the plural of 'child'?",a:["Childs","Children","Childes","Childrens"],correct:1,why:"The plural of child is children."},
+  {q:"Choose the adjective: The bright star shines.",a:["star","shines","bright","the"],correct:2,why:"Bright describes the star."},
+  {q:"What is the past tense of go?",a:["Goed","Going","Went","Goes"],correct:2,why:"The past tense of go is went."},
+  {q:"Which word is a synonym for happy?",a:["Joyful","Angry","Tired","Tiny"],correct:0,why:"Joyful has a similar meaning to happy."},
+  {q:"Which sentence is a question?",a:["Where are you?","I am here.","What a day!","Please sit."],correct:0,why:"Questions usually end with a question mark."}],
  "General Knowledge":[
   {q:"How many days are in a week?",a:["5","6","7","8"],correct:2,why:"A week has seven days."},
   {q:"Which is the largest ocean?",a:["Atlantic","Indian","Arctic","Pacific"],correct:3,why:"The Pacific Ocean is the largest."},
   {q:"How many sides does a hexagon have?",a:["5","6","7","8"],correct:1,why:"A hexagon has six sides."},
   {q:"Which animal is a mammal?",a:["Shark","Dolphin","Trout","Octopus"],correct:1,why:"Dolphins are mammals that breathe air."},
-  {q:"What is the capital of Japan?",a:["Seoul","Beijing","Tokyo","Bangkok"],correct:2,why:"Tokyo is the capital of Japan."}]
+  {q:"What is the capital of Japan?",a:["Seoul","Beijing","Tokyo","Bangkok"],correct:2,why:"Tokyo is the capital of Japan."},
+  {q:"How many continents are commonly taught on world maps?",a:["5","6","7","8"],correct:2,why:"Seven continents are commonly taught."},
+  {q:"Which planet do we live on?",a:["Mars","Earth","Venus","Saturn"],correct:1,why:"We live on Earth."},
+  {q:"Which instrument shows direction?",a:["Thermometer","Compass","Ruler","Clock"],correct:1,why:"A compass helps show directions."},
+  {q:"How many months are in a year?",a:["10","11","12","13"],correct:2,why:"There are 12 months in a year."}],
+ Arabic:[
+  {q:"ما معنى كلمة «كتاب»؟",a:["Book","Pen","Door","School"],correct:0,why:"كتاب تعني Book باللغة الإنجليزية."},
+  {q:"أي حرف تبدأ به كلمة «أسد»؟",a:["ب","أ","م","س"],correct:1,why:"كلمة أسد تبدأ بحرف الألف."},
+  {q:"ما جمع كلمة «قلم»؟",a:["أقلام","قلمان","قلمة","قلمات"],correct:0,why:"جمع قلم هو أقلام."},
+  {q:"أي كلمة تدل على فعل؟",a:["مدرسة","يكتب","جميل","كتاب"],correct:1,why:"يكتب فعل يدل على عمل."},
+  {q:"ما ضد كلمة «كبير»؟",a:["طويل","صغير","قريب","سريع"],correct:1,why:"ضد كبير هو صغير."},
+  {q:"كم عدد حروف الهجاء العربية المشهورة؟",a:["26","27","28","29"],correct:2,why:"عدد الحروف العربية المشهورة 28 حرفاً."},
+  {q:"ما مثنى كلمة «طالب»؟",a:["طلاب","طالبان","طالبات","طلب"],correct:1,why:"مثنى طالب هو طالبان."},
+  {q:"أي كلمة هي اسم؟",a:["يركض","على","حديقة","ثم"],correct:2,why:"حديقة اسم."}],
+ "Islamic Studies":[
+  {q:"كم عدد أركان الإسلام؟",a:["3","4","5","6"],correct:2,why:"أركان الإسلام خمسة."},
+  {q:"ما اسم الكتاب المقدس في الإسلام؟",a:["القرآن الكريم","الإنجيل","التوراة","الزبور"],correct:0,why:"القرآن الكريم هو كتاب الإسلام."},
+  {q:"كم صلاة مفروضة في اليوم والليلة؟",a:["3","4","5","6"],correct:2,why:"الصلوات المفروضة خمس في اليوم والليلة."},
+  {q:"ما الشهر الذي يصوم فيه المسلمون؟",a:["محرم","رمضان","شوال","رجب"],correct:1,why:"يصوم المسلمون شهر رمضان."},
+  {q:"ما التحية الإسلامية؟",a:["صباح الخير","السلام عليكم","إلى اللقاء","شكراً"],correct:1,why:"من التحيات الإسلامية السلام عليكم."},
+  {q:"ما اسم قبلة المسلمين في الصلاة؟",a:["المسجد النبوي","الكعبة","المسجد الأقصى","جبل عرفات"],correct:1,why:"يتجه المسلمون في الصلاة نحو الكعبة."},
+  {q:"أي قيمة تعني قول الحقيقة؟",a:["الصدق","الغضب","الكسل","الإهمال"],correct:0,why:"الصدق هو قول الحقيقة."},
+  {q:"ما اسم الشهر الذي يأتي بعد رمضان؟",a:["شعبان","ذو الحجة","شوال","صفر"],correct:2,why:"يأتي شهر شوال بعد رمضان."}],
+ Geography:[
+  {q:"What is the largest continent?",a:["Africa","Asia","Europe","Australia"],correct:1,why:"Asia is the largest continent by area."},
+  {q:"What is the capital city of the UAE?",a:["Dubai","Sharjah","Abu Dhabi","Ajman"],correct:2,why:"Abu Dhabi is the capital of the UAE."},
+  {q:"Which ocean is between Africa and Australia?",a:["Atlantic","Arctic","Indian","Southern"],correct:2,why:"The Indian Ocean lies between Africa and Australia."},
+  {q:"What do maps use to show north, south, east, and west?",a:["Compass rose","Scale bar","Legend only","Border"],correct:0,why:"A compass rose shows directions on a map."},
+  {q:"Which is a landform with a very high peak?",a:["Valley","Mountain","Plain","Island"],correct:1,why:"A mountain is a high landform."},
+  {q:"What is a group of islands called?",a:["Archipelago","Peninsula","Desert","Plateau"],correct:0,why:"A group of islands is called an archipelago."},
+  {q:"Which line divides Earth into Northern and Southern Hemispheres?",a:["Prime Meridian","Equator","Tropic of Cancer","Date Line"],correct:1,why:"The Equator divides Earth into two hemispheres."},
+  {q:"Which is the largest hot desert?",a:["Gobi","Sahara","Arabian Desert","Kalahari"],correct:1,why:"The Sahara is the largest hot desert."}]
+
 };
 
+const languageText={en:{hero:"Big learning.<br>Small games.",intro:"Explore school subjects, challenge yourself with quick quizzes, and create fresh practice questions with our AI-style game maker.",start:"Start learning →",choose:"Choose your adventure",pick:"Pick a subject to start a quiz.",creator:"AI Game Creator",topic:"Quiz topic",subject:"Subject",create:"✨ Create my quiz",settings:"⚙️ Game settings",grade:"My grade",difficulty:"Difficulty"},ar:{hero:"تعلّم كبير.<br>ألعاب صغيرة.",intro:"استكشف المواد الدراسية وتحدَّ نفسك بالاختبارات القصيرة وأنشئ أسئلة تدريبية.",start:"ابدأ التعلّم ←",choose:"اختر مغامرتك",pick:"اختر مادة لبدء الاختبار.",creator:"منشئ الألعاب التعليمية",topic:"موضوع الاختبار",subject:"المادة",create:"✨ أنشئ اختباري",settings:"⚙️ إعدادات اللعبة",grade:"صفي الدراسي",difficulty:"مستوى الصعوبة"}};
+function setLanguage(){const ar=$("language").value==="ar",t=languageText[ar?"ar":"en"];document.documentElement.lang=ar?"ar":"en";document.document.documentElement.dir=ar?"rtl":"ltr";document.body.style.direction=ar?"rtl":"ltr";$("home").querySelector(".hero h1").innerHTML=t.hero;$("home").querySelector(".hero p").textContent=t.intro;$("startBtn").textContent=t.start;$("home").querySelector(".section-title h2").textContent=t.choose;$("home").querySelector(".section-title p").textContent=t.pick;$("home").querySelectorAll(".section-title h2")[1].textContent=t.creator;document.querySelector('label[for="topic"]').textContent=t.topic;document.querySelector('label[for="customSubject"]').textContent=t.subject;$("createBtn").textContent=t.create;$("home").querySelector(".settings-side h3").textContent=t.settings;document.querySelector('label[for="grade"]').textContent=t.grade;document.querySelector('label[for="difficulty"]').textContent=t.difficulty;}
 function getUsers(){try{return JSON.parse(localStorage.getItem(demoUsersKey)||"{}")}catch{return {}}}
 function saveUsers(users){localStorage.setItem(demoUsersKey,JSON.stringify(users))}
 function showSection(name){["home","auth","dashboard","quizScreen"].forEach(id=>$(id).classList.toggle("hidden",id!==name));window.scrollTo({top:0,behavior:"smooth"});updateTop()}
@@ -171,6 +223,7 @@ $("authForm").addEventListener("submit",e=>{e.preventDefault();const username=$(
 $("logout").onclick=()=>{currentUser=null;localStorage.removeItem(sessionKey);showSection("home")};
 $("goCreator").onclick=()=>{showSection("home");$("topic").focus();window.scrollTo({top:document.querySelector("#topic").getBoundingClientRect().top+window.scrollY-80,behavior:"smooth"})};
 $("createBtn").onclick=makeCustomQuiz;
+$("language").addEventListener("change",setLanguage);setLanguage();
 $("nextQuestion").onclick=checkAnswer;
 $("quitQuiz").onclick=()=>{if(currentUser){updateDashboard();showSection("dashboard")}else showSection("home")};
 document.querySelectorAll(".play-subject").forEach(b=>b.onclick=()=>{if(!currentUser){openAuth("register");return}beginQuiz(b.dataset.subject,questionsForDifficulty(b.dataset.subject,questionBank[b.dataset.subject]))});
