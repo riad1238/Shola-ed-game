@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shola School Learning App — LearnQuest AI</title>
+<style>
+:root{--ink:#17213b;--muted:#667085;--purple:#6558e8;--blue:#4b9df8;--mint:#b9f3df;--yellow:#ffe18a;--paper:#f6f7ff;--white:#fff;--line:#e7e9f5;--shadow:0 14px 36px #28335b12}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-rounded,"Trebuchet MS",Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padding:12px 16px;font-weight:800;transition:transform .15s,opacity .15s}button:hover{transform:translateY(-1px)}button:disabled{opacity:.45;cursor:not-allowed;transform:none}.primary{background:var(--purple);color:white}.secondary{background:#efedff;color:var(--purple)}.light{background:white;color:var(--ink);border:1px solid var(--line)}.shell{max-width:1120px;margin:auto;padding:22px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px;flex-wrap:wrap}.brand-stack{display:flex;flex-direction:column;gap:5px}.byline{font-size:12px;color:var(--muted);font-weight:800;margin-left:52px}.school-tag{display:inline-flex;align-items:center;gap:7px;background:#e3f8ef;color:#17674e;border-radius:99px;padding:9px 12px;font-size:12px;font-weight:900}.creator-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(210px,.8fr);gap:18px;align-items:start}.settings-side{background:#f8f8ff;border:1px solid var(--line);border-radius:18px;padding:16px}.settings-side h3{margin:0 0 4px}.settings-side p{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 10px}.brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:1000;letter-spacing:-.6px}.logo{width:42px;height:42px;display:grid;place-items:center;background:var(--yellow);border-radius:14px;font-size:24px}.tag{font-size:12px;font-weight:900;color:var(--purple);background:#efedff;padding:7px 10px;border-radius:99px}.hero{background:linear-gradient(120deg,#e5e3ff,#e4f8f2);border-radius:28px;padding:clamp(22px,5vw,48px);display:grid;grid-template-columns:1.3fr .7fr;gap:20px;align-items:center;overflow:hidden}.eyebrow{color:var(--purple);font-weight:900;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}.hero h1{font-size:clamp(34px,5vw,56px);line-height:1.02;letter-spacing:-2px;margin:12px 0}.hero p{color:#505b77;line-height:1.7;max-width:530px}.hero-art{font-size:clamp(90px,15vw,160px);text-align:center;filter:drop-shadow(0 12px 6px #6558e822)}.section-title{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:32px 0 16px}.section-title h2{margin:0;font-size:25px;letter-spacing:-.8px}.section-title p{margin:5px 0 0;color:var(--muted);font-size:14px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:white;border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow)}.subject-icon{font-size:34px;width:62px;height:62px;border-radius:19px;display:grid;place-items:center;margin-bottom:14px}.math{background:#fff2ca}.science{background:#dff8ef}.english{background:#e9e5ff}.card h3{margin:0 0 8px}.card p{margin:0 0 16px;color:var(--muted);font-size:14px;line-height:1.55}.card button{width:100%}.panel{background:white;border:1px solid var(--line);border-radius:24px;padding:clamp(18px,4vw,30px);box-shadow:var(--shadow)}.field{display:flex;flex-direction:column;gap:7px;margin:12px 0}.field label{font-size:13px;font-weight:800}.field input,.field select{width:100%;padding:13px 14px;border:1px solid #dfe2f0;border-radius:13px;background:#fff;color:var(--ink);outline-color:var(--purple)}.row-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.auth-wrap{max-width:470px;margin:35px auto}.auth-wrap h1{margin:8px 0}.muted{color:var(--muted);font-size:14px;line-height:1.6}.notice{padding:12px 14px;border-radius:12px;background:#fff4d8;color:#795300;font-size:13px;line-height:1.5;margin:12px 0}.success{background:#e0f8ee;color:#126345}.hidden{display:none!important}.dashboard-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}.stat{padding:16px;background:#f8f8ff;border-radius:16px}.stat strong{display:block;font-size:24px}.stat span{font-size:12px;color:var(--muted)}.quiz{max-width:760px;margin:28px auto}.quiz-top{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:13px;font-weight:800}.progress{height:8px;background:#ececf7;border-radius:99px;margin:15px 0 24px;overflow:hidden}.progress div{height:100%;background:linear-gradient(90deg,var(--purple),var(--blue));width:0;transition:width .2s}.question{font-size:clamp(23px,4vw,34px);letter-spacing:-.8px;line-height:1.2}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0}.answer{background:#fff;border:2px solid var(--line);text-align:left;padding:17px;border-radius:16px;color:var(--ink)}.answer.chosen{border-color:var(--purple);background:#f2f0ff}.answer.correct{border-color:#26ad79;background:#e6faf1}.answer.wrong{border-color:#ed7777;background:#fff0f0}.feedback{min-height:25px;font-weight:800}.footer{text-align:center;color:var(--muted);font-size:12px;padding:30px 0 10px}.pill{display:inline-block;border-radius:99px;background:#f1f0ff;color:var(--purple);padding:6px 10px;font-size:12px;font-weight:900}
+@media(max-width:720px){.creator-layout{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.hero-art{font-size:90px;order:-1}.cards{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.row-fields{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.topbar{align-items:flex-start}.hero h1{letter-spacing:-1px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand-stack"><div class="brand"><div class="logo">🚀</div> LearnQuest <span class="tag">AI LEARNING</span></div><div class="byline">Made by Riad Tabbakha · 5-B</div></div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end"><span class="school-tag">🏫 Shola School App</span><div id="topActions"><button class="secondary" id="signInTop">Student sign in</button></div></div>
+  </header>
+
+  <section id="home">
+    <div class="hero">
+      <div><div class="eyebrow">Play • Practice • Progress</div><h1>Big learning.<br>Small games.</h1><p>Explore school subjects, challenge yourself with quick quizzes, and create fresh practice questions with our AI-style game maker.</p><button class="primary" id="startBtn">Start learning →</button></div>
+      <div class="hero-art" aria-hidden="true">🧠🎮</div>
+    </div>
+    <div class="section-title"><div><h2>Choose your adventure</h2><p>Pick a subject to start a quiz.</p></div><span class="pill">Made for curious minds</span></div>
+    <div class="cards">
+      <article class="card"><div class="subject-icon math">🔢</div><h3>Math Mission</h3><p>Practice numbers, arithmetic, and problem-solving.</p><button class="primary play-subject" data-subject="Math">Play math</button></article>
+      <article class="card"><div class="subject-icon science">🧪</div><h3>Science Squad</h3><p>Explore nature, space, energy, and the human body.</p><button class="primary play-subject" data-subject="Science">Play science</button></article>
+      <article class="card"><div class="subject-icon english">📚</div><h3>Word Wizard</h3><p>Build vocabulary and practice English skills.</p><button class="primary play-subject" data-subject="English">Play English</button></article>
+    </div>
+    <div class="section-title"><div><h2>AI Game Creator</h2><p>Make a new practice quiz for any topic.</p></div><span class="pill">Question generator</span></div>
+    <div class="panel creator-layout">
+      <div>
+        <div class="field"><label for="topic">Quiz topic</label><input id="topic" placeholder="e.g. planets, fractions, verbs" maxlength="80" value="The solar system"></div>
+        <div class="field"><label for="customSubject">Subject</label><select id="customSubject"><option>Science</option><option>Math</option><option>English</option><option>General Knowledge</option></select></div>
+        <button class="primary" id="createBtn">✨ Create my quiz</button>
+        <p class="muted" id="creatorMessage">Choose your grade and difficulty on the side. This demo uses built-in questions; connect a secure AI backend to generate brand-new questions.</p>
+      </div>
+      <aside class="settings-side">
+        <h3>⚙️ Game settings</h3><p>Set your school grade and challenge level.</p>
+        <div class="field"><label for="grade">My grade</label><select id="grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
+        <div class="field"><label for="difficulty">Difficulty</label><select id="difficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+        <p class="muted">Easy: 3 questions · Medium: 5 questions · Hard: tougher challenge questions where available.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="auth" class="auth-wrap hidden">
+    <div class="panel">
+      <span class="pill">STUDENT AREA</span><h1 id="authTitle">Welcome back!</h1><p class="muted">Enter a nickname and password to continue, or create a demo account.</p>
+      <div class="notice">Demo mode only: this version stores a demo account in this browser. Do not use a real or reused password. It is not secure for real student accounts.</div>
+      <form id="authForm">
+        <div class="field"><label for="username">Student username</label><input id="username" autocomplete="username" minlength="2" maxlength="24" required placeholder="Choose a username"></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="4" required placeholder="At least 4 characters"></div>
+        <button class="primary" id="authSubmit" type="submit" style="width:100%">Create demo account</button>
+      </form>
+      <p id="authError" class="muted" role="status"></p>
+      <button class="light" id="switchAuth" style="width:100%">Already have a demo account? Sign in</button>
+      <p class="muted"><button class="secondary" id="backHome">← Back to home</button></p>
+    </div>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="panel">
+      <div class="dashboard-head"><div><span class="pill">YOUR LEARNING SPACE</span><h1 id="welcomeName">Hello, learner!</h1><p class="muted">Ready for your next challenge?</p></div><button class="light" id="logout">Sign out</button></div>
+      <div class="stats"><div class="stat"><strong id="statPoints">0</strong><span>Total points</span></div><div class="stat"><strong id="statQuizzes">0</strong><span>Quizzes played</span></div><div class="stat"><strong>🌟</strong><span>Keep learning!</span></div></div>
+      <div class="section-title"><div><h2>Pick a game</h2><p>Your next mission is waiting.</p></div></div>
+      <div class="cards">
+        <article class="card"><div class="subject-icon math">🔢</div><h3>Math Mission</h3><p>Sharpen your number skills.</p><button class="primary play-subject" data-subject="Math">Play</button></article>
+        <article class="card"><div class="subject-icon science">🧪</div><h3>Science Squad</h3><p>Discover how the world works.</p><button class="primary play-subject" data-subject="Science">Play</button></article>
+        <article class="card"><div class="subject-icon english">📚</div><h3>Word Wizard</h3><p>Train your language skills.</p><button class="primary play-subject" data-subject="English">Play</button></article>
+      </div>
+      <div class="section-title"><div><h2>Make a custom quiz</h2><p>Use the AI Game Creator on the home page.</p></div><button class="secondary" id="goCreator">Create a quiz ✨</button></div>
+    </div>
+  </section>
+
+  <section id="quizScreen" class="quiz hidden">
+    <div class="panel">
+      <div class="quiz-top"><span id="quizSubject">SCIENCE MISSION</span><span id="questionCount">Question 1 of 5</span></div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <h2 class="question" id="questionText">Question goes here</h2>
+      <div class="answers" id="answers"></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
+      <div class="dashboard-head"><button class="light" id="quitQuiz">Exit quiz</button><button class="primary" id="nextQuestion" disabled>Check answer</button></div>
+    </div>
+  </section>
+  <footer class="footer">LearnQuest AI • Learn something new every day 🌈</footer>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const demoUsersKey = "learnquest_demo_users_v1";
+const sessionKey = "learnquest_demo_session_v1";
+let authMode = "register", currentUser = null, quizQuestions = [], qIndex = 0, selected = null, answered = false, quizScore = 0, quizSubject = "Science", quizSource = "subject";
+
+const questionBank = {
+ Math:[
+  {q:"What is 7 × 6?",a:["42","36","48","13"],correct:0,why:"7 groups of 6 make 42."},
+  {q:"What is 45 + 28?",a:["63","73","83","72"],correct:1,why:"45 + 20 = 65, then + 8 = 73."},
+  {q:"Which fraction is equal to one half?",a:["2/3","3/8","4/8","1/4"],correct:2,why:"4/8 simplifies to 1/2."},
+  {q:"What is 100 − 37?",a:["73","67","63","53"],correct:2,why:"100 − 37 = 63."},
+  {q:"A triangle has how many sides?",a:["2","3","4","5"],correct:1,why:"A triangle has three sides."}],
+ Science:[
+  {q:"Which planet is known as the Red Planet?",a:["Venus","Mars","Jupiter","Mercury"],correct:1,why:"Iron-rich dust gives Mars its reddish color."},
+  {q:"What do plants absorb from the air?",a:["Oxygen only","Helium","Carbon dioxide","Hydrogen"],correct:2,why:"Plants use carbon dioxide during photosynthesis."},
+  {q:"Which star is closest to Earth?",a:["Sirius","The Sun","Polaris","Vega"],correct:1,why:"The Sun is our nearest star."},
+  {q:"What is water's chemical formula?",a:["CO₂","O₂","NaCl","H₂O"],correct:3,why:"A water molecule has two hydrogen atoms and one oxygen atom."},
+  {q:"Which part of the body pumps blood?",a:["Lungs","Brain","Heart","Stomach"],correct:2,why:"The heart pumps blood around the body."}],
+ English:[
+  {q:"Which word is a noun?",a:["Quickly","Happiness","Jump","Blue"],correct:1,why:"Happiness is a noun naming a feeling."},
+  {q:"What is the opposite of 'ancient'?",a:["Old","Historic","Modern","Past"],correct:2,why:"Modern means relating to the present or recent times."},
+  {q:"Choose the correct spelling.",a:["Beutiful","Beautifull","Beautiful","Butiful"],correct:2,why:"Beautiful is spelled B-E-A-U-T-I-F-U-L."},
+  {q:"Which word is a verb?",a:["Swim","Table","Green","Soft"],correct:0,why:"Swim is an action word."},
+  {q:"What is the plural of 'child'?",a:["Childs","Children","Childes","Childrens"],correct:1,why:"The plural of child is children."}],
+ "General Knowledge":[
+  {q:"How many days are in a week?",a:["5","6","7","8"],correct:2,why:"A week has seven days."},
+  {q:"Which is the largest ocean?",a:["Atlantic","Indian","Arctic","Pacific"],correct:3,why:"The Pacific Ocean is the largest."},
+  {q:"How many sides does a hexagon have?",a:["5","6","7","8"],correct:1,why:"A hexagon has six sides."},
+  {q:"Which animal is a mammal?",a:["Shark","Dolphin","Trout","Octopus"],correct:1,why:"Dolphins are mammals that breathe air."},
+  {q:"What is the capital of Japan?",a:["Seoul","Beijing","Tokyo","Bangkok"],correct:2,why:"Tokyo is the capital of Japan."}]
+};
+
+function getUsers(){try{return JSON.parse(localStorage.getItem(demoUsersKey)||"{}")}catch{return {}}}
+function saveUsers(users){localStorage.setItem(demoUsersKey,JSON.stringify(users))}
+function showSection(name){["home","auth","dashboard","quizScreen"].forEach(id=>$(id).classList.toggle("hidden",id!==name));window.scrollTo({top:0,behavior:"smooth"});updateTop()}
+function updateTop(){const el=$("topActions");if(currentUser){el.innerHTML='<span class="tag">Hi, '+escapeHtml(currentUser.username)+'</span>'}else{el.innerHTML='<button class="secondary" id="signInTop">Student sign in</button>'; $("signInTop").onclick=()=>openAuth("login")}}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function openAuth(mode){authMode=mode;$("authTitle").textContent=mode==="register"?"Create your learner account":"Welcome back!";$("authSubmit").textContent=mode==="register"?"Create demo account":"Sign in";$("switchAuth").textContent=mode==="register"?"Already have a demo account? Sign in":"New here? Create a demo account";$("authError").textContent="";$("password").value="";showSection("auth")}
+function updateDashboard(){if(!currentUser)return;$("welcomeName").textContent="Hello, "+currentUser.username+"! 👋";$("statPoints").textContent=currentUser.points||0;$("statQuizzes").textContent=currentUser.quizzes||0;updateTop()}
+function refreshUser(){const users=getUsers();if(currentUser){users[currentUser.username.toLowerCase()]={...currentUser};saveUsers(users);localStorage.setItem(sessionKey,currentUser.username.toLowerCase())}}
+function beginQuiz(subject,questions,source="subject"){quizSubject=subject;quizQuestions=questions.map(q=>({...q}));qIndex=0;selected=null;answered=false;quizScore=0;quizSource=source;showSection("quizScreen");renderQuestion()}
+function renderQuestion(){const q=quizQuestions[qIndex];selected=null;answered=false;$("quizSubject").textContent=quizSubject.toUpperCase()+" MISSION";$("questionCount").textContent="Question "+(qIndex+1)+" of "+quizQuestions.length;$("progressBar").style.width=(qIndex/quizQuestions.length*100)+"%";$("questionText").textContent=q.q;$("feedback").textContent="";$("nextQuestion").disabled=true;$("nextQuestion").textContent="Check answer";$("answers").innerHTML="";q.a.forEach((a,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=String.fromCharCode(65+i)+". "+a;b.onclick=()=>{if(answered)return;selected=i;document.querySelectorAll(".answer").forEach(x=>x.classList.remove("chosen"));b.classList.add("chosen");$("nextQuestion").disabled=false};$("answers").appendChild(b)})}
+function checkAnswer(){if(!answered){if(selected===null)return;answered=true;const q=quizQuestions[qIndex];const buttons=[...document.querySelectorAll(".answer")];buttons.forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.classList.add("correct");if(i===selected&&i!==q.correct)b.classList.add("wrong")});if(selected===q.correct){quizScore++;$("feedback").textContent="🎉 Correct! "+q.why}else{$("feedback").textContent="💡 Not quite. "+q.why}$("nextQuestion").textContent=qIndex===quizQuestions.length-1?"See results":"Next question";$("nextQuestion").disabled=false;$("progressBar").style.width=((qIndex+1)/quizQuestions.length*100)+"%"}else{qIndex++;if(qIndex<quizQuestions.length)renderQuestion();else finishQuiz()}}
+function finishQuiz(){if(currentUser){currentUser.points=(currentUser.points||0)+quizScore*10;currentUser.quizzes=(currentUser.quizzes||0)+1;refreshUser();updateDashboard()}$("quizSubject").textContent="MISSION COMPLETE";$("questionCount").textContent="Finished";$("progressBar").style.width="100%";$("questionText").textContent="You scored "+quizScore+" out of "+quizQuestions.length+"!";$("answers").innerHTML='<div class="stat"><strong>+'+(quizScore*10)+'</strong><span>points earned</span></div><div class="stat"><strong>'+Math.round(quizScore/quizQuestions.length*100)+'%</strong><span>score</span></div>';$("feedback").textContent=quizScore===quizQuestions.length?"Perfect score! Fantastic work!":"Great effort! Practice makes progress.";$("nextQuestion").disabled=false;$("nextQuestion").textContent="Back to dashboard";$("nextQuestion").onclick=()=>{ $("nextQuestion").onclick=checkAnswer;currentUser? (updateDashboard(),showSection("dashboard")):showSection("home")};$("quitQuiz").textContent="Home"}
+function questionsForDifficulty(subject, questions){
+ const difficulty=$("difficulty").value;
+ let chosen=questions.map(q=>({...q,a:[...q.a]}));
+ if(difficulty==="Easy") chosen=chosen.slice(0,3);
+ if(difficulty==="Hard" && subject==="Math") chosen=[
+  {q:"What is 18 × 7?",a:["116","126","136","146"],correct:1,why:"18 × 7 = 126."},
+  {q:"A book costs 36 dirhams. How much do 4 books cost?",a:["124 dirhams","134 dirhams","144 dirhams","154 dirhams"],correct:2,why:"36 × 4 = 144 dirhams."},
+  {q:"What is 3/4 of 20?",a:["5","10","15","16"],correct:2,why:"20 divided by 4 is 5, and 5 × 3 = 15."},
+  {q:"What is 245 + 178?",a:["413","423","433","443"],correct:1,why:"245 + 178 = 423."},
+  {q:"A rectangle is 8 cm long and 5 cm wide. What is its area?",a:["13 cm²","26 cm²","40 cm²","80 cm²"],correct:2,why:"Area = length × width = 8 × 5 = 40 cm²."}
+ ];
+ return chosen;
+}
+function makeCustomQuiz(){const topic=$("topic").value.trim()||"General Knowledge";const difficulty=$("difficulty").value;const subject=$("customSubject").value;const low=topic.toLowerCase();let qs=questionBank[subject]||questionBank["General Knowledge"];let custom;
+if(/solar system|planet|space/.test(low)){custom=[
+{q:"Which planet is closest to the Sun?",a:["Earth","Mercury","Mars","Neptune"],correct:1,why:"Mercury is the closest planet to the Sun."},
+{q:"Which planet is the largest in our solar system?",a:["Saturn","Earth","Jupiter","Uranus"],correct:2,why:"Jupiter is the largest planet."},
+{q:"What do we call a space rock that reaches Earth's surface?",a:["Comet","Meteorite","Nebula","Galaxy"],correct:1,why:"A meteorite is a space rock that reaches the ground."},
+{q:"Which planet has famous rings?",a:["Saturn","Mercury","Mars","Venus"],correct:0,why:"Saturn's rings are made mostly of ice and rocky particles."},
+{q:"What keeps planets in orbit around the Sun?",a:["Sound","Wind","Gravity","Magnets"],correct:2,why:"Gravity keeps planets in orbit."}]}
+else if(/fraction/.test(low)){custom=[
+{q:"What is 1/2 + 1/2?",a:["1/2","1","2","1/4"],correct:1,why:"Two halves make one whole."},
+{q:"Which fraction is larger?",a:["1/4","3/4","They are equal","Cannot tell"],correct:1,why:"Three quarters is larger than one quarter."},
+{q:"What is half of 10?",a:["2","4","5","8"],correct:2,why:"10 divided by 2 is 5."},
+{q:"How many quarters make one whole?",a:["2","3","4","5"],correct:2,why:"Four quarters make one whole."},
+{q:"Which fraction means one out of three equal parts?",a:["1/2","1/3","3/1","2/3"],correct:1,why:"One out of three equal parts is one third."}]}
+else if(/verb|english|word|vocab/.test(low)){custom=questionBank.English}
+else if(/math|number|addition|multiply/.test(low)){custom=questionBank.Math}
+else if(/science|animal|plant|water/.test(low)){custom=questionBank.Science}
+else{custom=qs}
+custom=questionsForDifficulty(subject,custom);
+$("creatorMessage").textContent='Quiz ready! This demo used built-in questions related to "'+topic+'". For brand-new questions on any topic, connect an AI API through a secure backend.';beginQuiz(subject+" · "+topic+" · "+$("grade").value+" · "+difficulty,custom,"custom")}
+$("startBtn").onclick=()=>currentUser?(updateDashboard(),showSection("dashboard")):openAuth("register");
+$("signInTop").onclick=()=>openAuth("login");
+$("backHome").onclick=()=>showSection("home");
+$("switchAuth").onclick=()=>openAuth(authMode==="register"?"login":"register");
+$("authForm").addEventListener("submit",e=>{e.preventDefault();const username=$("username").value.trim();const password=$("password").value;const key=username.toLowerCase();const users=getUsers();if(authMode==="register"){if(users[key]){$("authError").textContent="That username already exists in this browser. Sign in instead.";return}users[key]={username,password,points:0,quizzes:0};saveUsers(users);currentUser=users[key]}else{if(!users[key]||users[key].password!==password){$("authError").textContent="Username or password doesn't match this browser's demo account.";return}currentUser=users[key]}localStorage.setItem(sessionKey,key);updateDashboard();showSection("dashboard")});
+$("logout").onclick=()=>{currentUser=null;localStorage.removeItem(sessionKey);showSection("home")};
+$("goCreator").onclick=()=>{showSection("home");$("topic").focus();window.scrollTo({top:document.querySelector("#topic").getBoundingClientRect().top+window.scrollY-80,behavior:"smooth"})};
+$("createBtn").onclick=makeCustomQuiz;
+$("nextQuestion").onclick=checkAnswer;
+$("quitQuiz").onclick=()=>{if(currentUser){updateDashboard();showSection("dashboard")}else showSection("home")};
+document.querySelectorAll(".play-subject").forEach(b=>b.onclick=()=>{if(!currentUser){openAuth("register");return}beginQuiz(b.dataset.subject,questionsForDifficulty(b.dataset.subject,questionBank[b.dataset.subject]))});
+const savedSession=localStorage.getItem(sessionKey);if(savedSession){const user=getUsers()[savedSession];if(user){currentUser=user;updateDashboard()}}updateTop();
+</script>
+</body>
+</html>
