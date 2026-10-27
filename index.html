@@ -197,7 +197,8 @@ function questionsForDifficulty(subject, questions){
  return chosen;
 }
 function makeCustomQuiz(){const topic=$("topic").value.trim()||"General Knowledge";const difficulty=$("difficulty").value;const subject=$("customSubject").value;const low=topic.toLowerCase();let qs=questionBank[subject]||questionBank["General Knowledge"];let custom;
-if(/solar system|planet|space/.test(low)){custom=[
+if(subject==="Arabic"||subject==="Islamic Studies"||subject==="Geography"){custom=questionBank[subject]}
+else if(/solar system|planet|space/.test(low)){custom=[
 {q:"Which planet is closest to the Sun?",a:["Earth","Mercury","Mars","Neptune"],correct:1,why:"Mercury is the closest planet to the Sun."},
 {q:"Which planet is the largest in our solar system?",a:["Saturn","Earth","Jupiter","Uranus"],correct:2,why:"Jupiter is the largest planet."},
 {q:"What do we call a space rock that reaches Earth's surface?",a:["Comet","Meteorite","Nebula","Galaxy"],correct:1,why:"A meteorite is a space rock that reaches the ground."},
