@@ -23,6 +23,7 @@
       <div class="hero-art" aria-hidden="true">🧠🎮</div>
     </div>
     <div class="section-title"><div><h2>Choose your adventure</h2><p>Pick a subject to start a quiz.</p></div><span class="pill">Made for curious minds</span></div>
+    <div class="panel" style="margin-bottom:16px"><div class="field"><label for="premadeDifficultyHome">Premade quiz difficulty: <strong class="premade-difficulty-label">Medium</strong></label><input class="premade-difficulty" id="premadeDifficultyHome" type="range" min="1" max="3" step="1" value="2" style="width:100%;accent-color:var(--purple)"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>Easy</span><span>Medium</span><span>Hard</span></div></div><p class="muted" style="margin:0">Choose how challenging the ready-made subject quizzes will be.</p></div>
     <div class="cards">
       <article class="card"><div class="subject-icon math">🔢</div><h3>Math Mission</h3><p>Practice numbers, arithmetic, and problem-solving.</p><button class="primary play-subject" data-subject="Math">Play math</button></article>
       <article class="card"><div class="subject-icon science">🧪</div><h3>Science Squad</h3><p>Explore nature, space, energy, and the human body.</p><button class="primary play-subject" data-subject="Science">Play science</button></article>
@@ -42,7 +43,7 @@
       <aside class="settings-side">
         <h3>⚙️ Game settings</h3><p>Set your school grade and challenge level.</p>
         <div class="field"><label for="grade">My grade</label><select id="grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
-        <div class="field"><label for="difficulty">Difficulty</label><select id="difficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+        <div class="field"><label for="customDifficulty">Custom quiz difficulty</label><select id="customDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
         <p class="muted">Easy: 3 questions · Medium: 5 questions · Hard: tougher challenge questions where available.</p>
       </aside>
     </div>
@@ -68,6 +69,7 @@
       <div class="dashboard-head"><div><span class="pill">YOUR LEARNING SPACE</span><h1 id="welcomeName">Hello, learner!</h1><p class="muted">Ready for your next challenge?</p></div><button class="light" id="logout">Sign out</button></div>
       <div class="stats"><div class="stat"><strong id="statPoints">0</strong><span>Total points</span></div><div class="stat"><strong id="statQuizzes">0</strong><span>Quizzes played</span></div><div class="stat"><strong>🌟</strong><span>Keep learning!</span></div></div>
       <div class="section-title"><div><h2>Pick a game</h2><p>Your next mission is waiting.</p></div></div>
+      <div class="panel" style="margin-bottom:16px"><div class="field"><label for="premadeDifficultyDash">Premade quiz difficulty: <strong class="premade-difficulty-label">Medium</strong></label><input class="premade-difficulty" id="premadeDifficultyDash" type="range" min="1" max="3" step="1" value="2" style="width:100%;accent-color:var(--purple)"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>Easy</span><span>Medium</span><span>Hard</span></div></div><p class="muted" style="margin:0">Choose how challenging the ready-made subject quizzes will be.</p></div>
       <div class="cards">
         <article class="card"><div class="subject-icon math">🔢</div><h3>Math Mission</h3><p>Sharpen your number skills.</p><button class="primary play-subject" data-subject="Math">Play</button></article>
         <article class="card"><div class="subject-icon science">🧪</div><h3>Science Squad</h3><p>Discover how the world works.</p><button class="primary play-subject" data-subject="Science">Play</button></article>
@@ -277,8 +279,7 @@ function checkAnswer(){
  }else{qIndex++;if(qIndex<quizQuestions.length)renderQuestion();else finishQuiz()}
 }
 function finishQuiz(){if(currentUser){currentUser.points=(currentUser.points||0)+quizScore*10;currentUser.quizzes=(currentUser.quizzes||0)+1;refreshUser();updateDashboard()}$("quizSubject").textContent="MISSION COMPLETE";$("questionCount").textContent="Finished";$("progressBar").style.width="100%";$("questionText").textContent="You scored "+quizScore+" out of "+quizQuestions.length+"!";$("answers").innerHTML='<div class="stat"><strong>+'+(quizScore*10)+'</strong><span>points earned</span></div><div class="stat"><strong>'+Math.round(quizScore/quizQuestions.length*100)+'%</strong><span>score</span></div>';$("feedback").textContent=quizScore===quizQuestions.length?"Perfect score! Fantastic work!":"Great effort! Practice makes progress.";$("nextQuestion").disabled=false;$("nextQuestion").textContent="Back to dashboard";$("nextQuestion").onclick=()=>{ $("nextQuestion").onclick=checkAnswer;currentUser? (updateDashboard(),showSection("dashboard")):showSection("home")};$("quitQuiz").textContent="Home"}
-function questionsForDifficulty(subject, questions){
- const difficulty=$("difficulty").value;
+function questionsForDifficulty(subject, questions, difficulty=$("customDifficulty").value){
  let chosen=questions.map(q=>({...q,a:[...q.a]}));
  if(difficulty==="Easy") chosen=chosen.slice(0,3);
  if(difficulty==="Hard" && subject==="Math") chosen=[
@@ -290,7 +291,7 @@ function questionsForDifficulty(subject, questions){
  ];
  return chosen;
 }
-function makeCustomQuiz(){const topic=$("topic").value.trim()||"General Knowledge";const difficulty=$("difficulty").value;const subject=$("customSubject").value;const low=topic.toLowerCase();let qs=questionBank[subject]||questionBank["General Knowledge"];let custom;
+function makeCustomQuiz(){const topic=$("topic").value.trim()||"General Knowledge";const difficulty=$("customDifficulty").value;const subject=$("customSubject").value;const low=topic.toLowerCase();let qs=questionBank[subject]||questionBank["General Knowledge"];let custom;
 if(subject==="Arabic"||subject==="Islamic Studies"||subject==="Geography"){custom=questionBank[subject]}
 else if(/solar system|planet|space/.test(low)){custom=[
 {q:"Which planet is closest to the Sun?",a:["Earth","Mercury","Mars","Neptune"],correct:1,why:"Mercury is the closest planet to the Sun."},
@@ -321,7 +322,8 @@ $("createBtn").onclick=makeCustomQuiz;
 $("language").addEventListener("change",setLanguage);setLanguage();
 $("nextQuestion").onclick=checkAnswer;
 $("quitQuiz").onclick=()=>{if(currentUser){updateDashboard();showSection("dashboard")}else showSection("home")};
-document.querySelectorAll(".play-subject").forEach(b=>b.onclick=()=>{if(!currentUser){openAuth("register");return}beginQuiz(b.dataset.subject,questionsForDifficulty(b.dataset.subject,questionBank[b.dataset.subject]))});
+document.querySelectorAll(".play-subject").forEach(b=>b.onclick=()=>{if(!currentUser){openAuth("register");return}beginQuiz(b.dataset.subject,questionsForDifficulty(b.dataset.subject,questionBank[b.dataset.subject],({1:"Easy",2:"Medium",3:"Hard"})[Number(document.querySelector(".premade-difficulty")?.value||2)]))});
+document.querySelectorAll(".premade-difficulty-label").forEach(label=>label.textContent="Medium");
 const savedSession=localStorage.getItem(sessionKey);if(savedSession){const user=getUsers()[savedSession];if(user){currentUser=user;updateDashboard()}}updateTop();
 </script>
 </body>
