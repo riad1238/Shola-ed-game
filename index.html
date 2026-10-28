@@ -23,7 +23,6 @@
       <div class="hero-art" aria-hidden="true">🧠🎮</div>
     </div>
     <div class="section-title"><div><h2>Choose your adventure</h2><p>Pick a subject to start a quiz.</p></div><span class="pill">Made for curious minds</span></div>
-    <div class="panel" style="margin-bottom:16px"><div class="field"><label for="premadeDifficultyHome">Premade quiz difficulty: <strong class="premade-difficulty-label">Medium</strong></label><input class="premade-difficulty" id="premadeDifficultyHome" type="range" min="1" max="3" step="1" value="2" style="width:100%;accent-color:var(--purple)"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>Easy</span><span>Medium</span><span>Hard</span></div></div><p class="muted" style="margin:0">Choose how challenging the ready-made subject quizzes will be.</p></div>
     <div class="cards">
       <article class="card"><div class="subject-icon math">🔢</div><h3>Math Mission</h3><p>Practice numbers, arithmetic, and problem-solving.</p><button class="primary play-subject" data-subject="Math">Play math</button></article>
       <article class="card"><div class="subject-icon science">🧪</div><h3>Science Squad</h3><p>Explore nature, space, energy, and the human body.</p><button class="primary play-subject" data-subject="Science">Play science</button></article>
@@ -69,7 +68,6 @@
       <div class="dashboard-head"><div><span class="pill">YOUR LEARNING SPACE</span><h1 id="welcomeName">Hello, learner!</h1><p class="muted">Ready for your next challenge?</p></div><button class="light" id="logout">Sign out</button></div>
       <div class="stats"><div class="stat"><strong id="statPoints">0</strong><span>Total points</span></div><div class="stat"><strong id="statQuizzes">0</strong><span>Quizzes played</span></div><div class="stat"><strong>🌟</strong><span>Keep learning!</span></div></div>
       <div class="section-title"><div><h2>Pick a game</h2><p>Your next mission is waiting.</p></div></div>
-      <div class="panel" style="margin-bottom:16px"><div class="field"><label for="premadeDifficultyDash">Premade quiz difficulty: <strong class="premade-difficulty-label">Medium</strong></label><input class="premade-difficulty" id="premadeDifficultyDash" type="range" min="1" max="3" step="1" value="2" style="width:100%;accent-color:var(--purple)"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>Easy</span><span>Medium</span><span>Hard</span></div></div><p class="muted" style="margin:0">Choose how challenging the ready-made subject quizzes will be.</p></div>
       <div class="cards">
         <article class="card"><div class="subject-icon math">🔢</div><h3>Math Mission</h3><p>Sharpen your number skills.</p><button class="primary play-subject" data-subject="Math">Play</button></article>
         <article class="card"><div class="subject-icon science">🧪</div><h3>Science Squad</h3><p>Discover how the world works.</p><button class="primary play-subject" data-subject="Science">Play</button></article>
@@ -79,6 +77,22 @@
         <article class="card"><div class="subject-icon math">🌍</div><h3>Geography Explorer</h3><p>Explore countries, maps, and continents.</p><button class="primary play-subject" data-subject="Geography">Play</button></article>
       </div>
       <div class="section-title"><div><h2>Make a custom quiz</h2><p>Use the AI Game Creator on the home page.</p></div><button class="secondary" id="goCreator">Create a quiz ✨</button></div>
+    </div>
+  </section>
+
+  <section id="difficultySetup" class="auth-wrap hidden">
+    <div class="panel">
+      <span class="pill">READY-MADE QUIZ</span>
+      <h1 id="difficultyTitle">Choose your difficulty</h1>
+      <p class="muted">Before the questions begin, choose how challenging you want this quiz to be.</p>
+      <div class="field">
+        <label for="premadeDifficulty">Difficulty: <strong id="premadeDifficultyLabel">Medium</strong></label>
+        <input id="premadeDifficulty" type="range" min="1" max="3" step="1" value="2" style="width:100%;accent-color:var(--purple)">
+        <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>Easy · 3 questions</span><span>Medium</span><span>Hard</span></div>
+      </div>
+      <div class="notice">Easy gives you a shorter quiz. Hard is a bigger challenge, with harder Math questions available.</div>
+      <button class="primary" id="startPremadeQuiz" style="width:100%">Start quiz</button>
+      <button class="light" id="cancelPremadeQuiz" style="width:100%;margin-top:10px">Go back</button>
     </div>
   </section>
 
@@ -98,7 +112,7 @@
 const $ = id => document.getElementById(id);
 const demoUsersKey = "learnquest_demo_users_v1";
 const sessionKey = "learnquest_demo_session_v1";
-let authMode = "register", currentUser = null, quizQuestions = [], qIndex = 0, selected = null, answered = false, quizScore = 0, quizSubject = "Science", quizSource = "subject";
+let authMode = "register", currentUser = null, quizQuestions = [], qIndex = 0, selected = null, answered = false, quizScore = 0, quizSubject = "Science", quizSource = "subject", pendingPremadeSubject = null;
 
 const questionBank = {
  Math:[
@@ -218,7 +232,7 @@ function setLanguage(){
 
 function getUsers(){try{return JSON.parse(localStorage.getItem(demoUsersKey)||"{}")}catch{return {}}}
 function saveUsers(users){localStorage.setItem(demoUsersKey,JSON.stringify(users))}
-function showSection(name){["home","auth","dashboard","quizScreen"].forEach(id=>$(id).classList.toggle("hidden",id!==name));window.scrollTo({top:0,behavior:"smooth"});updateTop()}
+function showSection(name){["home","auth","dashboard","difficultySetup","quizScreen"].forEach(id=>$(id).classList.toggle("hidden",id!==name));window.scrollTo({top:0,behavior:"smooth"});updateTop()}
 function updateTop(){const el=$("topActions");if(currentUser){el.innerHTML='<span class="tag">Hi, '+escapeHtml(currentUser.username)+'</span>'}else{el.innerHTML='<button class="secondary" id="signInTop">Student sign in</button>'; $("signInTop").onclick=()=>openAuth("login")}if($("language"))setLanguage()}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function openAuth(mode){authMode=mode;$("authTitle").textContent=mode==="register"?"Create your learner account":"Welcome back!";$("authSubmit").textContent=mode==="register"?"Create demo account":"Sign in";$("switchAuth").textContent=mode==="register"?"Already have a demo account? Sign in":"New here? Create a demo account";$("authError").textContent="";$("password").value="";showSection("auth")}
@@ -319,12 +333,14 @@ $("authForm").addEventListener("submit",e=>{e.preventDefault();const username=$(
 $("logout").onclick=()=>{currentUser=null;localStorage.removeItem(sessionKey);showSection("home")};
 $("goCreator").onclick=()=>{showSection("home");$("topic").focus();window.scrollTo({top:document.querySelector("#topic").getBoundingClientRect().top+window.scrollY-80,behavior:"smooth"})};
 $("createBtn").onclick=makeCustomQuiz;
-document.querySelectorAll(".premade-difficulty").forEach(slider=>slider.addEventListener("input",()=>{const value=({1:"Easy",2:"Medium",3:"Hard"})[Number(slider.value)];document.querySelectorAll(".premade-difficulty").forEach(other=>{other.value=slider.value});document.querySelectorAll(".premade-difficulty-label").forEach(label=>label.textContent=value)}));
+$("premadeDifficulty").addEventListener("input",()=>{$("premadeDifficultyLabel").textContent=({1:"Easy",2:"Medium",3:"Hard"})[Number($("premadeDifficulty").value)]});
+function openPremadeDifficulty(subject){pendingPremadeSubject=subject;$("difficultyTitle").textContent=subject+" — choose difficulty";$("premadeDifficulty").value="2";$("premadeDifficultyLabel").textContent="Medium";showSection("difficultySetup")}
+$("startPremadeQuiz").onclick=()=>{if(!pendingPremadeSubject)return;const difficulty=({1:"Easy",2:"Medium",3:"Hard"})[Number($("premadeDifficulty").value)];const questions=questionsForDifficulty(pendingPremadeSubject,questionBank[pendingPremadeSubject],difficulty);beginQuiz(pendingPremadeSubject+" · "+difficulty,questions,"subject")};
+$("cancelPremadeQuiz").onclick=()=>showSection(currentUser?"dashboard":"home");
 $("language").addEventListener("change",setLanguage);setLanguage();
 $("nextQuestion").onclick=checkAnswer;
 $("quitQuiz").onclick=()=>{if(currentUser){updateDashboard();showSection("dashboard")}else showSection("home")};
-document.querySelectorAll(".play-subject").forEach(b=>b.onclick=()=>{if(!currentUser){openAuth("register");return}beginQuiz(b.dataset.subject,questionsForDifficulty(b.dataset.subject,questionBank[b.dataset.subject],({1:"Easy",2:"Medium",3:"Hard"})[Number(document.querySelector(".premade-difficulty")?.value||2)]))});
-document.querySelectorAll(".premade-difficulty-label").forEach(label=>label.textContent="Medium");
+document.querySelectorAll(".play-subject").forEach(b=>b.onclick=()=>{if(!currentUser){openAuth("register");return}openPremadeDifficulty(b.dataset.subject)});
 const savedSession=localStorage.getItem(sessionKey);if(savedSession){const user=getUsers()[savedSession];if(user){currentUser=user;updateDashboard()}}updateTop();
 </script>
 </body>
