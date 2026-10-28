@@ -342,7 +342,7 @@ function mixQuestionTypes(questions){
   const q={...original,a:[...(original.a||[])]};
   const type=types[i%types.length];
   if(type==="true_false"){
-   const makeFalse=i%2===4;
+   const makeFalse=i%5===4;
    const statementAnswer=makeFalse?q.a[(q.correct+1)%q.a.length]:q.a[q.correct];
    q.type="true_false";
    q.answer=makeFalse?"false":"true";
@@ -353,9 +353,7 @@ function mixQuestionTypes(questions){
    q.type="short_answer";
    q.answer=String(q.a[q.correct]).trim();
    q.q="Write the answer: "+q.q;
-  }else{
-   q.type="multiple_choice";
-  }
+  }else q.type="multiple_choice";
   return q;
  });
 }
@@ -365,7 +363,7 @@ function renderQuestion(){
  $("quizSubject").textContent=quizSubject.toUpperCase()+" MISSION";
  $("questionCount").textContent="Question "+(qIndex+1)+" of "+quizQuestions.length;
  $("progressBar").style.width=(qIndex/quizQuestions.length*100)+"%";
- $("questionText").textContent=q.q;$("feedback").textContent="";
+ const ar=$("language").value==="ar";let shownQuestion=q.q;if(ar){shownQuestion=shownQuestion.replace(/^True or false: /,"صح أم خطأ: ").replace(/^Write the answer: /,"اكتب الإجابة: ");}$("questionText").textContent=shownQuestion;$("feedback").textContent="";
  $("nextQuestion").disabled=true;$("nextQuestion").textContent="Check answer";$("answers").innerHTML="";
  if(q.type==="short_answer"){
   const input=document.createElement("input");input.className="answer-input";input.type="text";input.id="writtenAnswer";input.autocomplete="off";input.placeholder=$("language").value==="ar"?"اكتب إجابتك هنا":"Type your answer here";
@@ -374,7 +372,7 @@ function renderQuestion(){
   $("answers").appendChild(input);
  }else{
   const options=q.type==="true_false"?( $("language").value==="ar"?["صحيح","خطأ"]:["True","False"]):q.a;
-  options.forEach((a,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=q.type==="true_false"?a:String.fromCharCode(65+i)+". "+a;b.onclick=()=>{if(answered)return;selected=q.type==="true_false"?q.a[i]:i;document.querySelectorAll(".answer").forEach(x=>x.classList.remove("chosen"));b.classList.add("chosen");$("nextQuestion").disabled=false};$("answers").appendChild(b)});
+  options.forEach((a,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=q.type==="true_false"?a:String.fromCharCode(65+i)+". "+a;b.onclick=()=>{if(answered)return;selected=i;document.querySelectorAll(".answer").forEach(x=>x.classList.remove("chosen"));b.classList.add("chosen");$("nextQuestion").disabled=false};$("answers").appendChild(b)});
  }
 }
 function normalizeAnswer(value){return String(value||"").trim().toLocaleLowerCase().replace(/[.!?؟،,؛;\s]+$/g,"").replace(/\s+/g," ")}
@@ -383,11 +381,16 @@ function checkAnswer(){
   if(selected===null||String(selected).trim()==="")return;
   answered=true;const q=quizQuestions[qIndex];
   const isCorrect=q.type==="short_answer"?normalizeAnswer(selected)===normalizeAnswer(q.answer):selected===q.correct;
-  document.querySelectorAll(".answer").forEach((b,i)=>{b.disabled=true;if(q.type!=="short_answer"&&i===q.correct)b.classList.add("correct");if(q.type!=="short_answer"&&((q.type==="true_false"?q.a[i]:i)===selected)&&!isCorrect)b.classList.add("wrong")});
+  document.querySelectorAll(".answer").forEach((button,i)=>{button.disabled=true;if(q.type!=="short_answer"&&i===q.correct)button.classList.add("correct");if(q.type!=="short_answer"&&i===selected&&!isCorrect)button.classList.add("wrong")});
   const input=$("writtenAnswer");if(input)input.disabled=true;
-  if(isCorrect){quizScore++;$("feedback").textContent="🎉 Correct! "+q.why}
-  else{$("feedback").textContent="💡 Not quite. The answer is "+(q.type==="short_answer"?q.answer:q.type==="true_false"?( $("language").value==="ar"?(q.correct===0?"صحيح":"خطأ"):(q.correct===0?"True":"False")):q.a[q.correct])+". "+q.why}
-  $("nextQuestion").textContent=qIndex===quizQuestions.length-1?"See results":"Next question";$("nextQuestion").disabled=false;$("progressBar").style.width=((qIndex+1)/quizQuestions.length*100)+"%";
+  const ar=$("language").value==="ar";
+  if(isCorrect){quizScore++;$("feedback").textContent=(ar?"🎉 إجابة صحيحة! ":"🎉 Correct! ")+q.why}
+  else{
+   const answer=q.type==="short_answer"?q.answer:q.type==="true_false"?(ar?(q.correct===0?"صحيح":"خطأ"):(q.correct===0?"True":"False")):q.a[q.correct];
+   $("feedback").textContent=(ar?"💡 ليس تماماً. الإجابة الصحيحة هي ":"💡 Not quite. The answer is ")+answer+". "+q.why;
+  }
+  $("nextQuestion").textContent=qIndex===quizQuestions.length-1?(ar?"عرض النتيجة":"See results"):(ar?"السؤال التالي":"Next question");
+  $("nextQuestion").disabled=false;$("progressBar").style.width=((qIndex+1)/quizQuestions.length*100)+"%";
  }else{qIndex++;if(qIndex<quizQuestions.length)renderQuestion();else finishQuiz()}
 }
 function finishQuiz(){if(currentUser){currentUser.points=(currentUser.points||0)+quizScore*10;currentUser.quizzes=(currentUser.quizzes||0)+1;refreshUser();updateDashboard()}$("quizSubject").textContent="MISSION COMPLETE";$("questionCount").textContent="Finished";$("progressBar").style.width="100%";$("questionText").textContent="You scored "+quizScore+" out of "+quizQuestions.length+"!";$("answers").innerHTML='<div class="stat"><strong>+'+(quizScore*10)+'</strong><span>points earned</span></div><div class="stat"><strong>'+Math.round(quizScore/quizQuestions.length*100)+'%</strong><span>score</span></div>';$("feedback").textContent=quizScore===quizQuestions.length?"Perfect score! Fantastic work!":"Great effort! Practice makes progress.";$("nextQuestion").disabled=false;$("nextQuestion").textContent="Back to dashboard";$("nextQuestion").onclick=()=>{ $("nextQuestion").onclick=checkAnswer;currentUser? (updateDashboard(),showSection("dashboard")):showSection("home")};$("quitQuiz").textContent="Home"}
