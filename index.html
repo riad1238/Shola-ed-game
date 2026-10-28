@@ -390,7 +390,7 @@ function renderQuestion(){
   options.forEach((a,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=q.type==="true_false"?a:String.fromCharCode(65+i)+". "+a;b.onclick=()=>{if(answered)return;selected=i;document.querySelectorAll(".answer").forEach(x=>x.classList.remove("chosen"));b.classList.add("chosen");$("nextQuestion").disabled=false};$("answers").appendChild(b)});
  }
 }
-function normalizeAnswer(value){return String(value||"").trim().toLocaleLowerCase().replace(/[.!?؟،,؛;\s]+$/g,"").replace(/\s+/g," ")}
+function normalizeAnswer(value){return String(value||"").normalize("NFKC").toLocaleLowerCase().trim().replace(/[.!?؟،,؛;:"'“”‘’]+/g,"").replace(/\s+/g," ")}
 function checkAnswer(){
  if(!answered){
   if(selected===null||String(selected).trim()==="")return;
