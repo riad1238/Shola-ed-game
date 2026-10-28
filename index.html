@@ -336,6 +336,29 @@ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":
 function openAuth(mode){authMode=mode;$("authTitle").textContent=mode==="register"?"Create your learner account":"Welcome back!";$("authSubmit").textContent=mode==="register"?"Create demo account":"Sign in";$("switchAuth").textContent=mode==="register"?"Already have a demo account? Sign in":"New here? Create a demo account";$("authError").textContent="";$("password").value="";showSection("auth")}
 function updateDashboard(){if(!currentUser)return;$("welcomeName").textContent="Hello, "+currentUser.username+"! 👋";$("statPoints").textContent=currentUser.points||0;$("statQuizzes").textContent=currentUser.quizzes||0;updateTop()}
 function refreshUser(){const users=getUsers();if(currentUser){users[currentUser.username.toLowerCase()]={...currentUser};saveUsers(users);localStorage.setItem(sessionKey,currentUser.username.toLowerCase())}}
+const quizArabic={
+"Which planet is known as the Red Planet?":"أي كوكب يُعرف بالكوكب الأحمر؟",
+"What do plants absorb from the air?":"ماذا تمتص النباتات من الهواء؟",
+"Which star is closest to Earth?":"ما النجم الأقرب إلى الأرض؟",
+"What is water's chemical formula?":"ما الصيغة الكيميائية للماء؟",
+"Which part of the body pumps blood?":"أي جزء من الجسم يضخ الدم؟",
+"What force pulls objects toward Earth?":"ما القوة التي تجذب الأشياء نحو الأرض؟",
+"Which state of matter has a fixed shape?":"أي حالة من حالات المادة لها شكل ثابت؟",
+"What do bees collect from flowers?":"ماذا يجمع النحل من الأزهار؟",
+"Which organ helps us breathe?":"أي عضو يساعدنا على التنفس؟",
+"Venus":"الزهرة","Mars":"المريخ","Jupiter":"المشتري","Mercury":"عطارد","Oxygen only":"الأكسجين فقط","Helium":"الهيليوم","Carbon dioxide":"ثاني أكسيد الكربون","Hydrogen":"الهيدروجين",
+"The Sun":"الشمس","Sirius":"الشعرى اليمانية","Polaris":"النجم القطبي","Vega":"النسر الواقع","Lungs":"الرئتان","Brain":"الدماغ","Heart":"القلب","Stomach":"المعدة","Gravity":"الجاذبية","Sound":"الصوت","Light":"الضوء","Heat":"الحرارة","Gas":"غاز","Liquid":"سائل","Solid":"صلب","Steam":"بخار","Sand":"الرمل","Nectar":"الرحيق","Stones":"الحجارة","Leaves":"الأوراق",
+"Iron-rich dust gives Mars its reddish color.":"يمنح الغبار الغني بالحديد كوكب المريخ لونه المحمر.",
+"Plants use carbon dioxide during photosynthesis.":"تستخدم النباتات ثاني أكسيد الكربون في عملية البناء الضوئي.",
+"The Sun is our nearest star.":"الشمس هي أقرب النجوم إلينا.",
+"A water molecule has two hydrogen atoms and one oxygen atom.":"يتكون جزيء الماء من ذرتي هيدروجين وذرة أكسجين واحدة.",
+"The heart pumps blood around the body.":"يضخ القلب الدم في أنحاء الجسم.",
+"Gravity pulls objects toward Earth.":"تجذب الجاذبية الأشياء نحو الأرض.",
+"Solids keep their own shape.":"تحافظ المواد الصلبة على شكلها.",
+"Bees collect nectar from flowers.":"يجمع النحل الرحيق من الأزهار.",
+"The lungs help us breathe.":"تساعدنا الرئتان على التنفس."
+};
+function quizTranslate(s){return quizArabic[s]||s}
 function shuffleArray(items){
  const shuffled=[...items];
  for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]}
@@ -349,7 +372,7 @@ function shuffleArray(items){
 function mixQuestionTypes(questions){
  const types=["multiple_choice","true_false","short_answer","multiple_choice","true_false"];
  return shuffleArray(questions).map((original,i)=>{
-  const q={...original,a:[...(original.a||[])]};
+  const q={...original,baseQ:original.q,a:[...(original.a||[])]};
   const type=types[i%types.length];
   if(type==="true_false"){
    const makeFalse=i%5===4;
@@ -378,7 +401,7 @@ function renderQuestion(){
  $("quizSubject").textContent=quizSubject.toUpperCase()+" MISSION";
  $("questionCount").textContent="Question "+(qIndex+1)+" of "+quizQuestions.length;
  $("progressBar").style.width=(qIndex/quizQuestions.length*100)+"%";
- const ar=$("language").value==="ar";let shownQuestion=q.q;if(ar){shownQuestion=shownQuestion.replace(/^True or false: /,"صح أم خطأ: ").replace(/^Write the answer: /,"اكتب الإجابة: ");}$("questionText").textContent=shownQuestion;$("feedback").textContent="";
+ const ar=$("language").value==="ar";let shownQuestion=q.q;if(ar){const base=quizTranslate(q.baseQ||q.q);if(q.type==="true_false"){const originalAnswer=q.answer==="true"?q.baseQ:q.a[(q.correct+1)%q.a.length];shownQuestion="صح أم خطأ: "+base.replace(/[?؟]+$/,"")+" الإجابة هي «"+quizTranslate(originalAnswer||"")+"».";}else if(q.type==="short_answer"){shownQuestion="اكتب الإجابة: "+base;}else{shownQuestion=base;}}$("questionText").textContent=shownQuestion;$("feedback").textContent="";
  $("nextQuestion").disabled=true;$("nextQuestion").textContent="Check answer";$("answers").innerHTML="";
  if(q.type==="short_answer"){
   const input=document.createElement("input");input.className="answer-input";input.type="text";input.id="writtenAnswer";input.autocomplete="off";input.placeholder=$("language").value==="ar"?"اكتب إجابتك هنا":"Type your answer here";
@@ -387,7 +410,7 @@ function renderQuestion(){
   $("answers").appendChild(input);
  }else{
   const options=q.type==="true_false"?( $("language").value==="ar"?["صحيح","خطأ"]:["True","False"]):q.a;
-  options.forEach((a,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=q.type==="true_false"?a:String.fromCharCode(65+i)+". "+a;b.onclick=()=>{if(answered)return;selected=i;document.querySelectorAll(".answer").forEach(x=>x.classList.remove("chosen"));b.classList.add("chosen");$("nextQuestion").disabled=false};$("answers").appendChild(b)});
+  options.forEach((a,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=q.type==="true_false"?a:String.fromCharCode(65+i)+". "+(ar?quizTranslate(a):a);b.onclick=()=>{if(answered)return;selected=i;document.querySelectorAll(".answer").forEach(x=>x.classList.remove("chosen"));b.classList.add("chosen");$("nextQuestion").disabled=false};$("answers").appendChild(b)});
  }
 }
 function normalizeAnswer(value){return String(value||"").normalize("NFKC").toLocaleLowerCase().trim().replace(/[.!?؟،,؛;:"'“”‘’]+/g,"").replace(/\s+/g," ")}
@@ -399,10 +422,10 @@ function checkAnswer(){
   document.querySelectorAll(".answer").forEach((button,i)=>{button.disabled=true;if(q.type!=="short_answer"&&i===q.correct)button.classList.add("correct");if(q.type!=="short_answer"&&i===selected&&!isCorrect)button.classList.add("wrong")});
   const input=$("writtenAnswer");if(input)input.disabled=true;
   const ar=$("language").value==="ar";
-  if(isCorrect){quizScore++;$("feedback").textContent=(ar?"🎉 إجابة صحيحة! ":"🎉 Correct! ")+q.why}
+  if(isCorrect){quizScore++;$("feedback").textContent=(ar?"🎉 إجابة صحيحة! ":"🎉 Correct! ")+(ar?quizTranslate(q.why):q.why)}
   else{
    const answer=q.type==="short_answer"?q.answer:q.type==="true_false"?(ar?(q.correct===0?"صحيح":"خطأ"):(q.correct===0?"True":"False")):q.a[q.correct];
-   $("feedback").textContent=(ar?"💡 ليس تماماً. الإجابة الصحيحة هي ":"💡 Not quite. The answer is ")+answer+". "+q.why;
+   $("feedback").textContent=(ar?"💡 ليس تماماً. الإجابة الصحيحة هي ":"💡 Not quite. The answer is ")+answer+". "+(ar?quizTranslate(q.why):q.why);
   }
   $("nextQuestion").textContent=qIndex===quizQuestions.length-1?(ar?"عرض النتيجة":"See results"):(ar?"السؤال التالي":"Next question");
   $("nextQuestion").disabled=false;$("progressBar").style.width=((qIndex+1)/quizQuestions.length*100)+"%";
