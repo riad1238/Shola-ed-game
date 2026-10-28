@@ -53,8 +53,8 @@
     body[dir="rtl"] { text-align: right; }
     a, button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
-    .hidden { display: none !important; }
 
+    .hidden { display: none !important; }
     .shell { max-width: 1180px; margin: 0 auto; padding: 18px 18px 50px; }
 
     .topbar {
@@ -63,6 +63,7 @@
       padding: 16px 18px; box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 15;
       backdrop-filter: blur(10px);
     }
+
     .brand-stack { display: flex; align-items: center; gap: 16px; }
     .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: -0.7px; font-size: clamp(20px, 2vw, 28px); }
     .logo {
@@ -77,6 +78,7 @@
     }
     .byline { color: var(--muted); font-size: 13px; }
     .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
     .muted { color: var(--muted); }
     select, input, textarea {
       width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px;
@@ -203,7 +205,7 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; border: none;
     }
 
-    .results { max-width: 760px; margin: 30px auto 0; }
+    .results { margin-top: 24px; }
     .results-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
     .results-head h2 { margin: 0; }
     .results-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
@@ -462,7 +464,9 @@
           <span id="quizSubject">SCIENCE MISSION</span>
           <span id="questionCount">Question 1 of 5</span>
         </div>
-        <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+        <div class="progress">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
         <h2 class="question" id="questionText">Question goes here</h2>
         <div class="answers" id="answers"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
@@ -498,6 +502,7 @@
       </div>
       <button id="closeAiPanel" class="close-btn" aria-label="Close AI tutor">✕</button>
     </div>
+
     <textarea id="aiPrompt" placeholder="Ask me something like: explain fractions, help with science, or give a math tip..."></textarea>
     <button id="askAiBtn" class="primary full-width">Ask AI</button>
     <div id="aiAnswer" class="ai-answer">Your answer will appear here.</div>
