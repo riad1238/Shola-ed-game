@@ -336,9 +336,14 @@ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":
 function openAuth(mode){authMode=mode;$("authTitle").textContent=mode==="register"?"Create your learner account":"Welcome back!";$("authSubmit").textContent=mode==="register"?"Create demo account":"Sign in";$("switchAuth").textContent=mode==="register"?"Already have a demo account? Sign in":"New here? Create a demo account";$("authError").textContent="";$("password").value="";showSection("auth")}
 function updateDashboard(){if(!currentUser)return;$("welcomeName").textContent="Hello, "+currentUser.username+"! 👋";$("statPoints").textContent=currentUser.points||0;$("statQuizzes").textContent=currentUser.quizzes||0;updateTop()}
 function refreshUser(){const users=getUsers();if(currentUser){users[currentUser.username.toLowerCase()]={...currentUser};saveUsers(users);localStorage.setItem(sessionKey,currentUser.username.toLowerCase())}}
+function shuffleArray(items){
+ const shuffled=[...items];
+ for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]}
+ return shuffled;
+}
 function mixQuestionTypes(questions){
  const types=["multiple_choice","true_false","short_answer","multiple_choice","true_false"];
- return questions.map((original,i)=>{
+ return shuffleArray(questions).map((original,i)=>{
   const q={...original,a:[...(original.a||[])]};
   const type=types[i%types.length];
   if(type==="true_false"){
@@ -354,6 +359,11 @@ function mixQuestionTypes(questions){
    q.answer=String(q.a[q.correct]).trim();
    q.q="Write the answer: "+q.q;
   }else q.type="multiple_choice";
+  if(q.type==="multiple_choice"){
+   const correctAnswer=q.a[q.correct];
+   q.a=shuffleArray(q.a);
+   q.correct=q.a.indexOf(correctAnswer);
+  }
   return q;
  });
 }
