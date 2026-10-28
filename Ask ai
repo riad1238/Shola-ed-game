@@ -1,0 +1,22 @@
+async function askAI() {
+  const response = await fetch("https://rt-ai-bk.onrender.com/api/ai-chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: "Explain fractions",
+      profile: {
+        name: "Student",
+        grade: 5,
+        language: "en",
+        weakAreas: ["fractions"],
+        strengths: ["science"],
+        learningStyle: "simple explanations"
+      }
+    })
+  });
+
+  const data = await response.json();
+  console.log(data.answer);
+}
