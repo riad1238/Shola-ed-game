@@ -53,8 +53,8 @@
     body[dir="rtl"] { text-align: right; }
     a, button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
-
     .hidden { display: none !important; }
+
     .shell { max-width: 1180px; margin: 0 auto; padding: 18px 18px 50px; }
 
     .topbar {
@@ -63,7 +63,6 @@
       padding: 16px 18px; box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 15;
       backdrop-filter: blur(10px);
     }
-
     .brand-stack { display: flex; align-items: center; gap: 16px; }
     .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: -0.7px; font-size: clamp(20px, 2vw, 28px); }
     .logo {
@@ -78,7 +77,6 @@
     }
     .byline { color: var(--muted); font-size: 13px; }
     .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
     .muted { color: var(--muted); }
     select, input, textarea {
       width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px;
@@ -118,8 +116,22 @@
     }
     .hero h1 { font-size: clamp(42px, 6vw, 72px); letter-spacing: -0.08em; margin: 12px 0 18px; line-height: 1.02; }
     .hero p { color: rgba(255,255,255,.9); font-size: 17px; max-width: 560px; }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
-    .hero-actions .primary { background: var(--yellow); color: #242a4f; box-shadow: 0 12px 20px rgba(28,25,81,.18); }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 18px;
+      width: 100%;
+    }
+    .hero-actions .primary,
+    .hero-actions .secondary {
+      min-height: 58px;
+      font-size: 1.02rem;
+    }
+    .hero-actions .primary {
+      background: var(--yellow); color: #242a4f; box-shadow: 0 12px 20px rgba(28,25,81,.18);
+    }
     .hero .secondary { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.18); color: white; }
     .hero-art {
       display: grid; place-items: center; height: 290px; border-radius: 34px; background: rgba(255,255,255,.1);
@@ -191,7 +203,7 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; border: none;
     }
 
-    .results { margin-top: 24px; }
+    .results { max-width: 760px; margin: 30px auto 0; }
     .results-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
     .results-head h2 { margin: 0; }
     .results-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
@@ -203,7 +215,14 @@
     .results-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
 
     .ai-btn {
-      background: linear-gradient(135deg, #8b5cf6, #06b6d4); border: none; color: white; box-shadow: 0 14px 28px rgba(99,102,241,.22);
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4); border: none; color: white;
+      box-shadow: 0 14px 28px rgba(99,102,241,.22);
+      min-width: 240px;
+      min-height: 62px;
+      font-size: 1.1rem;
+      padding: 16px 28px;
+      border-radius: 18px;
+      margin: 0 auto;
     }
     .ai-panel {
       position: fixed; right: 24px; bottom: 24px; width: min(420px, calc(100vw - 28px));
@@ -223,6 +242,50 @@
     }
     .full-width { width: 100%; }
 
+    .start-choice {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      display: grid;
+      place-items: center;
+      z-index: 60;
+      padding: 20px;
+    }
+    .start-choice-panel {
+      width: min(520px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+    }
+    .start-choice-panel h3 {
+      margin: 14px 0 18px;
+      font-size: clamp(24px, 4vw, 34px);
+      letter-spacing: -0.05em;
+    }
+    .start-choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(110px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .start-choice-option {
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 12px;
+      font-weight: 800;
+      color: var(--ink);
+      transition: .2s ease;
+    }
+    .start-choice-option.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border: none;
+      box-shadow: 0 12px 22px rgba(101,88,232,.2);
+    }
+
     .footer { padding-top: 28px; color: var(--muted); text-align: center; }
 
     @media (max-width: 860px) {
@@ -231,11 +294,13 @@
       .hero { grid-template-columns: 1fr; }
       .topbar { align-items: flex-start; flex-direction: column; }
       .top-actions { justify-content: flex-start; }
+      .ai-btn { width: 100%; }
     }
     @media (max-width: 560px) {
       .cards { grid-template-columns: 1fr; }
       .section-title, .quiz-actions { flex-direction: column; align-items: stretch; }
       .quiz-top { flex-direction: column; align-items: flex-start; }
+      .start-choice-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -397,9 +462,7 @@
           <span id="quizSubject">SCIENCE MISSION</span>
           <span id="questionCount">Question 1 of 5</span>
         </div>
-        <div class="progress">
-          <div id="progressBar" class="progress-bar"></div>
-        </div>
+        <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
         <h2 class="question" id="questionText">Question goes here</h2>
         <div class="answers" id="answers"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
@@ -435,10 +498,23 @@
       </div>
       <button id="closeAiPanel" class="close-btn" aria-label="Close AI tutor">✕</button>
     </div>
-
     <textarea id="aiPrompt" placeholder="Ask me something like: explain fractions, help with science, or give a math tip..."></textarea>
     <button id="askAiBtn" class="primary full-width">Ask AI</button>
     <div id="aiAnswer" class="ai-answer">Your answer will appear here.</div>
+  </div>
+
+  <div id="startChoiceModal" class="start-choice hidden">
+    <div class="start-choice-panel">
+      <span class="pill">Game setup</span>
+      <h3>How many players?</h3>
+      <div class="start-choice-grid">
+        <button class="start-choice-option active" data-players="1">1 Player</button>
+        <button class="start-choice-option" data-players="2">2 Players</button>
+        <button class="start-choice-option" data-players="3">3 Players</button>
+        <button class="start-choice-option" data-players="4">4 Players</button>
+      </div>
+      <button id="confirmPlayersBtn" class="primary full-width">Start quiz</button>
+    </div>
   </div>
 
   <script>
@@ -506,7 +582,6 @@
       currentQuestionIndex: 0,
       questions: [],
       selectedAnswer: null,
-      questionLimit: 5,
       subject: "Math"
     };
 
@@ -607,59 +682,6 @@
       showResults();
     }
 
-    function checkAnswer() {
-      if (state.selectedAnswer === null) return;
-      const currentQuestion = state.questions[state.currentQuestionIndex];
-      const currentPlayer = state.players[state.currentPlayerIndex];
-      const correctAnswer = currentQuestion.a[currentQuestion.correct];
-      const isCorrect = state.selectedAnswer === correctAnswer;
-      const feedback = document.getElementById("feedback");
-      const buttons = document.querySelectorAll(".answer");
-
-      buttons.forEach((button) => {
-        const text = button.textContent;
-        if (text === correctAnswer) {
-          button.classList.add("correct");
-        } else if (text === state.selectedAnswer && !isCorrect) {
-          button.classList.add("wrong");
-        }
-      });
-
-      if (isCorrect) {
-        currentPlayer.score += 10;
-        feedback.textContent = `Correct! ${currentPlayer.name} +10 points`;
-      } else {
-        feedback.textContent = `Wrong. Correct answer: ${correctAnswer}`;
-      }
-
-      document.getElementById("nextQuestion").textContent = state.currentQuestionIndex === state.questions.length - 1 ? "See results" : "Next question";
-      document.getElementById("nextQuestion").disabled = false;
-      document.getElementById("nextQuestion").dataset.state = "review";
-    }
-
-    function advanceQuiz() {
-      const nextButton = document.getElementById("nextQuestion");
-      const stateFlag = nextButton.dataset.state;
-
-      if (stateFlag === "review") {
-        state.currentQuestionIndex += 1;
-        if (state.currentQuestionIndex >= state.questions.length) {
-          finishQuiz();
-          return;
-        }
-        state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
-        nextButton.dataset.state = "idle";
-        nextButton.textContent = "Check answer";
-        renderQuestion();
-        return;
-      }
-
-      if (state.selectedAnswer === null) return;
-      checkAnswer();
-      nextButton.dataset.state = "review";
-      nextButton.textContent = state.currentQuestionIndex === state.questions.length - 1 ? "See results" : "Next question";
-    }
-
     function startQuiz(subject = "Math") {
       state.subject = subject;
       state.players = createPlayers(state.selectedPlayers);
@@ -670,14 +692,27 @@
       renderQuestion();
       document.getElementById("nextQuestion").dataset.state = "idle";
       document.getElementById("nextQuestion").textContent = "Check answer";
+      document.getElementById("nextQuestion").disabled = true;
     }
 
-    function startFromHome() {
-      const selected = document.querySelector(".play-subject[data-subject]")?.dataset?.subject || "Math";
-      startQuiz(selected);
-    }
+    document.getElementById("startBtn").addEventListener("click", () => {
+      document.getElementById("startChoiceModal").classList.remove("hidden");
+    });
 
-    document.getElementById("startBtn").addEventListener("click", () => startQuiz("Math"));
+    document.querySelectorAll(".start-choice-option").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.selectedPlayers = Number(button.dataset.players) || 1;
+        document.querySelectorAll(".start-choice-option").forEach((option) => {
+          option.classList.toggle("active", option === button);
+        });
+      });
+    });
+
+    document.getElementById("confirmPlayersBtn").addEventListener("click", () => {
+      document.getElementById("startChoiceModal").classList.add("hidden");
+      startQuiz(state.subject || "Math");
+    });
+
     document.getElementById("homeCreatorBtn").addEventListener("click", () => {
       document.getElementById("topic").focus();
       window.scrollTo({ top: 500, behavior: "smooth" });
