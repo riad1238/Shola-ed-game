@@ -3,36 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shola School Learning App</title>
+  <title>LearnQuest | AI Learning Game</title>
   <style>
     :root {
       --bg: #f4f5fb;
-      --bg-2: #ececff;
+      --bg-2: #ebefff;
       --panel: rgba(255,255,255,0.96);
       --panel-strong: #ffffff;
       --ink: #1f2a44;
-      --muted: #5b647d;
+      --muted: #5d6986;
       --primary: #6558e8;
       --primary-2: #4b9df8;
-      --accent: #b9f3df;
+      --accent: #64d4bd;
       --yellow: #ffe18a;
-      --line: #e9ebf5;
+      --line: #e8ebf7;
       --success: #2fae79;
       --danger: #ea6d6d;
-      --shadow: 0 18px 40px rgba(35, 41, 76, 0.08);
-      --radius: 24px;
+      --shadow: 0 20px 45px rgba(24, 30, 60, 0.08);
+      --radius: 22px;
     }
 
     body[data-theme="dark"] {
       --bg: #0d1220;
-      --bg-2: #161d2d;
-      --panel: rgba(17, 24, 39, 0.96);
-      --panel-strong: #141c2f;
+      --bg-2: #151d2d;
+      --panel: rgba(17,24,39,0.96);
+      --panel-strong: #121b2d;
       --ink: #edf2ff;
-      --muted: #a7b4d0;
+      --muted: #abbbd7;
       --primary: #8d82ff;
       --primary-2: #67bbff;
-      --accent: #8de6c5;
+      --accent: #82f0d6;
       --yellow: #f4d77b;
       --line: #28314a;
       --success: #56d39a;
@@ -45,41 +45,47 @@
     body {
       margin: 0;
       font-family: Inter, "Segoe UI", Arial, sans-serif;
-      background: radial-gradient(circle at top left, var(--bg-2), transparent 32%), var(--bg);
+      background: radial-gradient(circle at top left, var(--bg-2), transparent 30%), var(--bg);
       color: var(--ink);
       transition: background .25s ease, color .25s ease;
     }
+
     body[dir="rtl"] { text-align: right; }
-    button, input, select { font: inherit; }
+    a, button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
-    .shell { max-width: 1180px; margin: 0 auto; padding: 18px 18px 48px; }
+
+    .hidden { display: none !important; }
+    .shell { max-width: 1180px; margin: 0 auto; padding: 18px 18px 50px; }
+
     .topbar {
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
       background: var(--panel); border: 1px solid var(--line); border-radius: 22px;
-      padding: 16px 18px; box-shadow: var(--shadow);
-      position: sticky; top: 12px; z-index: 10; backdrop-filter: blur(10px);
+      padding: 16px 18px; box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 15;
+      backdrop-filter: blur(10px);
     }
+
     .brand-stack { display: flex; align-items: center; gap: 16px; }
-    .brand {
-      display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: -0.7px;
-      font-size: clamp(20px, 2vw, 28px);
-    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: -0.7px; font-size: clamp(20px, 2vw, 28px); }
     .logo {
       display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px;
-      background: linear-gradient(135deg, var(--yellow), var(--primary)); box-shadow: 0 10px 18px rgba(101,88,232,.25);
-      transform: rotate(-5deg);
+      background: linear-gradient(135deg, var(--yellow), var(--primary));
+      box-shadow: 0 10px 18px rgba(101,88,232,.25); transform: rotate(-5deg);
     }
     .tag {
-      display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .14em;
-      background: rgba(101, 88, 232, 0.12); color: var(--primary); border: 1px solid rgba(101,88,232,.18);
+      display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 11px;
+      font-weight: 800; letter-spacing: .14em; background: rgba(101,88,232,.12); color: var(--primary);
+      border: 1px solid rgba(101,88,232,.18);
     }
     .byline { color: var(--muted); font-size: 13px; }
     .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
     .muted { color: var(--muted); }
-    select, input, .control {
-      background: var(--panel-strong); color: var(--ink); border: 1px solid var(--line); border-radius: 12px;
-      padding: 10px 12px; min-height: 44px;
+    select, input, textarea {
+      width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px;
+      background: var(--panel-strong); color: var(--ink); min-height: 44px;
     }
+    textarea { resize: vertical; }
+
     .secondary, .light, .primary {
       border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; font-weight: 700;
       transition: transform .15s ease, opacity .15s ease, border-color .15s ease;
@@ -95,38 +101,41 @@
     .theme-toggle {
       min-width: 48px; padding-inline: 10px; font-size: 20px; background: var(--panel-strong); color: var(--ink);
     }
+
     .hero {
       margin-top: 20px; display: grid; grid-template-columns: 1.3fr .7fr; align-items: center; gap: 22px;
       background: linear-gradient(125deg, var(--primary), var(--primary-2)); color: white; border-radius: 32px;
-      padding: clamp(24px, 5vw, 56px); box-shadow: var(--shadow);
-      overflow: hidden; position: relative;
+      padding: clamp(24px,5vw,56px); box-shadow: var(--shadow); overflow: hidden; position: relative;
     }
     .hero::after {
       content: ""; position: absolute; inset: auto auto -100px -60px; width: 220px; height: 220px; border-radius: 50%;
       border: 1px solid rgba(255,255,255,.2); pointer-events: none;
     }
     .eyebrow {
-      display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
-      font-weight:800; letter-spacing:.1em; text-transform: uppercase; font-size: 11px;
+      display: inline-block; padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      font-weight: 800; letter-spacing: .1em; text-transform: uppercase; font-size: 11px;
     }
     .hero h1 { font-size: clamp(42px, 6vw, 72px); letter-spacing: -0.08em; margin: 12px 0 18px; line-height: 1.02; }
     .hero p { color: rgba(255,255,255,.9); font-size: 17px; max-width: 560px; }
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
-    .hero-actions .primary { background: var(--yellow); color: #242a4f; box-shadow:0 12px 20px rgba(28,25,81,.18); }
-    .hero .secondary { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.18); color: #fff; }
+    .hero-actions .primary { background: var(--yellow); color: #242a4f; box-shadow: 0 12px 20px rgba(28,25,81,.18); }
+    .hero .secondary { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.18); color: white; }
     .hero-art {
       display: grid; place-items: center; height: 290px; border-radius: 34px; background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.2); font-size: clamp(100px, 12vw, 170px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.2); font-size: clamp(100px,12vw,170px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
       animation: float 4s ease-in-out infinite;
     }
     @keyframes float { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+
     .section-title {
       display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 34px 0 20px;
     }
-    .section-title h2 { margin: 0; font-size: clamp(24px, 3vw, 36px); letter-spacing: -.05em; }
+    .section-title h2 { margin: 0; font-size: clamp(24px,3vw,36px); letter-spacing: -.05em; }
     .section-title p { margin: 4px 0 0; color: var(--muted); }
-    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.5); color: var(--muted); font-weight: 700; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
-    .cards { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 18px; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.5); color: var(--muted); border: 1px solid var(--line); }
+
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(220px,1fr)); gap: 18px; }
     .card {
       background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 22px; box-shadow: var(--shadow);
       position: relative; overflow: hidden;
@@ -139,61 +148,85 @@
     .card h3 { margin: 14px 0 8px; font-size: 20px; letter-spacing: -0.04em; }
     .card p { margin: 0 0 16px; color: var(--muted); min-height: 46px; }
     .card button { width: 100%; }
+
     .panel {
       background: var(--panel); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow); padding: 26px;
     }
     .creator-layout { display: grid; grid-template-columns: 1.2fr .8fr; gap: 22px; }
     .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
     .field label { font-weight: 700; }
-    .field input, .field select { width: 100%; }
     .notice {
       background: rgba(255,225,138,.18); border: 1px solid rgba(255,225,138,.45); border-radius: 16px; color: var(--ink);
       padding: 14px 16px; margin: 12px 0 18px;
     }
-    .stats { display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: 16px; }
-    .stat {
-      display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 110px;
-      background: var(--panel); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow);
-      padding: 16px;
-    }
-    .stat strong { font-size: clamp(24px, 4vw, 34px); }
-    .stat span { color: var(--muted); margin-top: 6px; }
-    .auth-wrap { max-width: 560px; margin: 24px auto 0; }
-    .auth-wrap .panel { padding: clamp(22px,4vw,36px); }
-    .hidden { display: none !important; }
-    .dashboard-head {
-      display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px;
-    }
-    .quiz {
-      max-width: 860px; margin: 30px auto 0;
-    }
+
+    .quiz { max-width: 860px; margin: 30px auto 0; }
     .quiz .panel { padding: clamp(22px,4vw,36px); }
     .quiz-top {
-      display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight:800;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted);
+      font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 800;
     }
     .progress { width: 100%; height: 10px; border-radius: 999px; background: rgba(101,88,232,.08); overflow: hidden; margin: 18px 0 20px; }
     .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-2)); border-radius: inherit; }
-    .question { margin: 0 0 18px; font-size: clamp(26px, 4vw, 42px); line-height: 1.2; letter-spacing: -.05em; }
+    .question { margin: 0 0 18px; font-size: clamp(26px,4vw,42px); line-height: 1.2; letter-spacing: -0.05em; }
     .answers { display: grid; gap: 12px; }
     .answer {
       background: var(--panel-strong); color: var(--ink); border: 1px solid var(--line); border-radius: 16px; padding: 18px 16px;
       text-align: left; font-weight: 700; transition: .15s ease; width: 100%;
     }
     body[dir="rtl"] .answer { text-align: right; }
-    .answer:hover:not(:disabled) { border-color: rgba(101,88,232,.5); background: rgba(101,88,232,.04); }
     .answer.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(101,88,232,.12); }
     .answer.correct { background: rgba(47,174,121,.14); border-color: var(--success); }
     .answer.wrong { background: rgba(234,109,109,.12); border-color: var(--danger); }
-    .answer-input {
-      width: 100%; margin-bottom: 12px; padding: 14px 16px; background: var(--panel-strong); color: var(--ink); border: 1px solid var(--line); border-radius: 14px;
-    }
-    .feedback {
-      min-height: 28px; margin: 20px 0 12px; color: var(--muted); font-weight: 700;
-    }
+    .feedback { min-height: 28px; margin: 20px 0 12px; color: var(--muted); font-weight: 700; }
     .quiz-actions { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+
+    .mode-panel { margin-top: 26px; }
+    .mode-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    .mode-btn {
+      background: var(--panel); border: 1px solid var(--line); color: var(--ink); font-weight: 800;
+      border-radius: 12px; padding: 12px 18px; cursor: pointer; transition: .2s ease;
+    }
+    .mode-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; border: none;
+    }
+
+    .results { margin-top: 24px; }
+    .results-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .results-head h2 { margin: 0; }
+    .results-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+    .result-row {
+      display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border: 1px solid var(--line);
+      border-radius: 12px; background: rgba(15,23,42,.04); font-weight: 700;
+    }
+    .result-row.winner { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.45); }
+    .results-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+
+    .ai-btn {
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4); border: none; color: white; box-shadow: 0 14px 28px rgba(99,102,241,.22);
+    }
+    .ai-panel {
+      position: fixed; right: 24px; bottom: 24px; width: min(420px, calc(100vw - 28px));
+      background: rgba(15,23,42,.96); border: 1px solid rgba(148,163,184,.28); border-radius: 22px; padding: 18px;
+      box-shadow: 0 28px 60px rgba(0,0,0,.32); z-index: 50;
+    }
+    .ai-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .ai-header h3 { margin: 8px 0 0; font-size: 1.2rem; }
+    .close-btn {
+      border: 1px solid rgba(148,163,184,.3); background: transparent; color: white; border-radius: 10px;
+      width: 36px; height: 36px; cursor: pointer;
+    }
+    .ai-panel textarea { min-height: 110px; background: rgba(15,23,42,.7); color: white; border-color: rgba(148,163,184,.3); }
+    .ai-answer {
+      margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(139,92,246,.12);
+      border: 1px solid rgba(139,92,246,.3); color: var(--ink); line-height: 1.6; white-space: pre-wrap;
+    }
+    .full-width { width: 100%; }
+
     .footer { padding-top: 28px; color: var(--muted); text-align: center; }
+
     @media (max-width: 860px) {
-      .cards { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+      .cards { grid-template-columns: repeat(2, minmax(220px,1fr)); }
       .creator-layout { grid-template-columns: 1fr; }
       .hero { grid-template-columns: 1fr; }
       .topbar { align-items: flex-start; flex-direction: column; }
@@ -201,7 +234,6 @@
     }
     @media (max-width: 560px) {
       .cards { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
       .section-title, .quiz-actions { flex-direction: column; align-items: stretch; }
       .quiz-top { flex-direction: column; align-items: flex-start; }
     }
@@ -214,18 +246,17 @@
         <div class="brand">
           <div class="logo">🚀</div>
           <span>LearnQuest</span>
-          <span class="tag" id="appTag">AI LEARNING</span>
+          <span class="tag">AI LEARNING</span>
         </div>
-        <div class="byline" id="bylineText">Made by Riad Tabbakha · 5-B</div>
+        <div class="byline">Made by Riad Tabbakha · 5-B</div>
       </div>
       <div class="top-actions">
         <label for="language" class="muted" style="font-weight:700;">Language / اللغة</label>
-        <select id="language" aria-label="Language">
+        <select id="language">
           <option value="en">English</option>
           <option value="ar">العربية</option>
         </select>
         <button id="themeToggle" class="secondary theme-toggle" aria-label="Toggle dark mode">🌙</button>
-        <button id="signInTop" class="secondary">Sign in</button>
       </div>
     </header>
 
@@ -233,11 +264,12 @@
       <div class="hero">
         <div>
           <div class="eyebrow">Play • Practice • Progress</div>
-          <h1 id="heroTitle">Big learning.<br>Small games.</h1>
-          <p id="heroText">Explore school subjects, challenge yourself with quick quizzes, and create fresh practice questions with AI-style support.</p>
+          <h1>Big learning.<br>Small games.</h1>
+          <p>Explore school subjects, challenge yourself with quick quizzes, and get help from an AI tutor.</p>
           <div class="hero-actions">
             <button class="primary" id="startBtn">Start learning →</button>
             <button class="secondary" id="homeCreatorBtn">Create quiz</button>
+            <button class="primary ai-btn" id="aiTutorBtn">🤖 Ask AI Tutor</button>
           </div>
         </div>
         <div class="hero-art" aria-hidden="true">🧠🎮</div>
@@ -245,67 +277,82 @@
 
       <div class="section-title">
         <div>
-          <h2 id="adventureTitle">Choose your adventure</h2>
-          <p id="adventureText">Pick a subject to start a quiz.</p>
+          <h2>Choose your adventure</h2>
+          <p>Pick a subject and start a quiz.</p>
         </div>
-        <span class="pill" id="madeFor">Made for curious minds</span>
+        <span class="pill">Made for curious minds</span>
       </div>
 
       <div class="cards">
         <article class="card">
           <div class="subject-icon">🔢</div>
-          <h3 id="mathTitle">Math Mission</h3>
-          <p id="mathText">Practice numbers, arithmetic, and problem-solving.</p>
+          <h3>Math Mission</h3>
+          <p>Practice numbers, arithmetic, and problem-solving.</p>
           <button class="primary play-subject" data-subject="Math">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">🧪</div>
-          <h3 id="scienceTitle">Science Squad</h3>
-          <p id="scienceText">Explore nature, space, energy, and the human body.</p>
+          <h3>Science Squad</h3>
+          <p>Explore nature, space, energy, and the human body.</p>
           <button class="primary play-subject" data-subject="Science">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">📚</div>
-          <h3 id="englishTitle">Word Wizard</h3>
-          <p id="englishText">Build vocabulary and practice English skills.</p>
+          <h3>Word Wizard</h3>
+          <p>Build vocabulary and practice English skills.</p>
           <button class="primary play-subject" data-subject="English">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">🔤</div>
-          <h3 id="arabicTitle">Arabic Adventures</h3>
-          <p id="arabicText">Practice Arabic letters, words, and language skills.</p>
+          <h3>Arabic Adventures</h3>
+          <p>Practice Arabic letters, words, and language skills.</p>
           <button class="primary play-subject" data-subject="Arabic">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">🕌</div>
-          <h3 id="islamicTitle">Islamic Studies</h3>
-          <p id="islamicText">Learn about Islamic values and knowledge.</p>
+          <h3>Islamic Studies</h3>
+          <p>Learn about Islamic values and knowledge.</p>
           <button class="primary play-subject" data-subject="Islamic Studies">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">🌍</div>
-          <h3 id="geoTitle">Geography Explorer</h3>
-          <p id="geoText">Explore countries, maps, continents, and oceans.</p>
+          <h3>Geography Explorer</h3>
+          <p>Explore countries, maps, continents, and oceans.</p>
           <button class="primary play-subject" data-subject="Geography">Play</button>
         </article>
       </div>
 
+      <div class="mode-panel panel">
+        <div class="section-title">
+          <div>
+            <h2>Choose game mode</h2>
+            <p>Play solo or with friends.</p>
+          </div>
+        </div>
+        <div class="mode-buttons">
+          <button class="mode-btn active" data-players="1">1P</button>
+          <button class="mode-btn" data-players="2">2P</button>
+          <button class="mode-btn" data-players="3">3P</button>
+          <button class="mode-btn" data-players="4">4P</button>
+        </div>
+      </div>
+
       <div class="section-title">
         <div>
-          <h2 id="creatorTitle">AI Game Creator</h2>
-          <p id="creatorText">Make a new practice quiz for any topic.</p>
+          <h2>AI Game Creator</h2>
+          <p>Make a new practice quiz for any topic.</p>
         </div>
-        <span class="pill" id="creatorPill">Question generator</span>
+        <span class="pill">Question generator</span>
       </div>
 
       <div class="panel creator-layout">
         <div>
           <div class="field">
-            <label for="topic" id="topicLabel">Quiz topic</label>
+            <label for="topic">Quiz topic</label>
             <input id="topic" placeholder="e.g. planets, fractions, verbs" maxlength="80" value="The solar system" />
           </div>
           <div class="field">
-            <label for="customSubject" id="subjectLabel">Subject</label>
+            <label for="customSubject">Subject</label>
             <select id="customSubject">
               <option>Science</option>
               <option>Math</option>
@@ -316,14 +363,13 @@
             </select>
           </div>
           <button class="primary" id="createBtn">✨ Create my quiz</button>
-          <p class="muted" id="creatorMessage">Choose your grade and difficulty on the side. Quizzes mix multiple-choice, true/false, and written answers.</p>
         </div>
 
         <aside class="panel" style="padding:20px;">
-          <h3 id="settingsTitle">⚙️ Game settings</h3>
-          <p class="muted" id="settingsText">Set your school grade and challenge level.</p>
+          <h3>⚙️ Game settings</h3>
+          <p class="muted">Set your school grade and challenge level.</p>
           <div class="field">
-            <label for="grade" id="gradeLabel">My grade</label>
+            <label for="grade">My grade</label>
             <select id="grade">
               <option>Grade 1</option>
               <option>Grade 2</option>
@@ -334,98 +380,14 @@
             </select>
           </div>
           <div class="field">
-            <label for="customDifficulty" id="difficultyLabel">Custom quiz difficulty</label>
+            <label for="customDifficulty">Custom quiz difficulty</label>
             <select id="customDifficulty">
               <option>Easy</option>
               <option selected>Medium</option>
               <option>Hard</option>
             </select>
           </div>
-          <p class="muted" id="difficultyMeta">Easy: 3 questions · Medium: 5 questions · Hard: tougher challenge questions.</p>
         </aside>
-      </div>
-    </section>
-
-    <section id="auth" class="auth-wrap hidden">
-      <div class="panel">
-        <span class="pill" id="studentAreaTag">STUDENT AREA</span>
-        <h1 id="authTitle">Welcome back!</h1>
-        <p class="muted" id="authText">Enter a nickname and password to continue, or create a demo account.</p>
-        <div class="notice" id="authNotice">Demo mode only: this version stores a demo account in this browser. Do not use a real or reused password.</div>
-        <form id="authForm">
-          <div class="field">
-            <label for="username" id="usernameLabel">Student username</label>
-            <input id="username" autocomplete="username" minlength="2" maxlength="24" required placeholder="Choose a username" />
-          </div>
-          <div class="field">
-            <label for="password" id="passwordLabel">Password</label>
-            <input id="password" type="password" autocomplete="current-password" minlength="4" required placeholder="At least 4 characters" />
-          </div>
-          <button class="primary" id="authSubmit" type="submit" style="width:100%">Create demo account</button>
-        </form>
-        <p id="authError" class="muted" role="status"></p>
-        <button class="light" id="switchAuth" style="width:100%">Already have a demo account? Sign in</button>
-        <p class="muted"><button class="secondary" id="backHome">← Back to home</button></p>
-      </div>
-    </section>
-
-    <section id="dashboard" class="hidden">
-      <div class="panel">
-        <div class="dashboard-head">
-          <div>
-            <span class="pill" id="learningSpaceTag">YOUR LEARNING SPACE</span>
-            <h1 id="welcomeName">Hello, learner!</h1>
-            <p class="muted" id="dashboardText">Ready for your next challenge?</p>
-          </div>
-          <button class="secondary" id="logout">Log out</button>
-        </div>
-
-        <div class="stats">
-          <div class="stat"><strong id="statPoints">0</strong><span id="pointsLabel">Total points</span></div>
-          <div class="stat"><strong id="statQuizzes">0</strong><span id="quizzesLabel">Quizzes played</span></div>
-          <div class="stat"><strong id="statStreak">0</strong><span id="streakLabel">Best streak</span></div>
-          <div class="stat"><strong id="statStars">0</strong><span id="starsLabel">Stars earned</span></div>
-        </div>
-
-        <div class="section-title">
-          <div>
-            <h2 id="pickGameTitle">Pick a game</h2>
-            <p id="pickGameText">Your next mission is waiting.</p>
-          </div>
-        </div>
-
-        <div class="cards">
-          <article class="card"><div class="subject-icon">🔢</div><h3>Math Mission</h3><p>Sharpen your number skills.</p><button class="primary play-subject" data-subject="Math">Play</button></article>
-          <article class="card"><div class="subject-icon">🧪</div><h3>Science Squad</h3><p>Discover how the world works.</p><button class="primary play-subject" data-subject="Science">Play</button></article>
-          <article class="card"><div class="subject-icon">📚</div><h3>Word Wizard</h3><p>Train your language skills.</p><button class="primary play-subject" data-subject="English">Play</button></article>
-          <article class="card"><div class="subject-icon">🔤</div><h3>Arabic Adventures</h3><p>Practice Arabic letters and words.</p><button class="primary play-subject" data-subject="Arabic">Play</button></article>
-          <article class="card"><div class="subject-icon">🕌</div><h3>Islamic Studies</h3><p>Learn essential Islamic values.</p><button class="primary play-subject" data-subject="Islamic Studies">Play</button></article>
-          <article class="card"><div class="subject-icon">🌍</div><h3>Geography Explorer</h3><p>Explore countries and places.</p><button class="primary play-subject" data-subject="Geography">Play</button></article>
-        </div>
-
-        <div class="section-title">
-          <div>
-            <h2 id="customTitle">Make a custom quiz</h2>
-            <p id="customText">Use the AI Game Creator on the home page.</p>
-          </div>
-          <button class="secondary" id="goCreator">Create a quiz ✨</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="difficultySetup" class="auth-wrap hidden">
-      <div class="panel">
-        <span class="pill" id="readyTag">READY-MADE QUIZ</span>
-        <h1 id="difficultyTitle">Choose your difficulty</h1>
-        <p class="muted" id="difficultyIntro">Before the questions begin, choose how challenging you want this quiz to be.</p>
-        <div class="field">
-          <label for="premadeDifficulty" id="premadeDifficultyLabel">Difficulty: <strong>Medium</strong></label>
-          <input id="premadeDifficulty" type="range" min="1" max="3" step="1" value="2" style="width:100%; accent-color: var(--primary);" />
-          <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px;"><span>Easy · 3</span><span>Medium</span><span>Hard</span></div>
-        </div>
-        <div class="notice" id="difficultyNotice">Easy gives you a shorter quiz. Hard is a bigger challenge with trickier questions.</div>
-        <button class="primary" id="startPremadeQuiz" style="width:100%">Start quiz</button>
-        <button class="light" id="cancelPremadeQuiz" style="width:100%; margin-top:10px;">Go back</button>
       </div>
     </section>
 
@@ -435,7 +397,9 @@
           <span id="quizSubject">SCIENCE MISSION</span>
           <span id="questionCount">Question 1 of 5</span>
         </div>
-        <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+        <div class="progress">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
         <h2 class="question" id="questionText">Question goes here</h2>
         <div class="answers" id="answers"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
@@ -446,813 +410,423 @@
       </div>
     </section>
 
+    <section id="resultsScreen" class="results hidden">
+      <div class="panel">
+        <div class="results-head">
+          <span class="pill">Game Results</span>
+          <h2>Quiz complete!</h2>
+        </div>
+        <div id="resultsList" class="results-list"></div>
+        <div class="results-actions">
+          <button class="primary" id="playAgainBtn">Play again</button>
+          <button class="secondary" id="backHomeBtn">Back to home</button>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">LearnQuest AI • Learn something new every day 🌈</footer>
   </div>
 
+  <div id="aiTutorPanel" class="ai-panel hidden">
+    <div class="ai-header">
+      <div>
+        <span class="pill">AI TUTOR</span>
+        <h3>Ask a question</h3>
+      </div>
+      <button id="closeAiPanel" class="close-btn" aria-label="Close AI tutor">✕</button>
+    </div>
+
+    <textarea id="aiPrompt" placeholder="Ask me something like: explain fractions, help with science, or give a math tip..."></textarea>
+    <button id="askAiBtn" class="primary full-width">Ask AI</button>
+    <div id="aiAnswer" class="ai-answer">Your answer will appear here.</div>
+  </div>
+
   <script>
-    const $ = (id) => document.getElementById(id);
-    const demoUsersKey = 'learnquest_demo_users_v1';
-    const sessionKey = 'learnquest_demo_session_v1';
-    const state = {
-      authMode: 'register',
-      currentUser: null,
-      quizQuestions: [],
-      qIndex: 0,
-      selected: null,
-      answered: false,
-      quizScore: 0,
-      quizSubject: 'Science',
-      pendingPremadeSubject: null
-    };
+    const AI_BACKEND_URL = window.AI_BACKEND_URL || "https://rt-ai-bk.onrender.com";
 
     const questionBank = {
       Math: [
-        { q: 'What is 7 × 6?', a: ['42','36','48','13'], correct: 0, why: '7 groups of 6 make 42.'},
-        { q: 'What is 45 + 28?', a: ['63','73','83','72'], correct: 1, why: '45 + 20 = 65, then + 8 = 73.'},
-        { q: 'Which fraction is equal to one half?', a: ['2/3','3/8','4/8','1/4'], correct: 2, why: '4/8 simplifies to 1/2.'},
-        { q: 'What is 100 − 37?', a: ['73','67','63','53'], correct: 2, why: '100 − 37 = 63.'},
-        { q: 'A triangle has how many sides?', a: ['2','3','4','5'], correct: 1, why: 'A triangle has three sides.'},
-        { q: 'What is 9 × 8?', a: ['72','64','81','69'], correct: 0, why: '9 times 8 equals 72.'},
-        { q: 'What is 1,000 − 275?', a: ['725','735','825','625'], correct: 0, why: '1,000 minus 275 equals 725.'},
-        { q: 'How many minutes are in 2 hours?', a: ['60','90','120','180'], correct: 2, why: 'Each hour has 60 minutes.'},
-        { q: 'What is the perimeter of a square with sides of 4 cm?', a: ['8 cm','12 cm','16 cm','20 cm'], correct: 2, why: 'Four sides of 4 cm make 16 cm.'}
+        { q: "What is 7 × 6?", a: ["42", "36", "48", "13"], correct: 0 },
+        { q: "What is 45 + 28?", a: ["63", "73", "83", "72"], correct: 1 },
+        { q: "Which fraction is equal to one half?", a: ["2/3", "3/8", "4/8", "1/4"], correct: 2 },
+        { q: "What is 100 − 37?", a: ["73", "67", "63", "53"], correct: 2 },
+        { q: "A triangle has how many sides?", a: ["2", "3", "4", "5"], correct: 1 },
+        { q: "What is 9 × 8?", a: ["72", "64", "81", "69"], correct: 0 },
+        { q: "What is 1,000 − 275?", a: ["725", "735", "825", "625"], correct: 0 },
+        { q: "How many minutes are in 2 hours?", a: ["60", "90", "120", "180"], correct: 2 }
       ],
       Science: [
-        { q: 'Which planet is known as the Red Planet?', a: ['Venus','Mars','Jupiter','Mercury'], correct: 1, why: 'Iron-rich dust gives Mars its reddish color.'},
-        { q: 'What do plants absorb from the air?', a: ['Oxygen only','Helium','Carbon dioxide','Hydrogen'], correct: 2, why: 'Plants use carbon dioxide during photosynthesis.'},
-        { q: 'Which star is closest to Earth?', a: ['Sirius','The Sun','Polaris','Vega'], correct: 1, why: 'The Sun is our nearest star.'},
-        { q: 'What is water\'s chemical formula?', a: ['CO₂','O₂','NaCl','H₂O'], correct: 3, why: 'A water molecule has two hydrogen atoms and one oxygen atom.'},
-        { q: 'Which part of the body pumps blood?', a: ['Lungs','Brain','Heart','Stomach'], correct: 2, why: 'The heart pumps blood around the body.'},
-        { q: 'What force pulls objects toward Earth?', a: ['Gravity','Sound','Light','Heat'], correct: 0, why: 'Gravity pulls objects toward Earth.'},
-        { q: 'Which state of matter has a fixed shape?', a: ['Gas','Liquid','Solid','Steam'], correct: 2, why: 'Solids keep their own shape.'},
-        { q: 'What do bees collect from flowers?', a: ['Sand','Nectar','Stones','Leaves'], correct: 1, why: 'Bees collect nectar from flowers.'},
-        { q: 'Which organ helps us breathe?', a: ['Lungs','Stomach','Kidneys','Skin'], correct: 0, why: 'The lungs help us breathe.'}
+        { q: "Which planet is known as the Red Planet?", a: ["Venus", "Mars", "Jupiter", "Mercury"], correct: 1 },
+        { q: "What do plants absorb from the air?", a: ["Oxygen only", "Helium", "Carbon dioxide", "Hydrogen"], correct: 2 },
+        { q: "Which star is closest to Earth?", a: ["Sirius", "The Sun", "Polaris", "Vega"], correct: 1 },
+        { q: "What is water's chemical formula?", a: ["CO₂", "O₂", "NaCl", "H₂O"], correct: 3 },
+        { q: "Which part of the body pumps blood?", a: ["Lungs", "Brain", "Heart", "Stomach"], correct: 2 },
+        { q: "What force pulls objects toward Earth?", a: ["Gravity", "Sound", "Light", "Heat"], correct: 0 },
+        { q: "Which state of matter has a fixed shape?", a: ["Gas", "Liquid", "Solid", "Steam"], correct: 2 },
+        { q: "What do bees collect from flowers?", a: ["Sand", "Nectar", "Stones", "Leaves"], correct: 1 }
       ],
       English: [
-        { q: 'Which word is a noun?', a: ['Quickly','Happiness','Jump','Blue'], correct: 1, why: 'Happiness is a noun naming a feeling.'},
-        { q: 'What is the opposite of "ancient"?', a: ['Old','Historic','Modern','Past'], correct: 2, why: 'Modern means recent or current.'},
-        { q: 'Choose the correct spelling.', a: ['Beutiful','Beautifull','Beautiful','Butiful'], correct: 2, why: 'Beautiful is spelled B-E-A-U-T-I-F-U-L.'},
-        { q: 'Which word is a verb?', a: ['Swim','Table','Green','Soft'], correct: 0, why: 'Swim is an action word.'},
-        { q: 'What is the plural of "child"?', a: ['Childs','Children','Childes','Childrens'], correct: 1, why: 'The plural of child is children.'},
-        { q: 'Choose the adjective: The bright star shines.', a: ['star','shines','bright','the'], correct: 2, why: 'Bright describes the star.'},
-        { q: 'What is the past tense of go?', a: ['Goed','Going','Went','Goes'], correct: 2, why: 'The past tense of go is went.'},
-        { q: 'Which word is a synonym for happy?', a: ['Joyful','Angry','Tired','Tiny'], correct: 0, why: 'Joyful has a similar meaning to happy.'},
-        { q: 'Which sentence is a question?', a: ['Where are you?','I am here.','What a day!','Please sit.'], correct: 0, why: 'Questions usually end with a question mark.'}
+        { q: "Which word is a noun?", a: ["Quickly", "Happiness", "Jump", "Blue"], correct: 1 },
+        { q: "What is the opposite of 'ancient'?", a: ["Old", "Historic", "Modern", "Past"], correct: 2 },
+        { q: "Choose the correct spelling.", a: ["Beutiful", "Beautifull", "Beautiful", "Butiful"], correct: 2 },
+        { q: "Which word is a verb?", a: ["Swim", "Table", "Green", "Soft"], correct: 0 },
+        { q: "What is the plural of 'child'?", a: ["Childs", "Children", "Childes", "Childrens"], correct: 1 },
+        { q: "Which sentence is a question?", a: ["Where are you?", "I am here.", "What a day!", "Please sit."], correct: 0 }
       ],
       Arabic: [
-        { q: 'ما معنى كلمة «كتاب»؟', a: ['Book','Pen','Door','School'], correct: 0, why: 'كتاب تعني Book باللغة الإنجليزية.'},
-        { q: 'أي حرف تبدأ به كلمة «أسد»؟', a: ['ب','أ','م','س'], correct: 1, why: 'كلمة أسد تبدأ بحرف الألف.'},
-        { q: 'ما جمع كلمة «قلم»؟', a: ['أقلام','قلمان','قلمة','قلمات'], correct: 0, why: 'جمع قلم هو أقلام.'},
-        { q: 'أي كلمة تدل على فعل؟', a: ['مدرسة','يكتب','جميل','كتاب'], correct: 1, why: 'يكتب فعل يدل على عمل.'},
-        { q: 'ما ضد كلمة «كبير»؟', a: ['طويل','صغير','قريب','سريع'], correct: 1, why: 'ضد كبير هو صغير.'},
-        { q: 'كم عدد حروف الهجاء العربية؟', a: ['26','27','28','29'], correct: 2, why: 'عدد الحروف العربية المشهورة 28 حرفاً.'},
-        { q: 'ما مثنى كلمة «طالب»؟', a: ['طلاب','طالبان','طالبات','طلب'], correct: 1, why: 'مثنى طالب هو طالبان.'},
-        { q: 'أي كلمة هي اسم؟', a: ['يركض','على','حديقة','ثم'], correct: 2, why: 'حديقة اسم.'}
+        { q: "ما معنى كلمة «كتاب»؟", a: ["Book", "Pen", "Door", "School"], correct: 0 },
+        { q: "أي حرف تبدأ به كلمة «أسد»؟", a: ["ب", "أ", "م", "س"], correct: 1 },
+        { q: "ما جمع كلمة «قلم»؟", a: ["أقلام", "قلمان", "قلمة", "قلمات"], correct: 0 },
+        { q: "أي كلمة تدل على فعل؟", a: ["مدرسة", "يكتب", "جميل", "كتاب"], correct: 1 },
+        { q: "ما ضد كلمة «كبير»؟", a: ["طويل", "صغير", "قريب", "سريع"], correct: 1 },
+        { q: "كم عدد حروف الهجاء العربية؟", a: ["26", "27", "28", "29"], correct: 2 }
       ],
-      'Islamic Studies': [
-        { q: 'كم عدد أركان الإسلام؟', a: ['3','4','5','6'], correct: 2, why: 'أركان الإسلام خمسة.'},
-        { q: 'ما اسم الكتاب المقدس في الإسلام؟', a: ['القرآن الكريم','الإنجيل','التوراة','الزبور'], correct: 0, why: 'القرآن الكريم هو كلام الله.'},
-        { q: 'كم صلاة مفروضة في اليوم والليلة؟', a: ['3','4','5','6'], correct: 2, why: 'الصلوات المفروضة خمس في اليوم والليلة.'},
-        { q: 'ما الشهر الذي يصوم فيه المسلمون؟', a: ['محرم','رمضان','شوال','رجب'], correct: 1, why: 'يصوم المسلمون شهر رمضان.'},
-        { q: 'ما التحية الإسلامية؟', a: ['صباح الخير','السلام عليكم','إلى اللقاء','شكراً'], correct: 1, why: 'السلام عليكم هي التحية الإسلامية.'},
-        { q: 'ما اسم قبلة المسلمين في الصلاة؟', a: ['المسجد النبوي','الكعبة','المسجد الأقصى','جبل عرفات'], correct: 1, why: 'يتجه المسلمون إلى الكعبة.'},
-        { q: 'أي قيمة تعني قول الحقيقة؟', a: ['الصدق','الغضب','الكسل','الإهمال'], correct: 0, why: 'الصدق هو قول الحقيقة.'},
-        { q: 'ما اسم الشهر الذي يأتي بعد رمضان؟', a: ['شعبان','ذو الحجة','شوال','صفر'], correct: 2, why: 'يأتي شهر شوال بعد رمضان.'}
+      "Islamic Studies": [
+        { q: "كم عدد أركان الإسلام؟", a: ["3", "4", "5", "6"], correct: 2 },
+        { q: "ما اسم الكتاب المقدس في الإسلام؟", a: ["القرآن الكريم", "الإنجيل", "التوراة", "الزبور"], correct: 0 },
+        { q: "كم صلاة مفروضة في اليوم والليلة؟", a: ["3", "4", "5", "6"], correct: 2 },
+        { q: "ما الشهر الذي يصوم فيه المسلمون؟", a: ["محرم", "رمضان", "شوال", "رجب"], correct: 1 },
+        { q: "ما التحية الإسلامية؟", a: ["صباح الخير", "السلام عليكم", "إلى اللقاء", "شكراً"], correct: 1 },
+        { q: "ما اسم قبلة المسلمين في الصلاة؟", a: ["المسجد النبوي", "الكعبة", "المسجد الأقصى", "جبل عرفات"], correct: 1 }
       ],
       Geography: [
-        { q: 'What is the largest continent?', a: ['Africa','Asia','Europe','Australia'], correct: 1, why: 'Asia is the largest continent by area.'},
-        { q: 'What is the capital city of the UAE?', a: ['Dubai','Sharjah','Abu Dhabi','Ajman'], correct: 2, why: 'Abu Dhabi is the capital of the UAE.'},
-        { q: 'Which ocean is between Africa and Australia?', a: ['Atlantic','Arctic','Indian','Southern'], correct: 2, why: 'The Indian Ocean lies between Africa and Australia.'},
-        { q: 'What do maps use to show north, south, east, and west?', a: ['Compass rose','Scale bar','Legend only','Border'], correct: 0, why: 'A compass rose shows directions.'},
-        { q: 'Which is a landform with a very high peak?', a: ['Valley','Mountain','Plain','Island'], correct: 1, why: 'A mountain is a high landform.'},
-        { q: 'What is a group of islands called?', a: ['Archipelago','Peninsula','Desert','Plateau'], correct: 0, why: 'A cluster of islands is an archipelago.'},
-        { q: 'Which line divides Earth into Northern and Southern Hemispheres?', a: ['Prime Meridian','Equator','Tropic of Cancer','Date Line'], correct: 1, why: 'The Equator divides Earth into two hemispheres.'},
-        { q: 'Which is the largest hot desert?', a: ['Gobi','Sahara','Arabian Desert','Kalahari'], correct: 1, why: 'The Sahara is the largest hot desert.'}
+        { q: "What is the largest continent?", a: ["Africa", "Asia", "Europe", "Australia"], correct: 1 },
+        { q: "What is the capital city of the UAE?", a: ["Dubai", "Sharjah", "Abu Dhabi", "Ajman"], correct: 2 },
+        { q: "Which ocean is between Africa and Australia?", a: ["Atlantic", "Arctic", "Indian", "Southern"], correct: 2 },
+        { q: "What do maps use to show north, south, east, and west?", a: ["Compass rose", "Scale bar", "Legend only", "Border"], correct: 0 },
+        { q: "Which is a landform with a very high peak?", a: ["Valley", "Mountain", "Plain", "Island"], correct: 1 },
+        { q: "What is a group of islands called?", a: ["Archipelago", "Peninsula", "Desert", "Plateau"], correct: 0 }
       ]
     };
 
-    const arabicUi = {
-      'AI LEARNING': 'التعلم بالذكاء الاصطناعي',
-      'LearnQuest': 'لاينكويست',
-      'Made by Riad Tabbakha · 5-B': 'إعداد رياض طبّاخة · الصف 5-B',
-      'Start learning →': 'ابدأ التعلم →',
-      'Create quiz': 'إنشاء اختبار',
-      'Choose your adventure': 'اختر مغامرتك',
-      'Pick a subject to start a quiz.': 'اختر مادة لبدء الاختبار.',
-      'Made for curious minds': 'مصمم للمستكشفين',
-      'Math Mission': 'مهمة الرياضيات',
-      'Science Squad': 'فريق العلوم',
-      'Word Wizard': 'ساحر الكلمات',
-      'Arabic Adventures': 'مغامرات العربية',
-      'Islamic Studies': 'الدراسات الإسلامية',
-      'Geography Explorer': 'مستكشف الجغرافيا',
-      'Practice numbers, arithmetic, and problem-solving.': 'تدرب على الأرقام والحساب وحل المشكلات.',
-      'Explore nature, space, energy, and the human body.': 'استكشف الطبيعة والفضاء والطاقة وجسم الإنسان.',
-      'Build vocabulary and practice English skills.': 'ابنِ مفرداتك وتمرّن على مهارات اللغة الإنجليزية.',
-      'Practice Arabic letters, words, and language skills.': 'تمرّن على الحروف والكلمات ومهارات اللغة العربية.',
-      'Learn about Islamic values and knowledge.': 'تعلم القيم والمعارف الإسلامية.',
-      'Explore countries, maps, continents, and oceans.': 'استكشف الدول والخرائط والقارات والمحيطات.',
-      'Play': 'العب',
-      'AI Game Creator': 'منشئ الألعاب التعليمية',
-      'Make a new practice quiz for any topic.': 'أنشئ اختباراً تدريبياً لأي موضوع.',
-      'Question generator': 'مولد الأسئلة',
-      'Quiz topic': 'موضوع الاختبار',
-      'Subject': 'المادة',
-      'e.g. planets, fractions, verbs': 'مثال: الكواكب، الكسور، الأفعال',
-      '✨ Create my quiz': '✨ أنشئ اختباري',
-      'Choose your grade and difficulty on the side. Quizzes mix multiple-choice, true/false, and written answers.': 'اختر صفك ومستوى الصعوبة من الجانب. تشمل الاختبارات أسئلة متعددة الخيارات وصحيحة/خطأ وأسئلة كتابية.',
-      '⚙️ Game settings': '⚙️ إعدادات اللعبة',
-      'Set your school grade and challenge level.': 'حدد صفك الدراسي ومستوى التحدي.',
-      'My grade': 'صفي',
-      'Custom quiz difficulty': 'صعوبة الاختبار المخصص',
-      'Easy: 3 questions · Medium: 5 questions · Hard: tougher challenge questions.': 'سهل: 3 أسئلة · متوسط: 5 أسئلة · صعب: أسئلة أصعب.',
-      'STUDENT AREA': 'منطقة الطالب',
-      'Welcome back!': 'أهلاً بعودتك!',
-      'Enter a nickname and password to continue, or create a demo account.': 'أدخل اسم مستخدم وكلمة مرور للمتابعة أو أنشئ حساب تجريبي.',
-      'Demo mode only: this version stores a demo account in this browser. Do not use a real or reused password.': 'الوضع التجريبي فقط: يحفظ هذا الإصدار حساباً تجريبياً في هذا المتصفح. لا تستخدم كلمة مرور حقيقية أو مستخدمة مسبقاً.',
-      'Student username': 'اسم المستخدم',
-      'Choose a username': 'اختر اسم مستخدم',
-      'Password': 'كلمة المرور',
-      'At least 4 characters': '4 أحرف على الأقل',
-      'Create demo account': 'إنشاء حساب تجريبي',
-      'Already have a demo account? Sign in': 'هل لديك حساب تجريبي؟ تسجيل الدخول',
-      '← Back to home': '← العودة إلى الرئيسية',
-      'YOUR LEARNING SPACE': 'مساحتك التعليمية',
-      'Hello, learner!': 'مرحباً، أيها المتعلم!',
-      'Ready for your next challenge?': 'هل أنت مستعد للتحدي التالي؟',
-      'Log out': 'تسجيل الخروج',
-      'Total points': 'إجمالي النقاط',
-      'Quizzes played': 'الاختبارات التي لعبت',
-      'Best streak': 'أفضل سلسلة',
-      'Stars earned': 'النجوم المحققة',
-      'Pick a game': 'اختر لعبة',
-      'Your next mission is waiting.': 'مهمتك القادمة في انتظارك.',
-      'Make a custom quiz': 'أنشئ اختباراً مخصصاً',
-      'Use the AI Game Creator on the home page.': 'استخدم منشئ الألعاب التعليمية من الصفحة الرئيسية.',
-      'Create a quiz ✨': 'أنشئ اختباراً ✨',
-      'READY-MADE QUIZ': 'اختبار جاهز',
-      'Choose your difficulty': 'اختر مستوى الصعوبة',
-      'Before the questions begin, choose how challenging you want this quiz to be.': 'قبل بدء الأسئلة، اختر مدى صعوبة هذا الاختبار.',
-      'Difficulty:': 'الصعوبة:',
-      'Medium': 'متوسط',
-      'Easy': 'سهل',
-      'Hard': 'صعب',
-      'Easy gives you a shorter quiz. Hard is a bigger challenge with trickier questions.': 'السهل يعطيك اختباراً أقصر. الصعب يكون تحدياً أكبر بأسئلة أكثر تعقيداً.',
-      'Start quiz': 'ابدأ الاختبار',
-      'Go back': 'العودة',
-      'Question 1 of 5': 'السؤال 1 من 5',
-      'Question goes here': 'سيظهر السؤال هنا',
-      'Exit quiz': 'الخروج من الاختبار',
-      'Check answer': 'تحقق من الإجابة',
-      'Next question': 'السؤال التالي',
-      'See results': 'عرض النتائج',
-      'Quiz ready! This demo used built-in questions related to': 'جاهز! استخدم هذا المثال أسئلة داخلية مرتبطة بـ',
-      'For brand-new questions on any topic, connect an AI API through a secure backend.': 'للحصول على أسئلة جديدة بالكامل في أي موضوع، اربط واجهة ذكاء اصطناعي عبر نظام سري.',
-      'Sign in': 'تسجيل الدخول',
-      'Hi, ': 'مرحباً، ',
-      'Practice': 'تمرّن',
-      'Progress': 'التقدم',
-      'Language / اللغة': 'اللغة / Language',
-      'Game settings': 'إعدادات اللعبة'
+    const state = {
+      selectedPlayers: 1,
+      players: [],
+      currentPlayerIndex: 0,
+      currentQuestionIndex: 0,
+      questions: [],
+      selectedAnswer: null,
+      questionLimit: 5,
+      subject: "Math"
     };
 
-    const quizArabic = {
-      'What is 7 × 6?': 'ما هو 7 × 6؟',
-      '42': '42', '36': '36', '48': '48', '13': '13',
-      '7 groups of 6 make 42.': '7 مجاميع من 6 تساوي 42.',
-      'What is 45 + 28?': 'ما هو 45 + 28؟',
-      '63': '63', '73': '73', '83': '83', '72': '72',
-      '45 + 20 = 65, then + 8 = 73.': '45 + 20 = 65، ثم + 8 = 73.',
-      'Which fraction is equal to one half?': 'أي كسر يساوي نصفاً؟',
-      '2/3': '2/3', '3/8': '3/8', '4/8': '4/8', '1/4': '1/4',
-      '4/8 simplifies to 1/2.': '4/8 يبسط إلى 1/2.',
-      'What is 100 − 37?': 'ما هو 100 − 37؟',
-      '73': '73', '67': '67', '63': '63', '53': '53',
-      '100 − 37 = 63.': '100 − 37 = 63.',
-      'A triangle has how many sides?': 'كم عدد أضلاع المثلث؟',
-      '2': '2', '3': '3', '4': '4', '5': '5',
-      'A triangle has three sides.': 'المثلث له ثلاثة أضلاع.',
-      'What is 9 × 8?': 'ما هو 9 × 8؟',
-      '72': '72', '64': '64', '81': '81', '69': '69',
-      '9 times 8 equals 72.': '9 × 8 = 72.',
-      'What is 1,000 − 275?': 'ما هو 1,000 − 275؟',
-      '725': '725', '735': '735', '825': '825', '625': '625',
-      '1,000 minus 275 equals 725.': '1,000 − 275 = 725.',
-      'How many minutes are in 2 hours?': 'كم دقيقة في ساعتين؟',
-      '60': '60', '90': '90', '120': '120', '180': '180',
-      'Each hour has 60 minutes.': 'كل ساعة تحتوي على 60 دقيقة.',
-      'What is the perimeter of a square with sides of 4 cm?': 'ما محيط مربع طول ضلعه 4 سم؟',
-      '8 cm': '8 سم', '12 cm': '12 سم', '16 cm': '16 سم', '20 cm': '20 سم',
-      'Four sides of 4 cm make 16 cm.': 'أربعة أضلاع طول كل منها 4 سم تعطي 16 سم.',
-      'Which planet is known as the Red Planet?': 'أي كوكب يُعرف بالكوكب الأحمر؟',
-      'Venus': 'الزهرة', 'Mars': 'المريخ', 'Jupiter': 'المشتري', 'Mercury': 'عطارد',
-      'Iron-rich dust gives Mars its reddish color.': 'الغبار الغني بالحديد يمنح المريخ لونه المحمر.',
-      'What do plants absorb from the air?': 'ماذا تمتص النباتات من الهواء؟',
-      'Oxygen only': 'الأكسجين فقط', 'Helium': 'الهيليوم', 'Carbon dioxide': 'ثاني أكسيد الكربون', 'Hydrogen': 'الهيدروجين',
-      'Plants use carbon dioxide during photosynthesis.': 'تستخدم النباتات ثاني أكسيد الكربون أثناء التمثيل الضوئي.',
-      'Which star is closest to Earth?': 'أي نجم أقرب إلى الأرض؟',
-      'Sirius': 'الشعرى', 'The Sun': 'الشمس', 'Polaris': 'النجم القطبي', 'Vega': 'فيغا',
-      'The Sun is our nearest star.': 'الشمس هي أقرب نجم إلينا.',
-      'What is water\'s chemical formula?': 'ما الصيغة الكيميائية للماء؟',
-      'CO₂': 'CO₂', 'O₂': 'O₂', 'NaCl': 'NaCl', 'H₂O': 'H₂O',
-      'A water molecule has two hydrogen atoms and one oxygen atom.': 'جزيء الماء يحتوي على ذرتي هيدروجين وذرة أكسجين واحدة.',
-      'Which part of the body pumps blood?': 'أي جزء من الجسم يضخ الدم؟',
-      'Lungs': 'الرئتان', 'Brain': 'الدماغ', 'Heart': 'القلب', 'Stomach': 'المعدة',
-      'The heart pumps blood around the body.': 'يضخ القلب الدم في جميع أنحاء الجسم.',
-      'What force pulls objects toward Earth?': 'ما القوة التي تجذب الأشياء نحو الأرض؟',
-      'Gravity': 'الجاذبية', 'Sound': 'الصوت', 'Light': 'الضوء', 'Heat': 'الحرارة',
-      'Gravity pulls objects toward Earth.': 'تجذب الجاذبية الأشياء نحو الأرض.',
-      'Which state of matter has a fixed shape?': 'أي حالة من المادة لها شكل ثابت؟',
-      'Gas': 'غاز', 'Liquid': 'سائل', 'Solid': 'صلب', 'Steam': 'بخار',
-      'Solids keep their own shape.': 'المواد الصلبة تحافظ على شكلها.',
-      'What do bees collect from flowers?': 'ماذا يجمع النحل من الأزهار؟',
-      'Sand': 'الرمل', 'Nectar': 'الرحيق', 'Stones': 'الحصى', 'Leaves': 'الأوراق',
-      'Bees collect nectar from flowers.': 'يجمع النحل الرحيق من الأزهار.',
-      'Which organ helps us breathe?': 'أي عضو يساعدنا على التنفس؟',
-      'The lungs help us breathe.': 'تساعدنا الرئتان على التنفس.',
-      'Which word is a noun?': 'أي كلمة اسم؟',
-      'Quickly': 'بسرعة', 'Happiness': 'السعادة', 'Jump': 'قفز', 'Blue': 'أزرق',
-      'Happiness is a noun naming a feeling.': 'السعادة اسم يصف شعوراً.',
-      'What is the opposite of "ancient"?': 'ما عكس كلمة "قديم"؟',
-      'Old': 'قديم', 'Historic': 'تاريخي', 'Modern': 'حديث', 'Past': 'ماضي',
-      'Modern means recent or current.': 'المعنى الحديث يرمز إلى الحاضر أو القريب.',
-      'Choose the correct spelling.': 'اختر spelling الصحيح.',
-      'Beutiful': 'Beutiful', 'Beautifull': 'Beautifull', 'Beautiful': 'Beautiful', 'Butiful': 'Butiful',
-      'Beautiful is spelled B-E-A-U-T-I-F-U-L.': 'كلمة Beautiful تكتب B-E-A-U-T-I-F-U-L.',
-      'Which word is a verb?': 'أي كلمة فعل؟',
-      'Swim': 'سباحة', 'Table': 'طاولة', 'Green': 'أخضر', 'Soft': 'ناعم',
-      'Swim is an action word.': 'سباحة هي كلمة تدل على فعل.',
-      'What is the plural of "child"?': 'ما جمع كلمة "طفل"؟',
-      'Childs': 'Childs', 'Children': 'Children', 'Childes': 'Childes', 'Childrens': 'Childrens',
-      'The plural of child is children.': 'جمع الطفل هو children.',
-      'Choose the adjective: The bright star shines.': 'اختر الصفة: النجم الساطع يضيء.',
-      'star': 'نجم', 'shines': 'يضيء', 'bright': 'ساطع', 'the': 'الـ',
-      'Bright describes the star.': 'ساطع يصف النجم.',
-      'What is the past tense of go?': 'ما الزمن الماضي من "go"؟',
-      'Goed': 'Goed', 'Going': 'Going', 'Went': 'Went', 'Goes': 'Goes',
-      'The past tense of go is went.': 'الفعل الماضي لـ go هو went.',
-      'Which word is a synonym for happy?': 'أي كلمة تعادل كلمة "happy"؟',
-      'Joyful': 'فرح', 'Angry': 'غاضب', 'Tired': 'متعب', 'Tiny': 'صغير',
-      'Joyful has a similar meaning to happy.': 'Joyful لها معنى مشابه لـ happy.',
-      'Which sentence is a question?': 'أي جملة سؤال؟',
-      'Where are you?': 'أين أنت؟', 'I am here.': 'أنا هنا.', 'What a day!': 'يا له من يوم!', 'Please sit.': 'من فضلك اجلس.',
-      'Questions usually end with a question mark.': 'تُكتب الأسئلة عادةً بنقطة استفهام.',
-      'ما معنى كلمة «كتاب»؟': 'ما معنى كلمة «كتاب»؟',
-      'Book': 'كتاب', 'Pen': 'قلم', 'Door': 'باب', 'School': 'مدرسة',
-      'كتاب تعني Book باللغة الإنجليزية.': 'كتاب تعني Book باللغة الإنجليزية.',
-      'أي حرف تبدأ به كلمة «أسد»؟': 'أي حرف تبدأ به كلمة «أسد»؟',
-      'ب': 'ب', 'أ': 'أ', 'م': 'م', 'س': 'س',
-      'كلمة أسد تبدأ بحرف الألف.': 'كلمة أسد تبدأ بحرف الألف.',
-      'ما جمع كلمة «قلم»؟': 'ما جمع كلمة «قلم»؟',
-      'أقلام': 'أقلام', 'قلمان': 'قلمان', 'قلمة': 'قلمة', 'قلمات': 'قلمات',
-      'جمع قلم هو أقلام.': 'جمع قلم هو أقلام.',
-      'أي كلمة تدل على فعل؟': 'أي كلمة تدل على فعل؟',
-      'مدرسة': 'مدرسة', 'يكتب': 'يكتب', 'جميل': 'جميل', 'كتاب': 'كتاب',
-      'يكتب فعل يدل على عمل.': 'يكتب فعل يدل على عمل.',
-      'ما ضد كلمة «كبير»؟': 'ما ضد كلمة «كبير»؟',
-      'طويل': 'طويل', 'صغير': 'صغير', 'قريب': 'قريب', 'سريع': 'سريع',
-      'ضد كبير هو صغير.': 'ضد كبير هو صغير.',
-      'كم عدد حروف الهجاء العربية؟': 'كم عدد حروف الهجاء العربية؟',
-      '26': '26', '27': '27', '28': '28', '29': '29',
-      'عدد الحروف العربية المشهورة 28 حرفاً.': 'عدد الحروف العربية المشهورة 28 حرفاً.',
-      'ما مثنى كلمة «طالب»؟': 'ما مثنى كلمة «طالب»؟',
-      'طلاب': 'طلاب', 'طالبان': 'طالبان', 'طالبات': 'طالبات', 'طلب': 'طلب',
-      'مثنى طالب هو طالبان.': 'مثنى طالب هو طالبان.',
-      'أي كلمة هي اسم؟': 'أي كلمة هي اسم؟',
-      'يركض': 'يركض', 'على': 'على', 'حديقة': 'حديقة', 'ثم': 'ثم',
-      'حديقة اسم.': 'حديقة اسم.',
-      'كم عدد أركان الإسلام؟': 'كم عدد أركان الإسلام؟',
-      'أركان الإسلام خمسة.': 'أركان الإسلام خمسة.',
-      'ما اسم الكتاب المقدس في الإسلام؟': 'ما اسم الكتاب المقدس في الإسلام؟',
-      'القرآن الكريم': 'القرآن الكريم', 'الإنجيل': 'الإنجيل', 'التوراة': 'التوراة', 'الزبور': 'الزبور',
-      'القرآن الكريم هو كلام الله.': 'القرآن الكريم هو كلام الله.',
-      'كم صلاة مفروضة في اليوم والليلة؟': 'كم صلاة مفروضة في اليوم والليلة؟',
-      'الصلوات المفروضة خمس في اليوم والليلة.': 'الصلوات المفروضة خمس في اليوم والليلة.',
-      'ما الشهر الذي يصوم فيه المسلمون؟': 'ما الشهر الذي يصوم فيه المسلمون؟',
-      'محرم': 'محرم', 'رمضان': 'رمضان', 'شوال': 'شوال', 'رجب': 'رجب',
-      'يصوم المسلمون شهر رمضان.': 'يصوم المسلمون شهر رمضان.',
-      'ما التحية الإسلامية؟': 'ما التحية الإسلامية؟',
-      'صباح الخير': 'صباح الخير', 'السلام عليكم': 'السلام عليكم', 'إلى اللقاء': 'إلى اللقاء', 'شكراً': 'شكراً',
-      'السلام عليكم هي التحية الإسلامية.': 'السلام عليكم هي التحية الإسلامية.',
-      'ما اسم قبلة المسلمين في الصلاة؟': 'ما اسم قبلة المسلمين في الصلاة؟',
-      'المسجد النبوي': 'المسجد النبوي', 'الكعبة': 'الكعبة', 'المسجد الأقصى': 'المسجد الأقصى', 'جبل عرفات': 'جبل عرفات',
-      'يتجه المسلمون إلى الكعبة.': 'يتجه المسلمون إلى الكعبة.',
-      'أي قيمة تعني قول الحقيقة؟': 'أي قيمة تعني قول الحقيقة؟',
-      'الصدق': 'الصدق', 'الغضب': 'الغضب', 'الكسل': 'الكسل', 'الإهمال': 'الإهمال',
-      'الصدق هو قول الحقيقة.': 'الصدق هو قول الحقيقة.',
-      'ما اسم الشهر الذي يأتي بعد رمضان؟': 'ما اسم الشهر الذي يأتي بعد رمضان؟',
-      'شعبان': 'شعبان', 'ذو الحجة': 'ذو الحجة', 'يأتي شهر شوال بعد رمضان.': 'يأتي شهر شوال بعد رمضان.',
-      'What is the largest continent?': 'ما أكبر قارة؟',
-      'Africa': 'أفريقيا', 'Asia': 'آسيا', 'Europe': 'أوروبا', 'Australia': 'أستراليا',
-      'Asia is the largest continent by area.': 'آسيا هي أكبر قارة من حيث المساحة.',
-      'What is the capital city of the UAE?': 'ما عاصمة دولة الإمارات العربية المتحدة؟',
-      'Dubai': 'دبي', 'Sharjah': 'الشارقة', 'Abu Dhabi': 'أبو ظبي', 'Ajman': 'عجمان',
-      'Abu Dhabi is the capital of the UAE.': 'أبو ظبي هي عاصمة دولة الإمارات.',
-      'Which ocean is between Africa and Australia?': 'أي محيط يقع بين أفريقيا وأستراليا؟',
-      'Atlantic': 'الأطلسي', 'Arctic': 'القطبي', 'Indian': 'الهندي', 'Southern': 'الجنوب',
-      'The Indian Ocean lies between Africa and Australia.': 'يقع المحيط الهندي بين أفريقيا وأستراليا.',
-      'What do maps use to show north, south, east, and west?': 'ماذا يستخدم الخريطان لإظهار الشمال والجنوب والشرق والغرب؟',
-      'Compass rose': 'النجمة البوصلة', 'Scale bar': 'شريط القياس', 'Legend only': 'الشرح فقط', 'Border': 'الحدود',
-      'A compass rose shows directions.': 'تُظهر البوصلة الاتجاهات.',
-      'Which is a landform with a very high peak?': 'أي شكل أرضي يحتوي على قمة عالية جداً؟',
-      'Valley': 'وادي', 'Mountain': 'جبل', 'Plain': 'سهل', 'Island': 'جزيرة',
-      'A mountain is a high landform.': 'الجبل هو شكل أرضي مرتفع.',
-      'What is a group of islands called?': 'ما اسم مجموعة الجزر؟',
-      'Archipelago': 'أرخبيل', 'Peninsula': 'شبه جزيرة', 'Desert': 'صحراء', 'Plateau': 'هضبة',
-      'A cluster of islands is an archipelago.': 'مجموعة الجزر تسمى أرخبيل.',
-      'Which line divides Earth into Northern and Southern Hemispheres?': 'أي خط يقسم الأرض إلى نصفي الكرة الشمالي والجنوبي؟',
-      'Prime Meridian': 'خط الطول الرئيسي', 'Equator': 'خط الاستواء', 'Tropic of Cancer': 'مدار السرطان', 'Date Line': 'خط التاريخ',
-      'The Equator divides Earth into two hemispheres.': 'يقسم خط الاستواء الأرض إلى نصفين.',
-      'Which is the largest hot desert?': 'أي صحراء حارة هي الأكبر؟',
-      'Gobi': 'غوبي', 'Sahara': 'الصحراء الكبرى', 'Arabian Desert': 'الصحراء العربية', 'Kalahari': 'الكalahاري',
-      'The Sahara is the largest hot desert.': 'الصحراء الكبرى هي أكبر صحراء حارة.'
-    };
-
-    function getUsers() {
-      try { return JSON.parse(localStorage.getItem(demoUsersKey) || '{}'); } catch { return {}; }
-    }
-
-    function saveUsers(users) {
-      localStorage.setItem(demoUsersKey, JSON.stringify(users));
-    }
-
-    function showSection(name) {
-      ['home', 'auth', 'dashboard', 'difficultySetup', 'quizScreen'].forEach((id) => {
-        $(id).classList.toggle('hidden', id !== name);
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function updateTop() {
-      const el = $('signInTop');
-      if (!el) return;
-      if (state.currentUser) {
-        el.textContent = 'Hi, ' + state.currentUser.username;
-      } else {
-        el.textContent = currentLang() === 'ar' ? 'تسجيل الدخول' : 'Sign in';
-      }
-    }
-
-    function currentLang() {
-      return $('language').value === 'ar' ? 'ar' : 'en';
-    }
-
-    function localizeText(str, fallback = str) {
-      if (!str || typeof str !== 'string') return str;
-      const ar = currentLang() === 'ar';
-      if (!ar) return fallback || str;
-      const translated = arabicUi[str] || quizArabic[str] || str;
-      return translated;
-    }
-
-    function applyTheme(theme = localStorage.getItem('learnquest_theme') || 'light') {
-      document.body.setAttribute('data-theme', theme);
-      const toggle = $('themeToggle');
-      if (toggle) {
-        toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-        toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-      }
-    }
-
-    function toggleTheme() {
-      const next = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('learnquest_theme', next);
-      applyTheme(next);
-    }
-
-    function renderDashboard() {
-      if (!state.currentUser) return;
-      $('welcomeName').textContent = (currentLang() === 'ar' ? 'مرحباً، ' : 'Hello, ') + state.currentUser.username + '!' + (currentLang() === 'ar' ? ' 👋' : ' 👋');
-      $('statPoints').textContent = state.currentUser.points || 0;
-      $('statQuizzes').textContent = state.currentUser.quizzes || 0;
-      $('statStreak').textContent = state.currentUser.streak || 0;
-      $('statStars').textContent = state.currentUser.stars || 0;
-    }
-
-    function setLanguage() {
-      const ar = currentLang() === 'ar';
-      document.documentElement.lang = ar ? 'ar' : 'en';
-      document.documentElement.dir = ar ? 'rtl' : 'ltr';
-      document.body.dir = ar ? 'rtl' : 'ltr';
-      document.body.style.direction = ar ? 'rtl' : 'ltr';
-
-      const labels = {
-        appTag: 'AI LEARNING',
-        bylineText: 'Made by Riad Tabbakha · 5-B',
-        heroTitle: 'Big learning.<br>Small games.',
-        heroText: 'Explore school subjects, challenge yourself with quick quizzes, and create fresh practice questions with AI-style support.',
-        startBtn: 'Start learning →',
-        homeCreatorBtn: 'Create quiz',
-        adventureTitle: 'Choose your adventure',
-        adventureText: 'Pick a subject to start a quiz.',
-        madeFor: 'Made for curious minds',
-        creatorTitle: 'AI Game Creator',
-        creatorText: 'Make a new practice quiz for any topic.',
-        creatorPill: 'Question generator',
-        topicLabel: 'Quiz topic',
-        subjectLabel: 'Subject',
-        creatorMessage: 'Choose your grade and difficulty on the side. Quizzes mix multiple-choice, true/false, and written answers.',
-        settingsTitle: '⚙️ Game settings',
-        settingsText: 'Set your school grade and challenge level.',
-        gradeLabel: 'My grade',
-        difficultyLabel: 'Custom quiz difficulty',
-        difficultyMeta: 'Easy: 3 questions · Medium: 5 questions · Hard: tougher challenge questions.',
-        studentAreaTag: 'STUDENT AREA',
-        authTitle: 'Welcome back!',
-        authText: 'Enter a nickname and password to continue, or create a demo account.',
-        authNotice: 'Demo mode only: this version stores a demo account in this browser. Do not use a real or reused password.',
-        usernameLabel: 'Student username',
-        passwordLabel: 'Password',
-        authSubmit: 'Create demo account',
-        switchAuth: 'Already have a demo account? Sign in',
-        backHome: '← Back to home',
-        learningSpaceTag: 'YOUR LEARNING SPACE',
-        dashboardText: 'Ready for your next challenge?',
-        pointsLabel: 'Total points',
-        quizzesLabel: 'Quizzes played',
-        streakLabel: 'Best streak',
-        starsLabel: 'Stars earned',
-        pickGameTitle: 'Pick a game',
-        pickGameText: 'Your next mission is waiting.',
-        customTitle: 'Make a custom quiz',
-        customText: 'Use the AI Game Creator on the home page.',
-        readyTag: 'READY-MADE QUIZ',
-        difficultyTitle: 'Choose your difficulty',
-        difficultyIntro: 'Before the questions begin, choose how challenging you want this quiz to be.',
-        premadeDifficultyLabel: 'Difficulty:',
-        difficultyNotice: 'Easy gives you a shorter quiz. Hard is a bigger challenge with trickier questions.',
-        startPremadeQuiz: 'Start quiz',
-        cancelPremadeQuiz: 'Go back',
-        quitQuiz: 'Exit quiz',
-        nextQuestion: 'Check answer'
-      };
-
-      Object.entries(labels).forEach(([key, value]) => {
-        const el = $(key);
-        if (!el) return;
-        if (key === 'heroTitle') {
-          el.innerHTML = ar ? 'تعلّم كبير.<br>ألعاب صغيرة.' : 'Big learning.<br>Small games.';
-          return;
-        }
-        if (key === 'bylineText' || key === 'adventureText') {
-          el.textContent = ar ? arabicUi[value] || value : value;
-          return;
-        }
-        el.textContent = ar ? (arabicUi[value] || value) : value;
-      });
-
-      const username = $('username');
-      if (username) username.placeholder = ar ? 'اختر اسم مستخدم' : 'Choose a username';
-      const password = $('password');
-      if (password) password.placeholder = ar ? '4 أحرف على الأقل' : 'At least 4 characters';
-      const topic = $('topic');
-      if (topic) topic.placeholder = ar ? 'مثال: الكواكب، الكسور، الأفعال' : 'e.g. planets, fractions, verbs';
-      if (state.quizQuestions.length) renderQuestion();
-      updateTop();
-      renderDashboard();
-    }
-
-    function openAuth(mode) {
-      state.authMode = mode;
-      $('authTitle').textContent = mode === 'register' ? (currentLang() === 'ar' ? 'أنشئ حسابك' : 'Create your learner account') : (currentLang() === 'ar' ? 'مرحباً بعودتك!' : 'Welcome back!');
-      $('authSubmit').textContent = mode === 'register' ? (currentLang() === 'ar' ? 'إنشاء حساب تجريبي' : 'Create demo account') : (currentLang() === 'ar' ? 'تسجيل الدخول' : 'Sign in');
-      $('switchAuth').textContent = mode === 'register' ? (currentLang() === 'ar' ? 'هل لديك حساب تجريبي؟ تسجيل الدخول' : 'Already have a demo account? Sign in') : (currentLang() === 'ar' ? 'ليس لديك حساب؟ إنشاء حساب جديد' : 'Need a demo account? Create one');
-      showSection('auth');
-    }
-
-    function getDifficultyValue() {
-      return { 1: 'Easy', 2: 'Medium', 3: 'Hard' }[Number($('premadeDifficulty').value)];
-    }
-
-    function questionsForDifficulty(subject, questions, difficulty = $('customDifficulty').value) {
-      let chosen = [...questions];
-      if (difficulty === 'Easy') chosen = chosen.slice(0, 3);
-      if (difficulty === 'Hard' && subject === 'Math') {
-        chosen = [
-          { q: 'What is 18 × 7?', a: ['116', '126', '136', '146'], correct: 1, why: '18 × 7 = 126.' },
-          { q: 'A book costs 36 dirhams. How much do 4 books cost?', a: ['124 dirhams', '134 dirhams', '144 dirhams', '154 dirhams'], correct: 2, why: '36 × 4 = 144 dirhams.' },
-          { q: 'What is 3/4 of 20?', a: ['5', '10', '15', '16'], correct: 2, why: '20 divided by 4 is 5, and 5 × 3 = 15.' },
-          { q: 'What is 245 + 178?', a: ['413', '423', '433', '443'], correct: 1, why: '245 + 178 = 423.' },
-          { q: 'A rectangle is 8 cm long and 5 cm wide. What is its area?', a: ['13 cm²', '26 cm²', '40 cm²', '80 cm²'], correct: 2, why: 'Area = length × width = 8 × 5 = 40 cm².' }
-        ];
-      }
-      return chosen;
-    }
-
-    function shuffleArray(items) {
-      const arr = [...items];
-      for (let i = arr.length - 1; i > 0; i--) {
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+        [copy[i], copy[j]] = [copy[j], copy[i]];
       }
-      return arr;
+      return copy;
     }
 
-    function mixQuestionTypes(questions) {
-      const types = ['multiple_choice', 'true_false', 'short_answer', 'multiple_choice', 'true_false'];
-      return shuffleArray(questions).map((original, i) => {
-        const q = { ...original, baseQ: original.q, a: [...(original.a || [])] };
-        const type = types[i % types.length];
-        if (type === 'true_false') {
-          const makeFalse = i % 5 === 4;
-          const statementAnswer = makeFalse ? q.a[(q.correct + 1) % q.a.length] : q.a[q.correct];
-          q.type = 'true_false';
-          q.answer = makeFalse ? 'false' : 'true';
-          q.q = 'True or false: The answer to “' + q.q.replace(/[?؟]+$/, '') + '” is “' + statementAnswer + '”.';
-          q.a = ['true', 'false'];
-          q.correct = q.answer === 'true' ? 0 : 1;
-        } else if (type === 'short_answer') {
-          q.type = 'short_answer';
-          q.answer = String(q.a[q.correct]).trim();
-          q.q = 'Write the answer: ' + q.q;
-        } else {
-          q.type = 'multiple_choice';
-        }
-        if (q.type === 'multiple_choice') {
-          const correctAnswer = q.a[q.correct];
-          q.a = shuffleArray(q.a);
-          q.correct = q.a.indexOf(correctAnswer);
-        }
-        return q;
+    function createPlayers(count) {
+      return Array.from({ length: count }, (_, index) => ({
+        name: index === 0 ? "Player 1" : `Player ${index + 1}`,
+        score: 0
+      }));
+    }
+
+    function getQuestionSet(subject) {
+      const source = questionBank[subject] || questionBank.Math;
+      return shuffleArray(source).slice(0, 5);
+    }
+
+    function showSection(sectionName) {
+      const sections = ["home", "quizScreen", "resultsScreen"];
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle("hidden", id !== sectionName);
       });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function beginQuiz(subject, questions, source = 'subject') {
-      state.quizSubject = subject;
-      state.quizQuestions = mixQuestionTypes(questions);
-      state.qIndex = 0;
-      state.selected = null;
-      state.answered = false;
-      state.quizScore = 0;
-      showSection('quizScreen');
-      renderQuestion();
+    function setTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+      const toggle = document.getElementById("themeToggle");
+      if (toggle) {
+        toggle.textContent = theme === "dark" ? "☀️" : "🌙";
+      }
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem("learnquest_theme") || "light";
+      setTheme(saved);
+    }
+
+    function updateQuizInfo() {
+      const currentPlayer = state.players[state.currentPlayerIndex];
+      document.getElementById("quizSubject").textContent = (state.subject || "MATH").toUpperCase() + " MISSION";
+      document.getElementById("questionCount").textContent = `Question ${state.currentQuestionIndex + 1} of ${state.questions.length}`;
+      document.getElementById("progressBar").style.width = `${((state.currentQuestionIndex) / state.questions.length) * 100}%`;
+      const turnText = currentPlayer ? `${currentPlayer.name} is playing` : "Ready";
+      document.getElementById("feedback").textContent = turnText;
     }
 
     function renderQuestion() {
-      const q = state.quizQuestions[state.qIndex];
-      if (!q) return;
-      const ar = currentLang() === 'ar';
-      const subjectText = ar ? (arabicUi[state.quizSubject] || state.quizSubject) : state.quizSubject;
-      $('quizSubject').textContent = (subjectText || state.quizSubject).toUpperCase() + ' MISSION';
-      $('questionCount').textContent = ar ? 'السؤال ' + (state.qIndex + 1) + ' من ' + state.quizQuestions.length : 'Question ' + (state.qIndex + 1) + ' of ' + state.quizQuestions.length;
-      $('progressBar').style.width = (state.qIndex / Math.max(1, state.quizQuestions.length)) * 100 + '%';
-      $('feedback').textContent = '';
+      if (!state.questions.length) return;
+      const question = state.questions[state.currentQuestionIndex];
+      const answerContainer = document.getElementById("answers");
+      answerContainer.innerHTML = "";
 
-      const displayQuestion = ar ? (quizArabic[q.baseQ || q.q] || q.q) : (q.q);
-      $('questionText').textContent = displayQuestion;
-      $('answers').innerHTML = '';
-      $('nextQuestion').disabled = true;
-      $('nextQuestion').textContent = ar ? 'تحقق من الإجابة' : 'Check answer';
-
-      if (q.type === 'short_answer') {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'answer-input';
-        input.placeholder = ar ? 'اكتب الإجابة' : 'Type your answer';
-        input.addEventListener('input', () => {
-          state.selected = input.value.trim();
-          $('nextQuestion').disabled = !state.selected;
+      question.a.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "answer";
+        button.textContent = option;
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".answer").forEach((btn) => btn.classList.remove("selected"));
+          button.classList.add("selected");
+          state.selectedAnswer = option;
+          document.getElementById("nextQuestion").disabled = false;
         });
-        $('answers').appendChild(input);
-        return;
-      }
-
-      const options = q.a.map((opt) => ar ? (quizArabic[opt] || opt) : opt);
-      options.forEach((label, index) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'answer';
-        button.textContent = q.type === 'true_false' ? (ar ? (index === 0 ? 'صحيح' : 'خطأ') : (index === 0 ? 'True' : 'False')) : `${String.fromCharCode(65 + index)}. ${label}`;
-        button.addEventListener('click', () => {
-          state.selected = index;
-          document.querySelectorAll('.answer').forEach((btn) => btn.classList.remove('selected'));
-          button.classList.add('selected');
-          $('nextQuestion').disabled = false;
-        });
-        $('answers').appendChild(button);
+        answerContainer.appendChild(button);
       });
+
+      document.getElementById("questionText").textContent = question.q;
+      document.getElementById("nextQuestion").disabled = true;
+      state.selectedAnswer = null;
+      updateQuizInfo();
     }
 
-    function normalizeAnswer(value) {
-      return String(value || '').normalize('NFKC').toLocaleLowerCase().trim().replace(/[.!?؟،,؛;:"'“”‘’]+/g, '').replace(/\s+/g, ' ');
-    }
+    function showResults() {
+      const ranked = [...state.players].sort((a, b) => b.score - a.score);
+      const resultsList = document.getElementById("resultsList");
+      resultsList.innerHTML = "";
 
-    function checkAnswer() {
-      if (!state.answered) {
-        if (state.selected === null || String(state.selected).trim() === '') return;
-        state.answered = true;
-        const q = state.quizQuestions[state.qIndex];
-        const correct = q.type === 'short_answer'
-          ? normalizeAnswer(state.selected) === normalizeAnswer(q.answer)
-          : Number(state.selected) === Number(q.correct);
+      ranked.forEach((player, index) => {
+        const row = document.createElement("div");
+        row.className = "result-row" + (index === 0 ? " winner" : "");
+        row.innerHTML = `<span>${index === 0 ? "🏆 " : ""}${player.name}</span><span>${player.score} pts</span>`;
+        resultsList.appendChild(row);
+      });
 
-        document.querySelectorAll('.answer').forEach((button, i) => {
-          button.disabled = true;
-          if (q.type !== 'short_answer' && i === q.correct) button.classList.add('correct');
-          if (q.type !== 'short_answer' && i === Number(state.selected) && !correct) button.classList.add('wrong');
-          if (q.type !== 'short_answer' && i === Number(state.selected) && correct) button.classList.add('selected');
-        });
-
-        const input = $('writtenAnswer');
-        if (input) {
-          input.disabled = true;
-        }
-
-        const ar = currentLang() === 'ar';
-        if (correct) {
-          state.quizScore += 1;
-          $('feedback').textContent = (ar ? '🎉 إجابة صحيحة! ' : '🎉 Correct! ') + (ar ? (quizArabic[q.why] || q.why) : q.why);
-        } else {
-          const answer = q.type === 'short_answer' ? q.answer : q.a[q.correct];
-          $('feedback').textContent = (ar ? '💡 ليس تماماً. الإجابة الصحيحة هي ' : '💡 Not quite. The answer is ') + (ar ? (quizArabic[answer] || answer) : answer) + '. ' + (ar ? (quizArabic[q.why] || q.why) : q.why);
-        }
-        $('nextQuestion').textContent = state.qIndex === state.quizQuestions.length - 1 ? (ar ? 'عرض النتيجة' : 'See results') : (ar ? 'السؤال التالي' : 'Next question');
-        $('nextQuestion').disabled = false;
-        $('progressBar').style.width = ((state.qIndex + 1) / Math.max(1, state.quizQuestions.length)) * 100 + '%';
-      } else {
-        state.qIndex += 1;
-        if (state.qIndex < state.quizQuestions.length) {
-          state.answered = false;
-          state.selected = null;
-          renderQuestion();
-        } else {
-          finishQuiz();
-        }
-      }
+      showSection("resultsScreen");
     }
 
     function finishQuiz() {
-      const ar = currentLang() === 'ar';
-      const summary = ar ? 'النتيجة: ' + state.quizScore + ' من ' + state.quizQuestions.length : 'Score: ' + state.quizScore + ' / ' + state.quizQuestions.length;
-      $('feedback').textContent = summary;
-      $('nextQuestion').textContent = ar ? 'العودة' : 'Back';
-      $('nextQuestion').disabled = false;
-      if (state.currentUser) {
-        state.currentUser.points = (state.currentUser.points || 0) + state.quizScore * 10;
-        state.currentUser.quizzes = (state.currentUser.quizzes || 0) + 1;
-        state.currentUser.streak = (state.currentUser.streak || 0) + 1;
-        state.currentUser.stars = (state.currentUser.stars || 0) + state.quizScore;
-        const users = getUsers();
-        users[state.currentUser.username.toLowerCase()] = state.currentUser;
-        saveUsers(users);
-        localStorage.setItem(sessionKey, state.currentUser.username);
-        renderDashboard();
-      }
-      $('nextQuestion').onclick = () => {
-        if (state.currentUser) {
-          renderDashboard();
-          showSection('dashboard');
-        } else {
-          showSection('home');
+      showResults();
+    }
+
+    function checkAnswer() {
+      if (state.selectedAnswer === null) return;
+      const currentQuestion = state.questions[state.currentQuestionIndex];
+      const currentPlayer = state.players[state.currentPlayerIndex];
+      const correctAnswer = currentQuestion.a[currentQuestion.correct];
+      const isCorrect = state.selectedAnswer === correctAnswer;
+      const feedback = document.getElementById("feedback");
+      const buttons = document.querySelectorAll(".answer");
+
+      buttons.forEach((button) => {
+        const text = button.textContent;
+        if (text === correctAnswer) {
+          button.classList.add("correct");
+        } else if (text === state.selectedAnswer && !isCorrect) {
+          button.classList.add("wrong");
         }
-      };
-    }
+      });
 
-    function makeCustomQuiz() {
-      const topic = ($('topic').value || 'General Knowledge').trim() || 'General Knowledge';
-      const difficulty = $('customDifficulty').value;
-      const subject = $('customSubject').value;
-      let custom = questionBank[subject] || questionBank.Math;
-      const lower = topic.toLowerCase();
-      if (/solar system|planet|space/.test(lower)) custom = questionBank.Science;
-      else if (/fraction|math|number|addition|multiply/.test(lower)) custom = questionBank.Math;
-      else if (/verb|english|word|vocab/.test(lower)) custom = questionBank.English;
-      else if (/arabic|letter|language/.test(lower)) custom = questionBank.Arabic;
-      else if (/islam|quran|ramadan|prayer/.test(lower)) custom = questionBank['Islamic Studies'];
-      else if (/country|map|ocean|continent|geo/.test(lower)) custom = questionBank.Geography;
-      const chosen = questionsForDifficulty(subject, custom, difficulty);
-      $('creatorMessage').textContent = (currentLang() === 'ar' ? 'الاختبار جاهز! تم استخدام أسئلة متعلقة بـ ' : 'Quiz ready! This demo used built-in questions related to ') + '"' + topic + '"' + (currentLang() === 'ar' ? '.' : '.');
-      beginQuiz(subject, chosen);
-    }
-
-    function openPremadeDifficulty(subject) {
-      state.pendingPremadeSubject = subject;
-      const label = $('premadeDifficultyLabel');
-      if (label) label.innerHTML = (currentLang() === 'ar' ? 'الصعوبة: ' : 'Difficulty: ') + '<strong>' + (currentLang() === 'ar' ? 'متوسط' : 'Medium') + '</strong>';
-      $('premadeDifficulty').value = '2';
-      $('difficultyTitle').textContent = (currentLang() === 'ar' ? subject + ' — اختر الصعوبة' : subject + ' — choose difficulty');
-      showSection('difficultySetup');
-    }
-
-    function saveSession() {
-      if (state.currentUser) {
-        localStorage.setItem(sessionKey, state.currentUser.username);
-      }
-    }
-
-    function refreshUserData() {
-      const users = getUsers();
-      if (state.currentUser) {
-        users[state.currentUser.username.toLowerCase()] = state.currentUser;
-        saveUsers(users);
-      }
-    }
-
-    document.getElementById('startBtn').onclick = () => {
-      if (state.currentUser) {
-        showSection('dashboard');
+      if (isCorrect) {
+        currentPlayer.score += 10;
+        feedback.textContent = `Correct! ${currentPlayer.name} +10 points`;
       } else {
-        openAuth('register');
+        feedback.textContent = `Wrong. Correct answer: ${correctAnswer}`;
       }
-    };
-    document.getElementById('homeCreatorBtn').onclick = () => {
-      const homeSection = document.getElementById('home');
-      homeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      document.getElementById('topic').focus();
-    };
-    document.getElementById('createBtn').onclick = makeCustomQuiz;
-    document.getElementById('signInTop').onclick = () => openAuth('login');
-    document.getElementById('backHome').onclick = () => showSection('home');
-    document.getElementById('switchAuth').onclick = () => openAuth(state.authMode === 'register' ? 'login' : 'register');
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('language').addEventListener('change', setLanguage);
-    document.getElementById('logout').onclick = () => {
-      state.currentUser = null;
-      localStorage.removeItem(sessionKey);
-      showSection('home');
-      updateTop();
-    };
-    document.getElementById('goCreator').onclick = () => {
-      showSection('home');
-      document.getElementById('topic').focus();
-    };
 
-    document.getElementById('authForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const username = $('username').value.trim();
-      const password = $('password').value;
-      if (!username || password.length < 4) return;
-      const users = getUsers();
-      const key = username.toLowerCase();
-      if (state.authMode === 'register') {
-        const existing = users[key];
-        if (existing) {
-          $('authError').textContent = currentLang() === 'ar' ? 'اسم المستخدم موجود بالفعل.' : 'That username already exists.';
+      document.getElementById("nextQuestion").textContent = state.currentQuestionIndex === state.questions.length - 1 ? "See results" : "Next question";
+      document.getElementById("nextQuestion").disabled = false;
+      document.getElementById("nextQuestion").dataset.state = "review";
+    }
+
+    function advanceQuiz() {
+      const nextButton = document.getElementById("nextQuestion");
+      const stateFlag = nextButton.dataset.state;
+
+      if (stateFlag === "review") {
+        state.currentQuestionIndex += 1;
+        if (state.currentQuestionIndex >= state.questions.length) {
+          finishQuiz();
           return;
         }
-        state.currentUser = { username, password, points: 0, quizzes: 0, streak: 0, stars: 0 };
-        users[key] = state.currentUser;
-      } else {
-        const user = users[key];
-        if (!user || user.password !== password) {
-          $('authError').textContent = currentLang() === 'ar' ? 'بيانات الدخول غير صحيحة.' : 'Wrong username or password.';
-          return;
-        }
-        state.currentUser = user;
+        state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+        nextButton.dataset.state = "idle";
+        nextButton.textContent = "Check answer";
+        renderQuestion();
+        return;
       }
-      saveUsers(users);
-      saveSession();
-      renderDashboard();
-      showSection('dashboard');
-      updateTop();
+
+      if (state.selectedAnswer === null) return;
+      checkAnswer();
+      nextButton.dataset.state = "review";
+      nextButton.textContent = state.currentQuestionIndex === state.questions.length - 1 ? "See results" : "Next question";
+    }
+
+    function startQuiz(subject = "Math") {
+      state.subject = subject;
+      state.players = createPlayers(state.selectedPlayers);
+      state.currentPlayerIndex = 0;
+      state.currentQuestionIndex = 0;
+      state.questions = getQuestionSet(subject);
+      showSection("quizScreen");
+      renderQuestion();
+      document.getElementById("nextQuestion").dataset.state = "idle";
+      document.getElementById("nextQuestion").textContent = "Check answer";
+    }
+
+    function startFromHome() {
+      const selected = document.querySelector(".play-subject[data-subject]")?.dataset?.subject || "Math";
+      startQuiz(selected);
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => startQuiz("Math"));
+    document.getElementById("homeCreatorBtn").addEventListener("click", () => {
+      document.getElementById("topic").focus();
+      window.scrollTo({ top: 500, behavior: "smooth" });
     });
 
-    document.querySelectorAll('.play-subject').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const subject = btn.dataset.subject;
-        if (!state.currentUser) {
-          openAuth('register');
-          return;
-        }
-        openPremadeDifficulty(subject);
+    document.getElementById("createBtn").addEventListener("click", () => {
+      const customSubject = document.getElementById("customSubject").value;
+      const enteredTopic = document.getElementById("topic").value.trim() || customSubject;
+      const difficulty = document.getElementById("customDifficulty").value;
+      const quizSubject = enteredTopic || customSubject;
+      state.subject = quizSubject;
+      const baseQuestions = [
+        { q: `What is 8 + 7?`, a: ["14", "15", "16", "17"], correct: 3 },
+        { q: `Which answer is correct for ${quizSubject}?`, a: ["A", "B", "C", "D"], correct: 1 },
+        { q: `Which is the best choice for ${quizSubject}?`, a: ["Option 1", "Option 2", "Option 3", "Option 4"], correct: 2 },
+        { q: `What is 12 - 5?`, a: ["5", "6", "7", "8"], correct: 2 },
+        { q: `Which answer is closest to ${quizSubject}?`, a: ["1", "2", "3", "4"], correct: 0 }
+      ];
+      const customQuestions = difficulty === "Hard" ? baseQuestions.reverse() : baseQuestions;
+      state.questions = shuffleArray(customQuestions).slice(0, difficulty === "Easy" ? 3 : difficulty === "Hard" ? 5 : 4);
+      state.players = createPlayers(state.selectedPlayers);
+      state.currentPlayerIndex = 0;
+      state.currentQuestionIndex = 0;
+      showSection("quizScreen");
+      renderQuestion();
+      document.getElementById("nextQuestion").dataset.state = "idle";
+      document.getElementById("nextQuestion").textContent = "Check answer";
+    });
+
+    document.getElementById("quitQuiz").addEventListener("click", () => {
+      showSection("home");
+    });
+
+    document.getElementById("playAgainBtn").addEventListener("click", () => {
+      startQuiz(state.subject || "Math");
+    });
+
+    document.getElementById("backHomeBtn").addEventListener("click", () => {
+      showSection("home");
+    });
+
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const next = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      localStorage.setItem("learnquest_theme", next);
+      setTheme(next);
+    });
+
+    document.getElementById("language").addEventListener("change", () => {
+      document.documentElement.lang = document.getElementById("language").value;
+      document.documentElement.dir = document.getElementById("language").value === "ar" ? "rtl" : "ltr";
+      document.body.dir = document.getElementById("language").value === "ar" ? "rtl" : "ltr";
+    });
+
+    document.querySelectorAll(".play-subject").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.subject = button.dataset.subject || "Math";
+        startQuiz(state.subject);
       });
     });
 
-    document.getElementById('startPremadeQuiz').onclick = () => {
-      if (!state.pendingPremadeSubject) return;
-      const difficulty = getDifficultyValue();
-      const questions = questionsForDifficulty(state.pendingPremadeSubject, questionBank[state.pendingPremadeSubject] || questionBank.Math, difficulty);
-      beginQuiz(state.pendingPremadeSubject, questions);
-      $('nextQuestion').onclick = checkAnswer;
-    };
-
-    document.getElementById('cancelPremadeQuiz').onclick = () => showSection(state.currentUser ? 'dashboard' : 'home');
-    document.getElementById('nextQuestion').onclick = checkAnswer;
-    document.getElementById('quitQuiz').onclick = () => showSection(state.currentUser ? 'dashboard' : 'home');
-    document.getElementById('premadeDifficulty').addEventListener('input', () => {
-      const val = Number($('premadeDifficulty').value);
-      const current = { 1: 'Easy', 2: 'Medium', 3: 'Hard' }[val];
-      const label = $('premadeDifficultyLabel');
-      label.innerHTML = (currentLang() === 'ar' ? 'الصعوبة: ' : 'Difficulty: ') + '<strong>' + (currentLang() === 'ar' ? (current === 'Easy' ? 'سهل' : current === 'Medium' ? 'متوسط' : 'صعب') : current) + '</strong>';
+    document.querySelectorAll(".mode-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.selectedPlayers = Number(button.dataset.players) || 1;
+        document.querySelectorAll(".mode-btn").forEach((b) => b.classList.toggle("active", b === button));
+      });
     });
 
-    const saved = localStorage.getItem(sessionKey);
-    if (saved) {
-      const found = getUsers()[saved.toLowerCase()];
-      if (found) {
-        state.currentUser = found;
+    document.getElementById("nextQuestion").addEventListener("click", () => {
+      const nextButton = document.getElementById("nextQuestion");
+      if (nextButton.dataset.state === "review") {
+        state.currentQuestionIndex += 1;
+        if (state.currentQuestionIndex >= state.questions.length) {
+          finishQuiz();
+          return;
+        }
+        state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+        nextButton.dataset.state = "idle";
+        nextButton.textContent = "Check answer";
+        renderQuestion();
+        return;
       }
-    }
 
-    applyTheme(localStorage.getItem('learnquest_theme') || 'light');
-    setLanguage();
-    renderDashboard();
-    updateTop();
+      if (!state.selectedAnswer) return;
+      const currentQuestion = state.questions[state.currentQuestionIndex];
+      const currentPlayer = state.players[state.currentPlayerIndex];
+      const correctAnswer = currentQuestion.a[currentQuestion.correct];
+      const buttons = document.querySelectorAll(".answer");
+      buttons.forEach((button) => {
+        const text = button.textContent;
+        if (text === correctAnswer) button.classList.add("correct");
+        else if (text === state.selectedAnswer) button.classList.add("wrong");
+      });
+
+      if (state.selectedAnswer === correctAnswer) {
+        currentPlayer.score += 10;
+        document.getElementById("feedback").textContent = `Correct! ${currentPlayer.name} +10 points`;
+      } else {
+        document.getElementById("feedback").textContent = `Wrong. Correct answer: ${correctAnswer}`;
+      }
+
+      nextButton.dataset.state = "review";
+      nextButton.textContent = state.currentQuestionIndex === state.questions.length - 1 ? "See results" : "Next question";
+      nextButton.disabled = false;
+    });
+
+    document.getElementById("aiTutorBtn").addEventListener("click", () => {
+      document.getElementById("aiTutorPanel").classList.toggle("hidden");
+    });
+
+    document.getElementById("closeAiPanel").addEventListener("click", () => {
+      document.getElementById("aiTutorPanel").classList.add("hidden");
+    });
+
+    document.getElementById("askAiBtn").addEventListener("click", async () => {
+      const prompt = document.getElementById("aiPrompt").value.trim();
+      const answerBox = document.getElementById("aiAnswer");
+      if (!prompt) {
+        answerBox.textContent = "Type a question first.";
+        return;
+      }
+
+      answerBox.textContent = "Thinking...";
+      try {
+        const response = await fetch(AI_BACKEND_URL + "/api/ai-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: prompt,
+            profile: {
+              name: "Student",
+              grade: 5,
+              language: "en",
+              weakAreas: ["fractions", "multiplication"],
+              strengths: ["science"],
+              learningStyle: "simple explanations"
+            }
+          })
+        });
+
+        const data = await response.json();
+        answerBox.textContent = data.answer || "No answer returned.";
+      } catch (error) {
+        console.error(error);
+        answerBox.textContent = "The AI tutor is unavailable right now. Please try again.";
+      }
+    });
+
+    initTheme();
+    showSection("home");
   </script>
 </body>
 </html>
-<button id="askAiBtn">Ask AI</button>
- <script src="config.js"></script>
-<script>
-  const AI_BACKEND_URL = window.AI_BACKEND_URL;
-</script>
