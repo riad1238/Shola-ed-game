@@ -319,6 +319,7 @@ $("authForm").addEventListener("submit",e=>{e.preventDefault();const username=$(
 $("logout").onclick=()=>{currentUser=null;localStorage.removeItem(sessionKey);showSection("home")};
 $("goCreator").onclick=()=>{showSection("home");$("topic").focus();window.scrollTo({top:document.querySelector("#topic").getBoundingClientRect().top+window.scrollY-80,behavior:"smooth"})};
 $("createBtn").onclick=makeCustomQuiz;
+document.querySelectorAll(".premade-difficulty").forEach(slider=>slider.addEventListener("input",()=>{const value=({1:"Easy",2:"Medium",3:"Hard"})[Number(slider.value)];document.querySelectorAll(".premade-difficulty").forEach(other=>{other.value=slider.value});document.querySelectorAll(".premade-difficulty-label").forEach(label=>label.textContent=value)}));
 $("language").addEventListener("change",setLanguage);setLanguage();
 $("nextQuestion").onclick=checkAnswer;
 $("quitQuiz").onclick=()=>{if(currentUser){updateDashboard();showSection("dashboard")}else showSection("home")};
