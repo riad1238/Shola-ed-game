@@ -318,8 +318,8 @@
         <div class="byline">Made by Riad Tabbakha · 5-B</div>
       </div>
       <div class="top-actions">
-        <label for="language" class="muted" style="font-weight:700;">Language / اللغة</label>
-        <select id="language">
+        <label for="language" class="muted" style="font-weight:700;" data-i18n="languageLabel">Language / اللغة</label>
+        <select id="language" aria-label="Language selector">
           <option value="en">English</option>
           <option value="ar">العربية</option>
         </select>
@@ -330,13 +330,13 @@
     <section id="home">
       <div class="hero">
         <div>
-          <div class="eyebrow">Play • Practice • Progress</div>
-          <h1>Big learning.<br>Small games.</h1>
-          <p>Explore school subjects, challenge yourself with quick quizzes, and get help from an AI tutor.</p>
+          <div class="eyebrow" data-i18n="heroEyebrow">Play • Practice • Progress</div>
+          <h1 id="heroTitle" data-i18n="heroTitle">Big learning.<br>Small games.</h1>
+          <p data-i18n="heroText">Explore school subjects, challenge yourself with quick quizzes, and get help from an AI tutor.</p>
           <div class="hero-actions">
-            <button class="primary" id="startBtn">Start learning →</button>
-            <button class="secondary" id="homeCreatorBtn">Create quiz</button>
-            <button class="primary ai-btn" id="aiTutorBtn">🤖 Ask AI Tutor</button>
+            <button class="primary" id="startBtn" data-i18n="startBtn">Start learning →</button>
+            <button class="secondary" id="homeCreatorBtn" data-i18n="homeCreatorBtn">Create quiz</button>
+            <button class="primary ai-btn" id="aiTutorBtn" data-i18n="aiTutorBtn">🤖 Ask AI Tutor</button>
           </div>
         </div>
         <div class="hero-art" aria-hidden="true">🧠🎮</div>
@@ -344,56 +344,56 @@
 
       <div class="section-title">
         <div>
-          <h2>Choose your adventure</h2>
-          <p>Pick a subject and start a quiz.</p>
+          <h2 data-i18n="chooseAdventureTitle">Choose your adventure</h2>
+          <p data-i18n="chooseAdventureSubtitle">Pick a subject and start a quiz.</p>
         </div>
-        <span class="pill">Made for curious minds</span>
+        <span class="pill" data-i18n="curiousMindPill">Made for curious minds</span>
       </div>
 
       <div class="cards">
         <article class="card">
           <div class="subject-icon">🔢</div>
-          <h3>Math Mission</h3>
-          <p>Practice numbers, arithmetic, and problem-solving.</p>
-          <button class="primary play-subject" data-subject="Math">Play</button>
+          <h3 data-i18n="mathTitle">Math Mission</h3>
+          <p data-i18n="mathText">Practice numbers, arithmetic, and problem-solving.</p>
+          <button class="primary play-subject" data-subject="Math" data-i18n="playBtn">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">🧪</div>
-          <h3>Science Squad</h3>
-          <p>Explore nature, space, energy, and the human body.</p>
-          <button class="primary play-subject" data-subject="Science">Play</button>
+          <h3 data-i18n="scienceTitle">Science Squad</h3>
+          <p data-i18n="scienceText">Explore nature, space, energy, and the human body.</p>
+          <button class="primary play-subject" data-subject="Science" data-i18n="playBtn">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">📚</div>
-          <h3>Word Wizard</h3>
-          <p>Build vocabulary and practice English skills.</p>
-          <button class="primary play-subject" data-subject="English">Play</button>
+          <h3 data-i18n="englishTitle">Word Wizard</h3>
+          <p data-i18n="englishText">Build vocabulary and practice English skills.</p>
+          <button class="primary play-subject" data-subject="English" data-i18n="playBtn">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">🔤</div>
-          <h3>Arabic Adventures</h3>
-          <p>Practice Arabic letters, words, and language skills.</p>
-          <button class="primary play-subject" data-subject="Arabic">Play</button>
+          <h3 data-i18n="arabicTitle">Arabic Adventures</h3>
+          <p data-i18n="arabicText">Practice Arabic letters, words, and language skills.</p>
+          <button class="primary play-subject" data-subject="Arabic" data-i18n="playBtn">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">🕌</div>
-          <h3>Islamic Studies</h3>
-          <p>Learn about Islamic values and knowledge.</p>
-          <button class="primary play-subject" data-subject="Islamic Studies">Play</button>
+          <h3 data-i18n="islamicTitle">Islamic Studies</h3>
+          <p data-i18n="islamicText">Learn about Islamic values and knowledge.</p>
+          <button class="primary play-subject" data-subject="Islamic Studies" data-i18n="playBtn">Play</button>
         </article>
         <article class="card">
           <div class="subject-icon">🌍</div>
-          <h3>Geography Explorer</h3>
-          <p>Explore countries, maps, continents, and oceans.</p>
-          <button class="primary play-subject" data-subject="Geography">Play</button>
+          <h3 data-i18n="geographyTitle">Geography Explorer</h3>
+          <p data-i18n="geographyText">Explore countries, maps, continents, and oceans.</p>
+          <button class="primary play-subject" data-subject="Geography" data-i18n="playBtn">Play</button>
         </article>
       </div>
 
       <div class="mode-panel panel">
         <div class="section-title">
           <div>
-            <h2>Choose game mode</h2>
-            <p>Play solo or with friends.</p>
+            <h2 data-i18n="modeTitle">Choose game mode</h2>
+            <p data-i18n="modeSubtitle">Play solo or with friends.</p>
           </div>
         </div>
         <div class="mode-buttons">
@@ -406,20 +406,20 @@
 
       <div class="section-title">
         <div>
-          <h2>AI Game Creator</h2>
-          <p>Make a new practice quiz for any topic.</p>
+          <h2 data-i18n="creatorTitle">AI Game Creator</h2>
+          <p data-i18n="creatorSubtitle">Make a new practice quiz for any topic.</p>
         </div>
-        <span class="pill">Question generator</span>
+        <span class="pill" data-i18n="creatorPill">Question generator</span>
       </div>
 
       <div class="panel creator-layout">
         <div>
           <div class="field">
-            <label for="topic">Quiz topic</label>
+            <label for="topic" data-i18n="topicLabel">Quiz topic</label>
             <input id="topic" placeholder="e.g. planets, fractions, verbs" maxlength="80" value="The solar system" />
           </div>
           <div class="field">
-            <label for="customSubject">Subject</label>
+            <label for="customSubject" data-i18n="subjectLabel">Subject</label>
             <select id="customSubject">
               <option>Science</option>
               <option>Math</option>
@@ -429,14 +429,14 @@
               <option>Geography</option>
             </select>
           </div>
-          <button class="primary" id="createBtn">✨ Create my quiz</button>
+          <button class="primary" id="createBtn" data-i18n="createQuizBtn">✨ Create my quiz</button>
         </div>
 
         <aside class="panel" style="padding:20px;">
-          <h3>⚙️ Game settings</h3>
-          <p class="muted">Set your school grade and challenge level.</p>
+          <h3 data-i18n="settingsTitle">⚙️ Game settings</h3>
+          <p class="muted" data-i18n="settingsText">Set your school grade and challenge level.</p>
           <div class="field">
-            <label for="grade">My grade</label>
+            <label for="grade" data-i18n="gradeLabel">My grade</label>
             <select id="grade">
               <option>Grade 1</option>
               <option>Grade 2</option>
@@ -447,7 +447,7 @@
             </select>
           </div>
           <div class="field">
-            <label for="customDifficulty">Custom quiz difficulty</label>
+            <label for="customDifficulty" data-i18n="difficultyLabel">Custom quiz difficulty</label>
             <select id="customDifficulty">
               <option>Easy</option>
               <option selected>Medium</option>
@@ -471,8 +471,8 @@
         <div class="answers" id="answers"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
         <div class="quiz-actions">
-          <button class="light" id="quitQuiz">Exit quiz</button>
-          <button class="primary" id="nextQuestion" disabled>Check answer</button>
+          <button class="light" id="quitQuiz" data-i18n="quitQuizBtn">Exit quiz</button>
+          <button class="primary" id="nextQuestion" disabled data-i18n="checkAnswerBtn">Check answer</button>
         </div>
       </div>
     </section>
@@ -480,50 +480,163 @@
     <section id="resultsScreen" class="results hidden">
       <div class="panel">
         <div class="results-head">
-          <span class="pill">Game Results</span>
-          <h2>Quiz complete!</h2>
+          <span class="pill" data-i18n="resultsBadge">Game Results</span>
+          <h2 data-i18n="resultsTitle">Quiz complete!</h2>
         </div>
         <div id="resultsList" class="results-list"></div>
         <div class="results-actions">
-          <button class="primary" id="playAgainBtn">Play again</button>
-          <button class="secondary" id="backHomeBtn">Back to home</button>
+          <button class="primary" id="playAgainBtn" data-i18n="playAgainBtn">Play again</button>
+          <button class="secondary" id="backHomeBtn" data-i18n="backHomeBtn">Back to home</button>
         </div>
       </div>
     </section>
 
-    <footer class="footer">LearnQuest AI • Learn something new every day 🌈</footer>
+    <footer class="footer" data-i18n="footerText">LearnQuest AI • Learn something new every day 🌈</footer>
   </div>
 
   <div id="aiTutorPanel" class="ai-panel hidden">
     <div class="ai-header">
       <div>
-        <span class="pill">AI TUTOR</span>
-        <h3>Ask a question</h3>
+        <span class="pill" data-i18n="aiTutorBadge">AI TUTOR</span>
+        <h3 data-i18n="aiTutorTitle">Ask a question</h3>
       </div>
       <button id="closeAiPanel" class="close-btn" aria-label="Close AI tutor">✕</button>
     </div>
 
     <textarea id="aiPrompt" placeholder="Ask me something like: explain fractions, help with science, or give a math tip..."></textarea>
-    <button id="askAiBtn" class="primary full-width">Ask AI</button>
-    <div id="aiAnswer" class="ai-answer">Your answer will appear here.</div>
+    <button id="askAiBtn" class="primary full-width" data-i18n="askAiBtnPrimary">Ask AI</button>
+    <div id="aiAnswer" class="ai-answer" data-i18n="aiAnswerPlaceholder">Your answer will appear here.</div>
   </div>
 
   <div id="startChoiceModal" class="start-choice hidden">
     <div class="start-choice-panel">
-      <span class="pill">Game setup</span>
-      <h3>How many players?</h3>
+      <span class="pill" data-i18n="startChoiceBadge">Game setup</span>
+      <h3 data-i18n="startChoiceTitle">How many players?</h3>
       <div class="start-choice-grid">
-        <button class="start-choice-option active" data-players="1">1 Player</button>
-        <button class="start-choice-option" data-players="2">2 Players</button>
-        <button class="start-choice-option" data-players="3">3 Players</button>
-        <button class="start-choice-option" data-players="4">4 Players</button>
+        <button class="start-choice-option active" data-players="1" data-i18n="playerCount1">1 Player</button>
+        <button class="start-choice-option" data-players="2" data-i18n="playerCount2">2 Players</button>
+        <button class="start-choice-option" data-players="3" data-i18n="playerCount3">3 Players</button>
+        <button class="start-choice-option" data-players="4" data-i18n="playerCount4">4 Players</button>
       </div>
-      <button id="confirmPlayersBtn" class="primary full-width">Start quiz</button>
+      <button id="confirmPlayersBtn" class="primary full-width" data-i18n="confirmPlayersBtn">Start quiz</button>
     </div>
   </div>
 
   <script>
     const AI_BACKEND_URL = window.AI_BACKEND_URL || "https://rt-ai-bk.onrender.com";
+
+    const translations = {
+      en: {
+        languageLabel: 'Language / اللغة',
+        heroEyebrow: 'Play • Practice • Progress',
+        heroTitle: 'Big learning.<br>Small games.',
+        heroText: 'Explore school subjects, challenge yourself with quick quizzes, and get help from an AI tutor.',
+        startBtn: 'Start learning →',
+        homeCreatorBtn: 'Create quiz',
+        aiTutorBtn: '🤖 Ask AI Tutor',
+        chooseAdventureTitle: 'Choose your adventure',
+        chooseAdventureSubtitle: 'Pick a subject and start a quiz.',
+        curiousMindPill: 'Made for curious minds',
+        playBtn: 'Play',
+        modeTitle: 'Choose game mode',
+        modeSubtitle: 'Play solo or with friends.',
+        creatorTitle: 'AI Game Creator',
+        creatorSubtitle: 'Make a new practice quiz for any topic.',
+        creatorPill: 'Question generator',
+        topicLabel: 'Quiz topic',
+        subjectLabel: 'Subject',
+        createQuizBtn: '✨ Create my quiz',
+        settingsTitle: '⚙️ Game settings',
+        settingsText: 'Set your school grade and challenge level.',
+        gradeLabel: 'My grade',
+        difficultyLabel: 'Custom quiz difficulty',
+        quitQuizBtn: 'Exit quiz',
+        checkAnswerBtn: 'Check answer',
+        resultsBadge: 'Game Results',
+        resultsTitle: 'Quiz complete!',
+        playAgainBtn: 'Play again',
+        backHomeBtn: 'Back to home',
+        footerText: 'LearnQuest AI • Learn something new every day 🌈',
+        aiTutorBadge: 'AI TUTOR',
+        aiTutorTitle: 'Ask a question',
+        askAiBtnPrimary: 'Ask AI',
+        aiAnswerPlaceholder: 'Your answer will appear here.',
+        startChoiceBadge: 'Game setup',
+        startChoiceTitle: 'How many players?',
+        playerCount1: '1 Player',
+        playerCount2: '2 Players',
+        playerCount3: '3 Players',
+        playerCount4: '4 Players',
+        confirmPlayersBtn: 'Start quiz',
+        mathTitle: 'Math Mission',
+        mathText: 'Practice numbers, arithmetic, and problem-solving.',
+        scienceTitle: 'Science Squad',
+        scienceText: 'Explore nature, space, energy, and the human body.',
+        englishTitle: 'Word Wizard',
+        englishText: 'Build vocabulary and practice English skills.',
+        arabicTitle: 'Arabic Adventures',
+        arabicText: 'Practice Arabic letters, words, and language skills.',
+        islamicTitle: 'Islamic Studies',
+        islamicText: 'Learn about Islamic values and knowledge.',
+        geographyTitle: 'Geography Explorer',
+        geographyText: 'Explore countries, maps, continents, and oceans.'
+      },
+      ar: {
+        languageLabel: 'اللغة / Language',
+        heroEyebrow: 'اللعب • الممارسة • التقدم',
+        heroTitle: 'تعلّم كبير.<br>ألعاب صغيرة.',
+        heroText: 'استكشف مواد المدرسة، وتحدى نفسك بأسئلة سريعة، واستفد من معلم ذكي.',
+        startBtn: 'ابدأ التعلم →',
+        homeCreatorBtn: 'إنشاء اختبار',
+        aiTutorBtn: '🤖 اسأل المعلم الذكي',
+        chooseAdventureTitle: 'اختر مغامرتك',
+        chooseAdventureSubtitle: 'اختر مادة وابدأ الاختبار.',
+        curiousMindPill: 'مصمم للمستكشفين',
+        playBtn: 'العب',
+        modeTitle: 'اختر نمط اللعبة',
+        modeSubtitle: 'العب وحدك أو مع الأصدقاء.',
+        creatorTitle: 'منشئ الألعاب بالذكاء الاصطناعي',
+        creatorSubtitle: 'أنشئ اختبارًا جديدًا لأي موضوع.',
+        creatorPill: 'مولد الأسئلة',
+        topicLabel: 'موضوع الاختبار',
+        subjectLabel: 'المادة',
+        createQuizBtn: '✨ أنشئ اختباري',
+        settingsTitle: '⚙️ إعدادات اللعبة',
+        settingsText: 'حدد صفك الدراسي ومستوى الصعوبة.',
+        gradeLabel: 'صفّي',
+        difficultyLabel: 'صعوبة الاختبار المخصصة',
+        quitQuizBtn: 'الخروج من الاختبار',
+        checkAnswerBtn: 'تحقق من الإجابة',
+        resultsBadge: 'نتائج اللعبة',
+        resultsTitle: 'اكتمل الاختبار!',
+        playAgainBtn: 'العب مرة أخرى',
+        backHomeBtn: 'العودة للرئيسية',
+        footerText: 'LearnQuest AI • تعلم شيئًا جديدًا كل يوم 🌈',
+        aiTutorBadge: 'المعلم الذكي',
+        aiTutorTitle: 'اسأل سؤالاً',
+        askAiBtnPrimary: 'اسأل الذكاء الاصطناعي',
+        aiAnswerPlaceholder: 'سيظهر جوابك هنا.',
+        startChoiceBadge: 'إعداد اللعبة',
+        startChoiceTitle: 'كم عدد اللاعبين؟',
+        playerCount1: 'لاعب واحد',
+        playerCount2: 'لاعبان',
+        playerCount3: '3 لاعبين',
+        playerCount4: '4 لاعبين',
+        confirmPlayersBtn: 'ابدأ الاختبار',
+        mathTitle: 'مهمة الرياضيات',
+        mathText: 'تمرّن على الأرقام والعمليات وحل المشكلات.',
+        scienceTitle: 'فريق العلوم',
+        scienceText: 'استكشف الطبيعة والفضاء والطاقة والجسم البشري.',
+        englishTitle: 'ساحر الكلمات',
+        englishText: 'طور مفرداتك ومارس مهارات اللغة الإنجليزية.',
+        arabicTitle: 'مغامرات العربية',
+        arabicText: 'تمرّن على الحروف والكلمات ومهارات اللغة العربية.',
+        islamicTitle: 'الدراسات الإسلامية',
+        islamicText: 'تعرف على القيم والمعرفة الإسلامية.',
+        geographyTitle: 'مستكشف الجغرافيا',
+        geographyText: 'استكشف البلدان والخرائط والقارات والمحيطات.'
+      }
+    };
 
     const questionBank = {
       Math: [
@@ -631,6 +744,36 @@
     function initTheme() {
       const saved = localStorage.getItem("learnquest_theme") || "light";
       setTheme(saved);
+    }
+
+    function applyLanguage(language = 'en') {
+      const dict = translations[language] || translations.en;
+      const nodes = document.querySelectorAll('[data-i18n]');
+      nodes.forEach((el) => {
+        const key = el.dataset.i18n;
+        const value = dict[key];
+        if (!value) return;
+        if (el.tagName === 'H1' || el.tagName === 'DIV' || el.tagName === 'SPAN' || el.tagName === 'P' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'BUTTON' || el.tagName === 'LABEL') {
+          if (key === 'heroTitle') {
+            el.innerHTML = value;
+          } else {
+            el.textContent = value;
+          }
+        }
+      });
+
+      const textarea = document.getElementById('aiPrompt');
+      if (textarea) {
+        textarea.placeholder = language === 'ar'
+          ? 'اسألني شيئًا مثل: اشرح الكسور، أو ساعدني في العلوم، أو أعطني نصيحة في الرياضيات...'
+          : 'Ask me something like: explain fractions, help with science, or give a math tip...';
+      }
+
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      document.body.dir = language === 'ar' ? 'rtl' : 'ltr';
+      document.body.setAttribute('dir', language === 'ar' ? 'rtl' : 'ltr');
+      localStorage.setItem('learnquest_language', language);
     }
 
     function updateQuizInfo() {
@@ -765,10 +908,8 @@
       setTheme(next);
     });
 
-    document.getElementById("language").addEventListener("change", () => {
-      document.documentElement.lang = document.getElementById("language").value;
-      document.documentElement.dir = document.getElementById("language").value === "ar" ? "rtl" : "ltr";
-      document.body.dir = document.getElementById("language").value === "ar" ? "rtl" : "ltr";
+    document.getElementById("language").addEventListener("change", (event) => {
+      applyLanguage(event.target.value);
     });
 
     document.querySelectorAll(".play-subject").forEach((button) => {
@@ -865,6 +1006,9 @@
       }
     });
 
+    const savedLanguage = localStorage.getItem('learnquest_language') || 'en';
+    document.getElementById('language').value = savedLanguage;
+    applyLanguage(savedLanguage);
     initTheme();
     showSection("home");
   </script>
