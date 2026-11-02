@@ -1,1296 +1,1023 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LearnQuest | AI Learning Game</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LearnQuest Village Runner</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-    :root {
-      --bg: #d4f0ff;
-      --bg-2: #8ae0ff;
-      --panel: rgba(255,255,255,0.94);
-      --panel-strong: #fff8d8;
-      --ink: #1e2b3a;
-      --muted: #40556d;
-      --primary: #ff5353;
-      --primary-2: #ffb13b;
-      --accent: #2ec97b;
-      --yellow: #ffd84d;
-      --line: #c9a856;
-      --success: #2ea44f;
-      --danger: #df4c4c;
-      --shadow: 0 18px 40px rgba(50, 64, 118, 0.2);
-      --radius: 22px;
-      --grass: #66d84d;
-      --grass-dark: #2d9b3d;
-      --sky: #8ad9ff;
-      --mario-red: #f95050;
-      --mario-blue: #66acff;
-      --mario-yellow: #ffdd57;
-      --mario-green: #67d564;
-      --mario-brown: #b06d36;
-      --pixel-border: 4px solid #5d3d2e;
-    }
-
-    body[data-theme="dark"] {
-      --bg: #0d1220;
-      --bg-2: #151d2d;
-      --panel: rgba(17,24,39,0.96);
-      --panel-strong: #121b2d;
-      --ink: #edf2ff;
-      --muted: #abbbd7;
-      --primary: #ff6b6b;
-      --primary-2: #ffc857;
-      --accent: #59d890;
-      --yellow: #f4d77b;
-      --line: #28314a;
-      --success: #56d39a;
-      --danger: #ff8585;
-      --shadow: 0 22px 48px rgba(3, 7, 18, 0.52);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: "Press Start 2P", monospace;
-      background: linear-gradient(#d9f6ff 0%, #d9f6ff 72%, #7fd879 72%, #66d84d 100%);
-      color: var(--ink);
-      transition: background .25s ease, color .25s ease;
-      image-rendering: pixelated;
-    }
-
-    body[dir="rtl"] { text-align: right; }
-    a, button, input, select, textarea { font: inherit; }
-    button { cursor: pointer; }
-
-    .hidden { display: none !important; }
-    .shell { max-width: 1180px; margin: 0 auto; padding: 18px 18px 50px; }
-
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      background: rgba(255, 255, 255, 0.18);
-      border: 4px solid #8a5a2f;
-      border-radius: 0;
-      padding: 12px 14px; box-shadow: 0 8px 0 rgba(84, 68, 46, 0.35); position: sticky; top: 12px; z-index: 15;
-      backdrop-filter: blur(10px);
-    }
-
-    .brand-stack { display: flex; align-items: center; gap: 16px; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: -0.7px; font-size: clamp(14px, 1.7vw, 22px); }
-    .logo {
-      display: grid; place-items: center; width: 38px; height: 38px; border-radius: 0; border: 3px solid rgba(99,58,14,.4);
-      background: linear-gradient(135deg, var(--yellow), var(--primary));
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,.2); transform: rotate(-5deg);
-      font-size: 20px;
-    }
-    .tag {
-      display: inline-block; padding: 6px 8px; border-radius: 0; font-size: 9px; background: rgba(255,255,255,.15); color: #265481; border: 3px solid #d1a64a; line-height: 1.4;
-    }
-    .byline { color: #1a4056; font-size: 10px; }
-    .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-    .muted { color: var(--muted); }
-    select, input, textarea {
-      width: 100%; border: 3px solid var(--line); border-radius: 0; padding: 10px 12px; background: rgba(255,255,255,0.7); color: var(--ink); min-height: 44px; font-size: 12px;
-    }
-    textarea { resize: vertical; }
-
-    .secondary, .light, .primary {
-      border: 4px solid #7a4f2b; border-radius: 0; padding: 12px 16px; font-weight: 700; font-size: 12px; box-shadow: 0 6px 0 rgba(75, 52, 36, 0.45);
-      transition: transform .15s ease, opacity .15s ease, border-color .15s ease;
-    }
-    .secondary:hover, .light:hover, .primary:hover { transform: translateY(-1px); }
-    .primary {
-      background: linear-gradient(180deg, var(--primary), #d94343); border-color: #7d2d2d; color: white; text-shadow: 2px 2px 0 rgba(0,0,0,.2);
-    }
-    .secondary, .light {
-      background: linear-gradient(180deg, #f7f1d8, #ebdca9); color: #15354c; border-color: #7d6735;
-    }
-    .theme-toggle {
-      min-width: 48px; padding-inline: 10px; font-size: 20px; background: rgba(255,255,255,.6); color: var(--ink); border-color: #7d6735; box-shadow: none;
-    }
-
-    .hero {
-      margin-top: 20px; display: grid; grid-template-columns: 1.3fr .7fr; align-items: center; gap: 22px;
-      background: linear-gradient(#7ae1ff 0%, #98ecff 65%, #c1f1ff 65%, #d6f8ff 100%); color: white; border: 8px solid #d7b75a; border-radius: 0; padding: clamp(24px,5vw,56px); box-shadow: 0 10px 0 rgba(130,96,40,.4); overflow: hidden; position: relative; min-height: 370px;
-    }
-    .hero::before {
-      content: ""; position: absolute; inset: auto auto 0 0; width: 100%; height: 64px; background: linear-gradient(#84dc5c, #63c652); border-top: 6px solid #4ea640;
-    }
-    .hero::after {
-      content: ""; position: absolute; inset: auto auto -20px -30px; width: 260px; height: 260px; border-radius: 50%; border: 6px solid rgba(255,255,255,.32); pointer-events: none;
-    }
-    .eyebrow {
-      display: inline-block; padding: 8px 12px; border-radius: 0; background: rgba(255,255,255,.15); border: 4px solid rgba(255,255,255,.4); font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #17476a;
-    }
-    .hero h1 {
-      position: relative; z-index: 2; font-size: clamp(26px, 4vw, 72px); letter-spacing: -0.08em; margin: 12px 0 18px; line-height: 1.1; color: transparent; text-transform: uppercase;
-      text-shadow: 0 0 0 transparent;
-    }
-    .hero h1::before {
-      content: "SUPER\A MARIO WORLD"; white-space: pre; display: block; font-size: inherit; line-height: 0.9; letter-spacing: -0.06em; background: linear-gradient(180deg, #f7f7f7 0%, #f7f7f7 10%, #b2ffff 10%, #7bff9c 28%, #ff5e5e 28%, #ffcb4a 53%, #5bb9ff 53%, #6bf08d 84%, #ff9595 84%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 4px 4px 0 rgba(23, 53, 92, 0.4);
-    }
-
-    .hero p {
-      position: relative; z-index: 2; color: rgba(20, 26, 55, 0.9); font-size: 12px; max-width: 560px; line-height: 1.8; text-shadow: 0 2px 0 rgba(255,255,255,.2);
-    }
-    .hero-actions {
-      position: relative; z-index: 2; display: flex; gap: 16px; flex-wrap: wrap; justify-content: flex-start; margin-top: 18px; width: 100%;
-    }
-    .hero-actions .primary,
-    .hero-actions .secondary {
-      min-height: 54px;
-      font-size: 11px;
-    }
-    .hero-actions .primary {
-      background: linear-gradient(180deg, var(--yellow), #e7ca2d); color: #1c2d45; border-color: #5a4a11;
-    }
-    .hero .secondary { background: linear-gradient(180deg, #f6f0d9, #d9d3ba); border-color: #5b4b3e; color: #20405d; }
-    .hero-art {
-      position: relative; z-index: 2; display: grid; place-items: center; height: 250px; background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(10,32,54,.04)); border: 4px solid rgba(34, 72, 83, 0.4); font-size: clamp(60px,9vw,110px); box-shadow: inset 0 0 0 4px rgba(255,255,255,.08); animation: float 4s ease-in-out infinite; overflow: hidden;
-    }
-    .hero-art::before {
-      content: "🌳"; position: absolute; left: 18px; bottom: 48px; font-size: 48px; filter: drop-shadow(0 6px 0 rgba(0,0,0,.12));
-    }
-    .hero-art::after {
-      content: "🌳"; position: absolute; right: 24px; bottom: 50px; font-size: 54px; filter: drop-shadow(0 6px 0 rgba(0,0,0,.12));
-    }
-    @keyframes float { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-
-    .section-title {
-      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 34px 0 20px;
-    }
-    .section-title h2 { margin: 0; font-size: clamp(18px,2vw,30px); letter-spacing: -.05em; }
-    .section-title p { margin: 4px 0 0; color: var(--muted); font-size: 10px; line-height: 1.7; }
-    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 0; background: rgba(255,250,214,.6); color: #1d3950; border: 4px solid #d3b159; font-size: 9px; }
-
-    .cards { display: grid; grid-template-columns: repeat(3, minmax(220px,1fr)); gap: 18px; }
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,248,216,.9)); border: 4px solid #c8973c; border-radius: 0; padding: 22px; box-shadow: 0 7px 0 rgba(78,72,42,0.30); position: relative; overflow: hidden;
-    }
-    .card::before {
-      content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: linear-gradient(90deg, var(--primary), var(--primary-2), var(--accent));
-      opacity: 0.9;
-    }
-    .subject-icon { width: 72px; height: 72px; display: grid; place-items: center; border-radius: 0; font-size: 38px; background: rgba(80,185,255,.14); border: 3px solid rgba(109,155,194,.28); }
-    .card h3 { margin: 14px 0 8px; font-size: 17px; letter-spacing: -0.04em; }
-    .card p { margin: 0 0 16px; color: var(--muted); min-height: 46px; font-size: 10px; line-height: 1.7; }
-    .card button { width: 100%; }
-
-    .panel {
-      background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,248,216,.82)); border: 4px solid #d7b75a; border-radius: 0; box-shadow: 0 8px 0 rgba(78,72,42,0.35); padding: 26px;
-    }
-    .creator-layout { display: grid; grid-template-columns: 1.2fr .8fr; gap: 22px; }
-    .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-    .field label { font-weight: 700; font-size: 11px; }
-    .notice {
-      background: rgba(255,225,138,.18); border: 1px solid rgba(255,225,138,.45); border-radius: 16px; color: var(--ink);
-      padding: 14px 16px; margin: 12px 0 18px;
-    }
-
-    .quiz { max-width: 860px; margin: 30px auto 0; }
-    .quiz .panel { padding: clamp(22px,4vw,36px); }
-    .quiz-top {
-      display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; font-weight: 800;
-    }
-    .progress { width: 100%; height: 12px; border-radius: 0; background: rgba(101,88,232,.12); overflow: hidden; margin: 18px 0 20px; border: 3px solid #6d8da7; }
-    .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #ff6a58, #ffcf3a, #60d45a); border-radius: 0; }
-    .question { margin: 0 0 18px; font-size: clamp(24px,3vw,42px); line-height: 1.3; letter-spacing: -0.05em; }
-    .answers { display: grid; gap: 12px; }
-    .answer {
-      background: rgba(255,255,255,.8); color: var(--ink); border: 3px solid #7a8fb0; border-radius: 0; padding: 18px 16px; text-align: left; font-size: 12px; font-weight: 700; transition: .15s ease; width: 100%;
-    }
-    body[dir="rtl"] .answer { text-align: right; }
-    .answer.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,83,83,.15); }
-    .answer.correct { background: rgba(47,174,121,.14); border-color: var(--success); }
-    .answer.wrong { background: rgba(234,109,109,.12); border-color: var(--danger); }
-    .feedback { min-height: 28px; margin: 20px 0 12px; color: var(--muted); font-weight: 700; font-size: 10px; line-height:1.8; }
-    .quiz-actions { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
-
-    .mode-panel { margin-top: 26px; }
-    .mode-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
-    .mode-btn {
-      background: linear-gradient(180deg, #f9f6d0, #e7d892); border: 4px solid #7d633f; color: #1d2d44; font-weight: 800; border-radius: 0; padding: 12px 18px; cursor: pointer; transition: .2s ease; font-size: 12px;
-    }
-    .mode-btn.active {
-      background: linear-gradient(180deg, #ff7a59, #ffcb3a); color: #1d2d44; border-color: #7d2d2d; box-shadow: 0 6px 0 rgba(115,54,38,.32);
-    }
-
-    .character-choice {
-      position: fixed; inset: 0; background: rgba(15,23,42,.7); display: grid; place-items: center; z-index: 80; padding: 20px;
-    }
-    .character-panel {
-      width: min(760px, 100%); background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,247,211,.82)); border: 6px solid #d9b75c; border-radius: 0; box-shadow: 0 10px 0 rgba(95,72,36,.35); padding: 26px;
-    }
-    .character-grid {
-      display: grid; grid-template-columns: repeat(2, minmax(200px, 1fr)); gap: 16px; margin-top: 18px;
-    }
-    .character-card {
-      background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(244,234,194,.95)); border: 4px solid #8cafc3; border-radius: 0; padding: 18px 16px; text-align: left; transition: .2s ease; box-shadow: 0 6px 0 rgba(87, 92, 102, 0.2);
-    }
-    body[dir="rtl"] .character-card { text-align: right; }
-    .character-card.active {
-      border-color: #f15858; background: linear-gradient(180deg, rgba(255,226,141,.6), rgba(255,121,121,.18));
-      box-shadow: 0 0 0 3px rgba(241,88,88,.14), 0 6px 0 rgba(107, 52, 52, 0.15);
-    }
-    .character-avatar { font-size: 3rem; margin-bottom: 10px; }
-    .character-card h4 { margin: 0 0 8px; font-size: 18px; }
-    .character-card p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.7; }
-
-    .village-panel { margin-top: 28px; }
-    .village-story-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 18px;
-    }
-    .village-story-card {
-      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(226,255,196,.76));
-      border: 4px solid #95c56a; border-radius: 0; padding: 18px 14px; color: var(--ink); font-weight: 800; text-align: left; min-height: 110px; transition: .2s ease; box-shadow: 0 6px 0 rgba(64, 118, 66, 0.25);
-    }
-    body[dir="rtl"] .village-story-card { text-align: right; }
-    .village-story-card:hover { transform: translateY(-2px); }
-    .village-story-card strong { display: block; font-size: 13px; margin-bottom: 8px; }
-    .village-story-card span { color: var(--muted); font-size: 9px; }
-    .village-story-card.active {
-      background: linear-gradient(180deg, #ffdf76, #ffb843); border-color: #d96041; color: #17314d; box-shadow: 0 8px 0 rgba(138,72,53,.25);
-    }
-    .village-story-card.active span { color: rgba(15, 27, 49, 0.8); }
-
-    .level-map {
-      display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: 16px; margin-top: 18px;
-    }
-    .level-box {
-      background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(212,244,255,.82)); border: 4px solid #9da9c0; border-radius: 0; padding: 18px 10px; text-align: center; font-weight: 800; color: var(--ink); min-height: 120px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; box-shadow: 0 6px 0 rgba(92,110,129,.25);
-    }
-    .level-box.current {
-      border-color: #ff6f5a; background: linear-gradient(180deg, rgba(255,229,180,.8), rgba(255,197,80,.75)); box-shadow: 0 0 0 3px rgba(255,111,90,.18), 0 6px 0 rgba(118, 63, 53, 0.2);
-    }
-    .level-box.locked { opacity: .45; }
-    .level-box .level-number { font-size: 2rem; }
-    .level-box small { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-
-    .results { margin-top: 24px; }
-    .results-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
-    .results-head h2 { margin: 0; }
-    .results-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
-    .result-row {
-      display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border: 3px solid #9db5b0; border-radius: 0; background: rgba(255,255,255,.6); font-weight: 700; font-size: 11px;
-    }
-    .result-row.winner { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.45); }
-    .results-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
-
-    .ai-btn {
-      background: linear-gradient(180deg, #8b5cf6, #06b6d4); border: 4px solid #3a3f71; color: white; box-shadow: 0 8px 0 rgba(43, 45, 70, 0.35); min-width: 240px; min-height: 62px; font-size: 11px; padding: 16px 28px; border-radius: 0; margin: 0 auto;
-    }
-    .ai-panel {
-      position: fixed; right: 24px; bottom: 24px; width: min(420px, calc(100vw - 28px));
-      background: rgba(15,23,42,.96); border: 4px solid rgba(148,163,184,.35); border-radius: 0; padding: 18px; box-shadow: 0 10px 0 rgba(0,0,0,.10); z-index: 50;
-    }
-    .ai-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-    .ai-header h3 { margin: 8px 0 0; font-size: 12px; }
-    .close-btn {
-      border: 3px solid rgba(148,163,184,.3); background: transparent; color: white; border-radius: 0; width: 36px; height: 36px; cursor: pointer;
-    }
-    .ai-panel textarea { min-height: 110px; background: rgba(15,23,42,.7); color: white; border: 3px solid rgba(148,163,184,.3); border-radius: 0; }
-    .ai-answer {
-      margin-top: 12px; padding: 12px 14px; border-radius: 0; background: rgba(139,92,246,.12); border: 3px solid rgba(139,92,246,.3); color: var(--ink); line-height: 1.6; white-space: pre-wrap; font-size: 10px;
-    }
-    .full-width { width: 100%; }
-
-    .start-choice {
-      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: grid; place-items: center; z-index: 60; padding: 20px;
-    }
-    .start-choice-panel {
-      width: min(520px, 100%); background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,247,211,.82)); border: 6px solid #d9b75c; border-radius: 0; box-shadow: 0 10px 0 rgba(95,72,36,.35); padding: 28px 24px;
-    }
-    .start-choice-panel h3 {
-      margin: 14px 0 18px; font-size: clamp(18px, 3vw, 28px); letter-spacing: -0.05em;
-    }
-    .start-choice-grid {
-      display: grid; grid-template-columns: repeat(2, minmax(110px, 1fr)); gap: 12px; margin-bottom: 16px;
-    }
-    .start-choice-option {
-      background: rgba(255,255,255,.7); border: 4px solid #8aa0b4; border-radius: 0; padding: 16px 12px; font-weight: 800; color: var(--ink); transition: .2s ease; font-size: 11px;
-    }
-    .start-choice-option.active {
-      background: linear-gradient(180deg, #ff7a59, #ffb13b); color: #1d2d44; border-color: #7d2d2d; box-shadow: 0 6px 0 rgba(118, 63, 53, 0.2);
-    }
-
-    .footer { padding-top: 28px; color: #294c62; text-align: center; font-size: 10px; }
-
-    @media (max-width: 860px) {
-      .cards { grid-template-columns: repeat(2, minmax(220px,1fr)); }
-      .creator-layout { grid-template-columns: 1fr; }
-      .hero { grid-template-columns: 1fr; }
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .top-actions { justify-content: flex-start; }
-      .ai-btn { width: 100%; }
-      .character-grid { grid-template-columns: 1fr 1fr; }
-      .level-map { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
-    }
-    @media (max-width: 560px) {
-      .cards { grid-template-columns: 1fr; }
-      .section-title, .quiz-actions { flex-direction: column; align-items: stretch; }
-      .quiz-top { flex-direction: column; align-items: flex-start; }
-      .start-choice-grid, .character-grid { grid-template-columns: 1fr 1fr; }
-      .level-map { grid-template-columns: 1fr 1fr; }
-    }
-  </style>
-</head>
-<body data-theme="light">
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand-stack">
-        <div class="brand">
-          <div class="logo">🚀</div>
-          <span>LearnQuest</span>
-          <span class="tag">AI LEARNING</span>
-        </div>
-        <div class="byline">Made by Riad Tabbakha · 5-B</div>
-      </div>
-      <div class="top-actions">
-        <label for="language" class="muted" style="font-weight:700;" data-i18n="languageLabel">Language / اللغة</label>
-        <select id="language" aria-label="Language selector">
-          <option value="en">English</option>
-          <option value="ar">العربية</option>
-        </select>
-        <button id="themeToggle" class="secondary theme-toggle" aria-label="Toggle dark mode">🌙</button>
-      </div>
-    </header>
-
-    <section id="home">
-      <div class="hero">
-        <div>
-          <div class="eyebrow" data-i18n="heroEyebrow">Play • Practice • Progress</div>
-          <h1 id="heroTitle" data-i18n="heroTitle">SUPER MARIO WORLD</h1>
-          <p data-i18n="heroText">Explore school subjects, challenge yourself with question-filled levels, and rescue the village from the boss.</p>
-          <div class="hero-actions">
-            <button class="primary" id="startBtn" data-i18n="startBtn">Start adventure →</button>
-            <button class="secondary" id="homeCreatorBtn" data-i18n="homeCreatorBtn">Create quiz</button>
-            <button class="primary ai-btn" id="aiTutorBtn" data-i18n="aiTutorBtn">🤖 Ask AI Tutor</button>
-          </div>
-        </div>
-        <div class="hero-art" aria-hidden="true">🧩</div>
-      </div>
-
-      <div class="section-title">
-        <div>
-          <h2 data-i18n="chooseAdventureTitle">Choose your adventure</h2>
-          <p data-i18n="chooseAdventureSubtitle">Pick a subject and start a quiz.</p>
-        </div>
-        <span class="pill" data-i18n="curiousMindPill">Made for curious minds</span>
-      </div>
-
-      <div class="cards">
-        <article class="card">
-          <div class="subject-icon">🔢</div>
-          <h3 data-i18n="mathTitle">Math Mission</h3>
-          <p data-i18n="mathText">Practice numbers, arithmetic, and problem-solving.</p>
-          <button class="primary play-subject" data-subject="Math" data-i18n="playBtn">Play</button>
-        </article>
-        <article class="card">
-          <div class="subject-icon">🧪</div>
-          <h3 data-i18n="scienceTitle">Science Squad</h3>
-          <p data-i18n="scienceText">Explore nature, space, energy, and the human body.</p>
-          <button class="primary play-subject" data-subject="Science" data-i18n="playBtn">Play</button>
-        </article>
-        <article class="card">
-          <div class="subject-icon">📚</div>
-          <h3 data-i18n="englishTitle">Word Wizard</h3>
-          <p data-i18n="englishText">Build vocabulary and practice English skills.</p>
-          <button class="primary play-subject" data-subject="English" data-i18n="playBtn">Play</button>
-        </article>
-        <article class="card">
-          <div class="subject-icon">🔤</div>
-          <h3 data-i18n="arabicTitle">Arabic Adventures</h3>
-          <p data-i18n="arabicText">Practice Arabic letters, words, and language skills.</p>
-          <button class="primary play-subject" data-subject="Arabic" data-i18n="playBtn">Play</button>
-        </article>
-        <article class="card">
-          <div class="subject-icon">🕌</div>
-          <h3 data-i18n="islamicTitle">Islamic Studies</h3>
-          <p data-i18n="islamicText">Learn about Islamic values and knowledge.</p>
-          <button class="primary play-subject" data-subject="Islamic Studies" data-i18n="playBtn">Play</button>
-        </article>
-        <article class="card">
-          <div class="subject-icon">🌍</div>
-          <h3 data-i18n="geographyTitle">Geography Explorer</h3>
-          <p data-i18n="geographyText">Explore countries, maps, continents, and oceans.</p>
-          <button class="primary play-subject" data-subject="Geography" data-i18n="playBtn">Play</button>
-        </article>
-        <article class="card">
-          <div class="subject-icon">🏛️</div>
-          <h3>Countries &amp; Cultures</h3>
-          <p>Travel across traditions, landmarks, and world cultures.</p>
-          <button class="primary play-subject" data-subject="Countries &amp; Cultures">Play</button>
-        </article>
-      </div>
-
-      <div class="mode-panel panel">
-        <div class="section-title">
-          <div>
-            <h2 data-i18n="modeTitle">Choose game mode</h2>
-            <p data-i18n="modeSubtitle">Play solo or with friends.</p>
-          </div>
-        </div>
-        <div class="mode-buttons">
-          <button class="mode-btn active" data-players="1">1P</button>
-          <button class="mode-btn" data-players="2">2P</button>
-          <button class="mode-btn" data-players="3">3P</button>
-          <button class="mode-btn" data-players="4">4P</button>
-        </div>
-      </div>
-
-      <div class="panel village-panel">
-        <div class="section-title">
-          <div>
-            <h2>Village Story Mode</h2>
-            <p>Choose your hero, enter the village, clear the stages, and defeat the boss.</p>
-          </div>
-          <span class="pill">Quest journey</span>
-        </div>
-
-        <div class="level-map" id="levelMap">
-          <div class="level-box current"><span class="level-number">1</span><small>Easy</small></div>
-          <div class="level-box locked"><span class="level-number">2</span><small>Medium</small></div>
-          <div class="level-box locked"><span class="level-number">3</span><small>Hard</small></div>
-          <div class="level-box locked"><span class="level-number">Boss</span><small>Final</small></div>
-        </div>
-
-        <div class="village-story-grid">
-          <button class="village-story-card active" data-village-subject="Math">
-            <strong>🔢 Math Village</strong>
-            <span>Easy → Medium → Hard → Boss</span>
-          </button>
-          <button class="village-story-card" data-village-subject="Science">
-            <strong>🧪 Science Village</strong>
-            <span>Easy → Medium → Hard → Boss</span>
-          </button>
-          <button class="village-story-card" data-village-subject="English">
-            <strong>📚 English Village</strong>
-            <span>Easy → Medium → Hard → Boss</span>
-          </button>
-          <button class="village-story-card" data-village-subject="Arabic">
-            <strong>🔤 Arabic Village</strong>
-            <span>Easy → Medium → Hard → Boss</span>
-          </button>
-          <button class="village-story-card" data-village-subject="Islamic Studies">
-            <strong>🕌 Islamic Village</strong>
-            <span>Easy → Medium → Hard → Boss</span>
-          </button>
-          <button class="village-story-card" data-village-subject="Geography">
-            <strong>🌍 Geography Village</strong>
-            <span>Easy → Medium → Hard → Boss</span>
-          </button>
-          <button class="village-story-card" data-village-subject="Countries &amp; Cultures">
-            <strong>🏛️ World Village</strong>
-            <span>Easy → Medium → Hard → Boss</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="section-title">
-        <div>
-          <h2 data-i18n="creatorTitle">AI Game Creator</h2>
-          <p data-i18n="creatorSubtitle">Make a new practice quiz for any topic.</p>
-        </div>
-        <span class="pill" data-i18n="creatorPill">Question generator</span>
-      </div>
-
-      <div class="panel creator-layout">
-        <div>
-          <div class="field">
-            <label for="topic" data-i18n="topicLabel">Quiz topic</label>
-            <input id="topic" placeholder="e.g. planets, fractions, verbs" maxlength="80" value="The solar system" />
-          </div>
-          <div class="field">
-            <label for="customSubject" data-i18n="subjectLabel">Subject</label>
-            <select id="customSubject">
-              <option>Science</option>
-              <option>Math</option>
-              <option>English</option>
-              <option>Arabic</option>
-              <option>Islamic Studies</option>
-              <option>Geography</option>
-              <option>Countries &amp; Cultures</option>
-            </select>
-          </div>
-          <button class="primary" id="createBtn" data-i18n="createQuizBtn">✨ Create my quiz</button>
-        </div>
-
-        <aside class="panel" style="padding:20px;">
-          <h3 data-i18n="settingsTitle">⚙️ Game settings</h3>
-          <p class="muted" data-i18n="settingsText">Set your school grade and challenge level.</p>
-          <div class="field">
-            <label for="grade" data-i18n="gradeLabel">My grade</label>
-            <select id="grade">
-              <option>Grade 1</option>
-              <option>Grade 2</option>
-              <option>Grade 3</option>
-              <option>Grade 4</option>
-              <option selected>Grade 5</option>
-              <option>Grade 6</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="customDifficulty" data-i18n="difficultyLabel">Custom quiz difficulty</label>
-            <select id="customDifficulty">
-              <option>Easy</option>
-              <option selected>Medium</option>
-              <option>Hard</option>
-            </select>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="quizScreen" class="quiz hidden">
-      <div class="panel">
-        <div class="quiz-top">
-          <span id="quizSubject">SCIENCE MISSION</span>
-          <span id="questionCount">Question 1 of 5</span>
-        </div>
-        <div class="progress">
-          <div id="progressBar" class="progress-bar"></div>
-        </div>
-        <h2 class="question" id="questionText">Question goes here</h2>
-        <div class="answers" id="answers"></div>
-        <p id="feedback" class="feedback" aria-live="polite"></p>
-        <div class="quiz-actions">
-          <button class="light" id="quitQuiz" data-i18n="quitQuizBtn">Exit quiz</button>
-          <button class="primary" id="nextQuestion" disabled data-i18n="checkAnswerBtn">Check answer</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="resultsScreen" class="results hidden">
-      <div class="panel">
-        <div class="results-head">
-          <span class="pill" data-i18n="resultsBadge">Game Results</span>
-          <h2 data-i18n="resultsTitle">Quiz complete!</h2>
-        </div>
-        <div id="resultsList" class="results-list"></div>
-        <div class="results-actions">
-          <button class="primary" id="playAgainBtn" data-i18n="playAgainBtn">Play again</button>
-          <button class="secondary" id="backHomeBtn" data-i18n="backHomeBtn">Back to home</button>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer" data-i18n="footerText">LearnQuest AI • Learn something new every day 🌈</footer>
-  </div>
-
-  <div id="aiTutorPanel" class="ai-panel hidden">
-    <div class="ai-header">
-      <div>
-        <span class="pill" data-i18n="aiTutorBadge">AI TUTOR</span>
-        <h3 data-i18n="aiTutorTitle">Ask a question</h3>
-      </div>
-      <button id="closeAiPanel" class="close-btn" aria-label="Close AI tutor">✕</button>
-    </div>
-
-    <textarea id="aiPrompt" placeholder="Ask me something like: explain fractions, help with science, or give a math tip..."></textarea>
-    <button id="askAiBtn" class="primary full-width" data-i18n="askAiBtnPrimary">Ask AI</button>
-    <div id="aiAnswer" class="ai-answer" data-i18n="aiAnswerPlaceholder">Your answer will appear here.</div>
-  </div>
-
-  <div id="startChoiceModal" class="start-choice hidden">
-    <div class="start-choice-panel">
-      <span class="pill" data-i18n="startChoiceBadge">Game setup</span>
-      <h3 data-i18n="startChoiceTitle">How many players?</h3>
-      <div class="start-choice-grid">
-        <button class="start-choice-option active" data-players="1" data-i18n="playerCount1">1 Player</button>
-        <button class="start-choice-option" data-players="2" data-i18n="playerCount2">2 Players</button>
-        <button class="start-choice-option" data-players="3" data-i18n="playerCount3">3 Players</button>
-        <button class="start-choice-option" data-players="4" data-i18n="playerCount4">4 Players</button>
-      </div>
-      <button id="confirmPlayersBtn" class="primary full-width" data-i18n="confirmPlayersBtn">Start quiz</button>
-    </div>
-  </div>
-
-  <div id="characterSelectModal" class="character-choice">
-    <div class="character-panel">
-      <span class="pill">Choose Your Hero</span>
-      <h3 style="margin:14px 0 0; font-size:clamp(18px,4vw,32px); letter-spacing:-0.05em;">Pick a character</h3>
-      <div class="character-grid">
-        <button class="character-card active" data-character="Milo" data-avatar="🦊">
-          <div class="character-avatar">🦊</div>
-          <h4>Milo</h4>
-          <p>Fast runner and brave explorer.</p>
-        </button>
-        <button class="character-card" data-character="Ava" data-avatar="🧙‍♀️">
-          <div class="character-avatar">🧙‍♀️</div>
-          <h4>Ava</h4>
-          <p>Smart mage with powerful answers.</p>
-        </button>
-        <button class="character-card" data-character="Leo" data-avatar="🛡️">
-          <div class="character-avatar">🛡️</div>
-          <h4>Leo</h4>
-          <p>Strong knight who protects the village.</p>
-        </button>
-        <button class="character-card" data-character="Zee" data-avatar="🏹">
-          <div class="character-avatar">🏹</div>
-          <h4>Zee</h4>
-          <p>Quick archer with perfect timing.</p>
-        </button>
-      </div>
-      <div style="display:flex; justify-content:flex-end; margin-top:20px;">
-        <button id="startAdventureBtn" class="primary">Start adventure</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const AI_BACKEND_URL = window.AI_BACKEND_URL || "https://rt-ai-bk-1.onrender.com";
-
-    const translations = {
-      en: {
-        languageLabel: 'Language / اللغة',
-        heroEyebrow: 'Play • Practice • Progress',
-        heroTitle: 'SUPER MARIO WORLD',
-        heroText: 'Explore school subjects, challenge yourself with question-filled levels, and rescue the village from the boss.',
-        startBtn: 'Start adventure →',
-        homeCreatorBtn: 'Create quiz',
-        aiTutorBtn: '🤖 Ask AI Tutor',
-        chooseAdventureTitle: 'Choose your adventure',
-        chooseAdventureSubtitle: 'Pick a subject and start a quiz.',
-        curiousMindPill: 'Made for curious minds',
-        playBtn: 'Play',
-        modeTitle: 'Choose game mode',
-        modeSubtitle: 'Play solo or with friends.',
-        creatorTitle: 'AI Game Creator',
-        creatorSubtitle: 'Make a new practice quiz for any topic.',
-        creatorPill: 'Question generator',
-        topicLabel: 'Quiz topic',
-        subjectLabel: 'Subject',
-        createQuizBtn: '✨ Create my quiz',
-        settingsTitle: '⚙️ Game settings',
-        settingsText: 'Set your school grade and challenge level.',
-        gradeLabel: 'My grade',
-        difficultyLabel: 'Custom quiz difficulty',
-        quitQuizBtn: 'Exit quiz',
-        checkAnswerBtn: 'Check answer',
-        resultsBadge: 'Game Results',
-        resultsTitle: 'Quiz complete!',
-        playAgainBtn: 'Play again',
-        backHomeBtn: 'Back to home',
-        footerText: 'LearnQuest AI • Learn something new every day 🌈',
-        aiTutorBadge: 'AI TUTOR',
-        aiTutorTitle: 'Ask a question',
-        askAiBtnPrimary: 'Ask AI',
-        aiAnswerPlaceholder: 'Your answer will appear here.',
-        startChoiceBadge: 'Game setup',
-        startChoiceTitle: 'How many players?',
-        playerCount1: '1 Player',
-        playerCount2: '2 Players',
-        playerCount3: '3 Players',
-        playerCount4: '4 Players',
-        confirmPlayersBtn: 'Start quiz',
-        mathTitle: 'Math Mission',
-        mathText: 'Practice numbers, arithmetic, and problem-solving.',
-        scienceTitle: 'Science Squad',
-        scienceText: 'Explore nature, space, energy, and the human body.',
-        englishTitle: 'Word Wizard',
-        englishText: 'Build vocabulary and practice English skills.',
-        arabicTitle: 'Arabic Adventures',
-        arabicText: 'Practice Arabic letters, words, and language skills.',
-        islamicTitle: 'Islamic Studies',
-        islamicText: 'Learn about Islamic values and knowledge.',
-        geographyTitle: 'Geography Explorer',
-        geographyText: 'Explore countries, maps, continents, and oceans.'
-      },
-      ar: {
-        languageLabel: 'اللغة / Language',
-        heroEyebrow: 'اللعب • الممارسة • التقدم',
-        heroTitle: 'سوبر ماريو ورلد',
-        heroText: 'استكشف المواد الدراسية، وتحدى نفسك عبر مستويات مليئة بالأسئلة، وأنقذ القرية من الرئيس.',
-        startBtn: 'ابدأ المغامرة →',
-        homeCreatorBtn: 'إنشاء اختبار',
-        aiTutorBtn: '🤖 اسأل المعلم الذكي',
-        chooseAdventureTitle: 'اختر مغامرتك',
-        chooseAdventureSubtitle: 'اختر مادة وابدأ الاختبار.',
-        curiousMindPill: 'مصمم للمستكشفين',
-        playBtn: 'العب',
-        modeTitle: 'اختر نمط اللعبة',
-        modeSubtitle: 'العب وحدك أو مع الأصدقاء.',
-        creatorTitle: 'منشئ الألعاب بالذكاء الاصطناعي',
-        creatorSubtitle: 'أنشئ اختبارًا جديدًا لأي موضوع.',
-        creatorPill: 'مولد الأسئلة',
-        topicLabel: 'موضوع الاختبار',
-        subjectLabel: 'المادة',
-        createQuizBtn: '✨ أنشئ اختباري',
-        settingsTitle: '⚙️ إعدادات اللعبة',
-        settingsText: 'حدد صفك الدراسي ومستوى الصعوبة.',
-        gradeLabel: 'صفّي',
-        difficultyLabel: 'صعوبة الاختبار المخصصة',
-        quitQuizBtn: 'الخروج من الاختبار',
-        checkAnswerBtn: 'تحقق من الإجابة',
-        resultsBadge: 'نتائج اللعبة',
-        resultsTitle: 'اكتمل الاختبار!',
-        playAgainBtn: 'العب مرة أخرى',
-        backHomeBtn: 'العودة للرئيسية',
-        footerText: 'LearnQuest AI • تعلم شيئًا جديدًا كل يوم 🌈',
-        aiTutorBadge: 'المعلم الذكي',
-        aiTutorTitle: 'اسأل سؤالاً',
-        askAiBtnPrimary: 'اسأل الذكاء الاصطناعي',
-        aiAnswerPlaceholder: 'سيظهر جوابك هنا.',
-        startChoiceBadge: 'إعداد اللعبة',
-        startChoiceTitle: 'كم عدد اللاعبين؟',
-        playerCount1: 'لاعب واحد',
-        playerCount2: 'لاعبان',
-        playerCount3: '3 لاعبين',
-        playerCount4: '4 لاعبين',
-        confirmPlayersBtn: 'ابدأ الاختبار',
-        mathTitle: 'مهمة الرياضيات',
-        mathText: 'تمرّن على الأرقام والعمليات وحل المشكلات.',
-        scienceTitle: 'فريق العلوم',
-        scienceText: 'استكشف الطبيعة والفضاء والطاقة والجسم البشري.',
-        englishTitle: 'ساحر الكلمات',
-        englishText: 'طور مفرداتك ومارس مهارات اللغة الإنجليزية.',
-        arabicTitle: 'مغامرات العربية',
-        arabicText: 'تمرّن على الحروف والكلمات ومهارات اللغة العربية.',
-        islamicTitle: 'الدراسات الإسلامية',
-        islamicText: 'تعرف على القيم والمعرفة الإسلامية.',
-        geographyTitle: 'مستكشف الجغرافيا',
-        geographyText: 'استكشف البلدان والخرائط والقارات والمحيطات.'
+      :root {
+        --sky: #9ae7ff;
+        --sky-deep: #77d4ff;
+        --grass: #6edc5a;
+        --grass-dark: #2c9a42;
+        --ground: #9b6b39;
+        --wood: #b26a2d;
+        --panel: #fff7d6;
+        --panel-border: #cb9d43;
+        --brown: #6b3e1d;
+        --red: #f94e4e;
+        --blue: #4fa3ff;
+        --yellow: #ffd84b;
+        --text: #18314a;
       }
-    };
 
-    const questionBank = {
-      Math: [
-        { q: "What is 7 × 6?", a: ["42", "36", "48", "13"], correct: 0 },
-        { q: "What is 45 + 28?", a: ["63", "73", "83", "72"], correct: 1 },
-        { q: "Which fraction is equal to one half?", a: ["2/3", "3/8", "4/8", "1/4"], correct: 2 },
-        { q: "What is 100 − 37?", a: ["73", "67", "63", "53"], correct: 2 },
-        { q: "A triangle has how many sides?", a: ["2", "3", "4", "5"], correct: 1 },
-        { q: "What is 9 × 8?", a: ["72", "64", "81", "69"], correct: 0 },
-        { q: "What is 1,000 − 275?", a: ["725", "735", "825", "625"], correct: 0 },
-        { q: "How many minutes are in 2 hours?", a: ["60", "90", "120", "180"], correct: 2 }
-      ],
-      Science: [
-        { q: "Which planet is known as the Red Planet?", a: ["Venus", "Mars", "Jupiter", "Mercury"], correct: 1 },
-        { q: "What do plants absorb from the air?", a: ["Oxygen only", "Helium", "Carbon dioxide", "Hydrogen"], correct: 2 },
-        { q: "Which star is closest to Earth?", a: ["Sirius", "The Sun", "Polaris", "Vega"], correct: 1 },
-        { q: "What is water's chemical formula?", a: ["CO₂", "O₂", "NaCl", "H₂O"], correct: 3 },
-        { q: "Which part of the body pumps blood?", a: ["Lungs", "Brain", "Heart", "Stomach"], correct: 2 },
-        { q: "What force pulls objects toward Earth?", a: ["Gravity", "Sound", "Light", "Heat"], correct: 0 },
-        { q: "Which state of matter has a fixed shape?", a: ["Gas", "Liquid", "Solid", "Steam"], correct: 2 },
-        { q: "What do bees collect from flowers?", a: ["Sand", "Nectar", "Stones", "Leaves"], correct: 1 }
-      ],
-      English: [
-        { q: "Which word is a noun?", a: ["Quickly", "Happiness", "Jump", "Blue"], correct: 1 },
-        { q: "What is the opposite of 'ancient'?", a: ["Old", "Historic", "Modern", "Past"], correct: 2 },
-        { q: "Choose the correct spelling.", a: ["Beutiful", "Beautifull", "Beautiful", "Butiful"], correct: 2 },
-        { q: "Which word is a verb?", a: ["Swim", "Table", "Green", "Soft"], correct: 0 },
-        { q: "What is the plural of 'child'?", a: ["Childs", "Children", "Childes", "Childrens"], correct: 1 },
-        { q: "Which sentence is a question?", a: ["Where are you?", "I am here.", "What a day!", "Please sit."], correct: 0 }
-      ],
-      Arabic: [
-        { q: "ما معنى كلمة «كتاب»؟", a: ["Book", "Pen", "Door", "School"], correct: 0 },
-        { q: "أي حرف تبدأ به كلمة «أسد»؟", a: ["ب", "أ", "م", "س"], correct: 1 },
-        { q: "ما جمع كلمة «قلم»؟", a: ["أقلام", "قلمان", "قلمة", "قلمات"], correct: 0 },
-        { q: "أي كلمة تدل على فعل؟", a: ["مدرسة", "يكتب", "جميل", "كتاب"], correct: 1 },
-        { q: "ما ضد كلمة «كبير»؟", a: ["طويل", "صغير", "قريب", "سريع"], correct: 1 },
-        { q: "كم عدد حروف الهجاء العربية؟", a: ["26", "27", "28", "29"], correct: 2 }
-      ],
-      "Islamic Studies": [
-        { q: "كم عدد أركان الإسلام؟", a: ["3", "4", "5", "6"], correct: 2 },
-        { q: "ما اسم الكتاب المقدس في الإسلام؟", a: ["القرآن الكريم", "الإنجيل", "التوراة", "الزبور"], correct: 0 },
-        { q: "كم صلاة مفروضة في اليوم والليلة؟", a: ["3", "4", "5", "6"], correct: 2 },
-        { q: "ما الشهر الذي يصوم فيه المسلمون؟", a: ["محرم", "رمضان", "شوال", "رجب"], correct: 1 },
-        { q: "ما التحية الإسلامية؟", a: ["صباح الخير", "السلام عليكم", "إلى اللقاء", "شكراً"], correct: 1 },
-        { q: "ما اسم قبلة المسلمين في الصلاة؟", a: ["المسجد النبوي", "الكعبة", "المسجد الأقصى", "جبل عرفات"], correct: 1 }
-      ],
-      Geography: [
-        { q: "What is the largest continent?", a: ["Africa", "Asia", "Europe", "Australia"], correct: 1 },
-        { q: "What is the capital city of the UAE?", a: ["Dubai", "Sharjah", "Abu Dhabi", "Ajman"], correct: 2 },
-        { q: "Which ocean is between Africa and Australia?", a: ["Atlantic", "Arctic", "Indian", "Southern"], correct: 2 },
-        { q: "What do maps use to show north, south, east, and west?", a: ["Compass rose", "Scale bar", "Legend only", "Border"], correct: 0 },
-        { q: "Which is a landform with a very high peak?", a: ["Valley", "Mountain", "Plain", "Island"], correct: 1 },
-        { q: "What is a group of islands called?", a: ["Archipelago", "Peninsula", "Desert", "Plateau"], correct: 0 }
-      ],
-      "Countries & Cultures": [
-        { q: "Which country is famous for the pyramids of Giza?", a: ["Mexico", "Egypt", "India", "Italy"], correct: 1 },
-        { q: "Which festival is celebrated by many people in the UAE?", a: ["Halloween", "Eid", "Christmas", "Diwali"], correct: 1 },
-        { q: "What is a traditional way to greet people in many Arab cultures?", a: ["Shaking hands with a smile", "Saying 'goodbye' first", "Ignoring them", "Running away"], correct: 0 },
-        { q: "Which country is home to the city of Tokyo?", a: ["Japan", "Brazil", "Germany", "Canada"], correct: 0 },
-        { q: "Which language is widely spoken in Brazil?", a: ["French", "Spanish", "Portuguese", "Arabic"], correct: 2 },
-        { q: "Which country is known for the Great Wall?", a: ["China", "Kenya", "France", "Australia"], correct: 0 }
-      ]
-    };
-
-    const levelNames = [
-      { title: "Easy", label: "Village Gate" },
-      { title: "Medium", label: "Market Trail" },
-      { title: "Hard", label: "Stone Bridge" },
-      { title: "Boss", label: "Guardian Arena" }
-    ];
-
-    const state = {
-      selectedPlayers: 1,
-      selectedCharacter: 'Milo',
-      selectedCharacterAvatar: '🦊',
-      players: [],
-      currentPlayerIndex: 0,
-      currentQuestionIndex: 0,
-      questions: [],
-      selectedAnswer: null,
-      subject: "Math",
-      gameMode: "classic",
-      villageStageIndex: 0,
-      levelUnlocked: 1,
-      levelCompleted: 0
-    };
-
-    function shuffleArray(arr) {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
+      * {
+        box-sizing: border-box;
       }
-      return copy;
-    }
 
-    function createPlayers(count) {
-      return Array.from({ length: count }, (_, index) => ({
-        name: index === 0 ? `${state.selectedCharacter || 'Player 1'}` : `Player ${index + 1}`,
-        score: 0
-      }));
-    }
-
-    function getQuestionSet(subject) {
-      const source = questionBank[subject] || questionBank.Math;
-      return shuffleArray(source).slice(0, 5);
-    }
-
-    function getVillageStageQuestions(subject, stageIndex) {
-      const source = questionBank[subject] || questionBank.Math;
-      const pool = shuffleArray(source);
-      if (stageIndex === 0) return pool.slice(0, 3);
-      if (stageIndex === 1) return pool.slice(0, 4);
-      if (stageIndex === 2) return pool.slice(0, 5);
-      return pool.slice(0, 5);
-    }
-
-    function showSection(sectionName) {
-      const sections = ["home", "quizScreen", "resultsScreen"];
-      sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.classList.toggle("hidden", id !== sectionName);
-      });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function setTheme(theme) {
-      document.body.setAttribute("data-theme", theme);
-      const toggle = document.getElementById("themeToggle");
-      if (toggle) {
-        toggle.textContent = theme === "dark" ? "☀️" : "🌙";
+      html, body {
+        margin: 0;
+        background: linear-gradient(#dff9ff 0%, #dff9ff 65%, #7edb58 65%, #5ac93e 100%);
+        color: var(--text);
+        font-family: 'Press Start 2P', monospace;
+        image-rendering: pixelated;
       }
-    }
 
-    function initTheme() {
-      const saved = localStorage.getItem("learnquest_theme") || "light";
-      setTheme(saved);
-    }
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
 
-    function applyLanguage(language = 'en') {
-      const dict = translations[language] || translations.en;
-      const nodes = document.querySelectorAll('[data-i18n]');
-      nodes.forEach((el) => {
-        const key = el.dataset.i18n;
-        const value = dict[key];
-        if (!value) return;
-        if (key === 'heroTitle') {
-          el.innerHTML = value;
-        } else {
-          el.textContent = value;
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .screen {
+        width: 100vw;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+
+      .title-screen {
+        background: linear-gradient(#9fe8ff, #c4f0ff 62%, #b9ef9f 62%, #7fe166 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .title-screen::before,
+      .title-screen::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 12px;
+        background: repeating-linear-gradient(
+          90deg,
+          #d4b058 0 16px,
+          #8e6a2a 16px 32px
+        );
+        bottom: 52px;
+      }
+
+      .title-screen::after {
+        bottom: 0;
+        height: 48px;
+        background: linear-gradient(#d4a55a, #b87a31);
+      }
+
+      .pixel-box {
+        position: relative;
+        width: min(980px, 92vw);
+        height: min(600px, 80vh);
+        background: linear-gradient(#7bd9ff, #bfeeff 58%, #d7f7ff 58%, #a8e5c9 100%);
+        border: 8px solid #7f532d;
+        box-shadow: 0 0 0 8px #c08d4a, 0 14px 0 rgba(72, 53, 32, 0.5);
+        overflow: hidden;
+      }
+
+      .cloud {
+        position: absolute;
+        width: 88px;
+        height: 30px;
+        background: rgba(255,255,255,0.82);
+        border: 3px solid rgba(140, 193, 214, 0.5);
+        border-radius: 20px;
+        box-shadow: 30px 0 0 rgba(255,255,255,0.75), 60px 0 0 rgba(255,255,255,0.7);
+      }
+
+      .cloud.c1 { top: 40px; left: 120px; }
+      .cloud.c2 { top: 70px; right: 180px; transform: scale(1.3); }
+      .cloud.c3 { top: 110px; left: 450px; transform: scale(0.8); }
+
+      .hill {
+        position: absolute;
+        bottom: 54px;
+        width: 420px;
+        height: 180px;
+        background: linear-gradient(#73d97d, #4ab75e);
+        border-radius: 50% 50% 0 0;
+        border: 5px solid rgba(52, 132, 62, 0.5);
+      }
+
+      .hill.h1 { left: -40px; }
+      .hill.h2 { right: -30px; width: 500px; }
+
+      .title-block {
+        position: absolute;
+        left: 50%;
+        top: 100px;
+        transform: translateX(-50%);
+        text-align: center;
+      }
+
+      .super {
+        font-size: clamp(20px, 3vw, 42px);
+        color: #7ed1ff;
+        text-shadow: 4px 0 0 #f0f7ff, -4px 0 0 #f0f7ff, 0 4px 0 #f0f7ff, 0 -4px 0 #f0f7ff,
+          4px 4px 0 #000;
+        letter-spacing: 2px;
+      }
+
+      .mario-world {
+        margin-top: 8px;
+        font-size: clamp(30px, 5vw, 86px);
+        line-height: 0.9;
+        letter-spacing: 2px;
+        color: #ffec4a;
+        text-shadow: 4px 0 0 #ff774d, -4px 0 0 #ff774d, 0 4px 0 #ff774d, 0 -4px 0 #ff774d,
+          4px 4px 0 #000;
+        transform: scaleY(1.3);
+      }
+
+      .menu {
+        position: absolute;
+        left: 50%;
+        bottom: 120px;
+        transform: translateX(-50%);
+        display: grid;
+        gap: 14px;
+        justify-items: center;
+      }
+
+      .menu-btn {
+        min-width: 410px;
+        padding: 18px 26px;
+        background: linear-gradient(#fef7cf, #f2d77e);
+        border: 5px solid #7c5c3d;
+        box-shadow: 0 8px 0 rgba(95, 64, 33, 0.4);
+        color: var(--text);
+        font-size: clamp(10px, 1.3vw, 18px);
+        line-height: 1.5;
+        text-transform: uppercase;
+        transition: transform 0.12s ease;
+      }
+
+      .menu-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .menu-btn.small {
+        min-width: 250px;
+      }
+
+      .copyright {
+        position: absolute;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: var(--text);
+        text-shadow: 2px 2px 0 rgba(255,255,255,0.6);
+      }
+
+      .selection-screen {
+        background: linear-gradient(#d9f8ff, #a5e8ff 58%, #d9f0ff 58%, #d5f2a5 100%);
+      }
+
+      .panel {
+        width: min(980px, 93vw);
+        background: linear-gradient(#fff9dd, #f5e4a8);
+        border: 8px solid #d1a34d;
+        box-shadow: 0 0 0 8px rgba(123, 100, 58, 0.3), 0 14px 0 rgba(86, 64, 33, 0.44);
+        padding: 28px 24px 20px;
+      }
+
+      .panel-header {
+        margin: 0 0 18px;
+        text-align: center;
+        font-size: clamp(18px, 2.2vw, 38px);
+        color: var(--text);
+        text-transform: uppercase;
+      }
+
+      .selector-grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .character-grid,
+      .subject-grid,
+      .level-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(190px, 1fr));
+        gap: 18px;
+      }
+
+      .option-card {
+        background: linear-gradient(#fdfdf7, #f1ebd0);
+        border: 5px solid #8aa1be;
+        min-height: 150px;
+        padding: 18px 18px 16px;
+        text-align: left;
+        display: grid;
+        align-content: start;
+        gap: 12px;
+        color: var(--text);
+        transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+      }
+
+      .option-card.active {
+        border-color: #ff5d5d;
+        box-shadow: 0 0 0 4px rgba(255, 92, 92, 0.1);
+        background: linear-gradient(#fff3bb, #ffd884);
+      }
+
+      .option-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .option-emoji {
+        font-size: 42px;
+      }
+
+      .option-title {
+        font-size: clamp(14px, 1.7vw, 24px);
+      }
+
+      .option-sub {
+        font-size: 10px;
+        line-height: 1.7;
+        color: #35536f;
+      }
+
+      .selection-actions {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        padding: 18px 26px;
+        border: 5px solid #7f4a2d;
+        box-shadow: 0 8px 0 rgba(83, 56, 35, 0.5);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .primary-btn {
+        background: linear-gradient(#ff9a72, #ff5d5d);
+        color: white;
+      }
+
+      .secondary-btn {
+        background: linear-gradient(#fef7d6, #ebd79d);
+        color: var(--text);
+      }
+
+      .game-screen {
+        position: relative;
+        background: linear-gradient(#89dfff 0%, #97e5ff 62%, #7ee46b 62%, #53c948 100%);
+        overflow: hidden;
+      }
+
+      .game-shell {
+        width: min(980px, 94vw);
+        height: min(620px, 84vh);
+        position: relative;
+        border: 8px solid #8a5b2f;
+        box-shadow: 0 0 0 8px rgba(104, 82, 46, 0.34), 0 16px 0 rgba(91, 69, 38, 0.44);
+        background: linear-gradient(#7ad7ff 0%, #bdf6ff 58%, #7be36e 58%, #57ce57 100%);
+        overflow: hidden;
+      }
+
+      .hud {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        right: 14px;
+        z-index: 20;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        font-size: 12px;
+      }
+
+      .hud-box {
+        background: rgba(255,255,255,0.18);
+        border: 4px solid rgba(31, 58, 84, 0.4);
+        padding: 8px 12px;
+        color: var(--text);
+      }
+
+      .hud-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .heart {
+        font-size: 20px;
+        color: #ff4b5e;
+      }
+
+      .world {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+
+      .cloud-sm {
+        position: absolute;
+        width: 90px;
+        height: 26px;
+        background: rgba(255,255,255,0.7);
+        border-radius: 18px;
+        box-shadow: 26px 0 0 rgba(255,255,255,0.75), 52px 0 0 rgba(255,255,255,0.7);
+      }
+
+      .cloud-sm.one { left: 80px; top: 70px; }
+      .cloud-sm.two { left: 450px; top: 92px; }
+      .cloud-sm.three { right: 130px; top: 70px; }
+
+      .hill-large {
+        position: absolute;
+        bottom: 70px;
+        width: 500px;
+        height: 170px;
+        background: linear-gradient(#63d86d, #36ae53);
+        border-radius: 50% 50% 0 0;
+        border: 5px solid rgba(48, 120, 58, 0.5);
+      }
+
+      .hill-large.left { left: -60px; }
+      .hill-large.right { right: -80px; width: 540px; }
+
+      .tree {
+        position: absolute;
+        bottom: 90px;
+        width: 56px;
+        height: 86px;
+      }
+
+      .tree::before {
+        content: "";
+        position: absolute;
+        left: 13px;
+        bottom: 0;
+        width: 8px;
+        height: 34px;
+        background: #7a4c2b;
+      }
+
+      .tree::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 18px;
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(#3fbb5d, #2d9440);
+        border-radius: 50%;
+        border: 4px solid rgba(38, 118, 52, 0.5);
+      }
+
+      .tree.t1 { left: 250px; }
+      .tree.t2 { left: 650px; }
+      .tree.t3 { right: 230px; }
+
+      .house {
+        position: absolute;
+        bottom: 90px;
+        width: 76px;
+        height: 60px;
+        background: linear-gradient(#d9bc7a, #b58d54);
+        border: 4px solid rgba(88, 60, 35, 0.6);
+      }
+
+      .house::before {
+        content: "";
+        position: absolute;
+        left: -8px;
+        top: -18px;
+        width: 88px;
+        height: 24px;
+        background: #c3ac7f;
+        clip-path: polygon(0 100%, 50% 0, 100% 100%);
+      }
+
+      .house.h1 { left: 410px; }
+      .house.h2 { right: 410px; }
+
+      .ground {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 92px;
+        background: linear-gradient(#8ad95a, #57c93f 55%, #4f9e33 100%);
+        border-top: 8px solid rgba(46, 121, 54, 0.72);
+      }
+
+      .ground::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 18px;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,0.18) 0 18px,
+          rgba(255,255,255,0.02) 18px 32px
+        );
+      }
+
+      .player {
+        position: absolute;
+        left: 90px;
+        bottom: 93px;
+        width: 48px;
+        height: 48px;
+        border: 4px solid rgba(0,0,0,0.15);
+        display: grid;
+        place-items: center;
+        font-size: 24px;
+        background: #ffd84a;
+        z-index: 12;
+        box-shadow: inset 0 -8px 0 rgba(0,0,0,0.09);
+      }
+
+      .enemy {
+        position: absolute;
+        bottom: 90px;
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        font-size: 26px;
+        border: 4px solid rgba(0,0,0,0.15);
+        background: #f7f7f7;
+        z-index: 11;
+        transition: transform 0.1s ease;
+      }
+
+      .enemy.red { background: #ff8a8a; }
+      .enemy.green { background: #a0eb8e; }
+      .enemy.blue { background: #8fc9ff; }
+      .enemy.boss { width: 82px; height: 82px; font-size: 44px; background: #d3a0ff; }
+
+      .question-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(16, 24, 40, 0.6);
+        z-index: 50;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+
+      .modal-box {
+        width: min(760px, 92vw);
+        background: linear-gradient(#fffbd7, #f1e499);
+        border: 8px solid #c99a3d;
+        box-shadow: 0 0 0 8px rgba(94, 70, 42, 0.2), 0 16px 0 rgba(87, 68, 37, 0.35);
+        padding: 26px 22px 20px;
+      }
+
+      .question-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        font-size: 12px;
+      }
+
+      .question-text {
+        font-size: clamp(16px, 2vw, 30px);
+        line-height: 1.5;
+        margin: 0 0 20px;
+      }
+
+      .answer-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .answer-btn {
+        width: 100%;
+        text-align: left;
+        padding: 18px 16px;
+        background: rgba(255,255,255,0.75);
+        border: 4px solid #6c87a0;
+        color: var(--text);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .answer-btn.correct {
+        border-color: #1ea85b;
+        background: rgba(59, 180, 110, 0.18);
+      }
+
+      .answer-btn.wrong {
+        border-color: #e94848;
+        background: rgba(230, 80, 80, 0.15);
+      }
+
+      .feedback {
+        min-height: 32px;
+        margin-top: 18px;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .close-btn {
+        border: 4px solid rgba(34, 50, 59, 0.45);
+        background: rgba(255,255,255,0.55);
+        color: var(--text);
+        padding: 10px 12px;
+      }
+
+      @media (max-width: 760px) {
+        .character-grid,
+        .subject-grid,
+        .level-grid {
+          grid-template-columns: 1fr;
         }
-      });
 
-      const textarea = document.getElementById('aiPrompt');
-      if (textarea) {
-        textarea.placeholder = language === 'ar'
-          ? 'اسألني شيئًا مثل: اشرح الكسور، أو ساعدني في العلوم، أو أعطني نصيحة في الرياضيات...'
-          : 'Ask me something like: explain fractions, help with science, or give a math tip...';
+        .menu-btn {
+          min-width: 280px;
+        }
+
+        .selection-actions {
+          flex-direction: column;
+        }
       }
+    </style>
+  </head>
+  <body>
+    <div id="titleScreen" class="screen title-screen">
+      <div class="pixel-box">
+        <div class="cloud c1"></div>
+        <div class="cloud c2"></div>
+        <div class="cloud c3"></div>
+        <div class="hill h1"></div>
+        <div class="hill h2"></div>
 
-      const askAiBtn = document.getElementById('askAiBtn');
-      if (askAiBtn && !askAiBtn.disabled) {
-        askAiBtn.textContent = dict.askAiBtnPrimary;
-      }
+        <div class="title-block">
+          <div class="super">SUPER</div>
+          <div class="mario-world">MARIO<br />WORLD</div>
+        </div>
 
-      document.documentElement.lang = language;
-      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-      document.body.dir = language === 'ar' ? 'rtl' : 'ltr';
-      document.body.setAttribute('dir', language === 'ar' ? 'rtl' : 'ltr');
-      localStorage.setItem('learnquest_language', language);
-    }
+        <div class="menu">
+          <button class="menu-btn" id="startGameBtn">1 Player Game</button>
+          <button class="menu-btn small">2 Player Game</button>
+        </div>
 
-    function renderLevelMap() {
-      const boxes = document.querySelectorAll('.level-box');
-      boxes.forEach((box, index) => {
-        const unlocked = index < state.levelUnlocked;
-        const current = index === state.villageStageIndex;
-        box.classList.toggle('locked', !unlocked);
-        box.classList.toggle('current', current && unlocked);
-        const label = levelNames[index]?.title || 'Level';
-        const sub = levelNames[index]?.label || 'Stage';
-        box.innerHTML = `<span class="level-number">${index === 3 ? 'Boss' : index + 1}</span><small>${label}</small>`;
-        box.title = sub;
-      });
-    }
+        <div class="copyright">© 1990 Nintendo</div>
+      </div>
+    </div>
 
-    function updateQuizInfo() {
-      const currentPlayer = state.players[state.currentPlayerIndex];
-      if (state.gameMode === 'village') {
-        const stage = levelNames[state.villageStageIndex] || levelNames[0];
-        const stageLabel = `${stage.title} • ${state.subject}`.toUpperCase();
-        document.getElementById("quizSubject").textContent = `${state.selectedCharacterAvatar} ${stageLabel}`;
-        document.getElementById("questionCount").textContent = `Stage ${state.villageStageIndex + 1} • Question ${state.currentQuestionIndex + 1} of ${state.questions.length}`;
-        document.getElementById("progressBar").style.width = `${((state.currentQuestionIndex + 1) / state.questions.length) * 100}%`;
-        document.getElementById("feedback").textContent = `${state.selectedCharacter} enters the ${stage.label}. ${state.currentPlayerIndex === 0 ? 'Ready to win!' : 'Keep going!'}`;
-        return;
-      }
+    <div id="selectionScreen" class="screen selection-screen hidden">
+      <div class="panel">
+        <h2 class="panel-header">Choose your hero</h2>
 
-      document.getElementById("quizSubject").textContent = (state.subject || "MATH").toUpperCase() + " MISSION";
-      document.getElementById("questionCount").textContent = `Question ${state.currentQuestionIndex + 1} of ${state.questions.length}`;
-      document.getElementById("progressBar").style.width = `${((state.currentQuestionIndex) / state.questions.length) * 100}%`;
-      const turnText = currentPlayer ? `${currentPlayer.name} is playing` : "Ready";
-      document.getElementById("feedback").textContent = turnText;
-    }
+        <div class="selector-grid">
+          <div id="characterGrid" class="character-grid"></div>
 
-    function renderQuestion() {
-      if (!state.questions.length) return;
-      const question = state.questions[state.currentQuestionIndex];
-      const answerContainer = document.getElementById("answers");
-      answerContainer.innerHTML = "";
+          <h2 class="panel-header" style="margin-top:16px;">Choose subject</h2>
+          <div id="subjectGrid" class="subject-grid"></div>
 
-      question.a.forEach((option) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "answer";
-        button.textContent = option;
-        button.addEventListener("click", () => {
-          document.querySelectorAll(".answer").forEach((btn) => btn.classList.remove("selected"));
-          button.classList.add("selected");
-          state.selectedAnswer = option;
-          document.getElementById("nextQuestion").disabled = false;
-        });
-        answerContainer.appendChild(button);
-      });
+          <h2 class="panel-header" style="margin-top:16px;">Choose level</h2>
+          <div id="levelGrid" class="level-grid"></div>
+        </div>
 
-      document.getElementById("questionText").textContent = question.q;
-      document.getElementById("nextQuestion").disabled = true;
-      state.selectedAnswer = null;
-      updateQuizInfo();
-    }
+        <div class="selection-actions">
+          <button class="secondary-btn" id="backBtn">Back</button>
+          <button class="primary-btn" id="startAdventureBtn">Start adventure</button>
+        </div>
+      </div>
+    </div>
 
-    function finishQuiz() {
-      showResults();
-    }
+    <div id="gameScreen" class="screen game-screen hidden">
+      <div class="game-shell">
+        <div class="hud">
+          <div class="hud-box" id="hudSubject">MATH VILLAGE</div>
+          <div class="hud-right">
+            <div class="hud-box" id="hudLevel">LEVEL 1</div>
+            <div class="hud-box" id="hudScore">SCORE 0</div>
+            <div class="hud-box"><span class="heart">❤</span> <span id="hudLives">3</span></div>
+          </div>
+        </div>
 
-    function finishVillageQuest() {
-      const hero = state.players[0] || { name: state.selectedCharacter, score: 0 };
-      state.levelCompleted = 4;
-      state.levelUnlocked = 4;
-      renderLevelMap();
+        <div class="world" id="world">
+          <div class="cloud-sm one"></div>
+          <div class="cloud-sm two"></div>
+          <div class="cloud-sm three"></div>
 
-      const resultsList = document.getElementById("resultsList");
-      resultsList.innerHTML = "";
+          <div class="hill-large left"></div>
+          <div class="hill-large right"></div>
+          <div class="tree t1"></div>
+          <div class="tree t2"></div>
+          <div class="tree t3"></div>
+          <div class="house h1"></div>
+          <div class="house h2"></div>
 
-      const row = document.createElement("div");
-      row.className = "result-row winner";
-      row.innerHTML = `<span>🏆 ${hero.name} wins the village</span><span>${hero.score} pts</span>`;
-      resultsList.appendChild(row);
+          <div class="player" id="player">🧑</div>
+          <div id="enemyLayer"></div>
+          <div class="ground"></div>
+        </div>
+      </div>
+    </div>
 
-      const bossRow = document.createElement("div");
-      bossRow.className = "result-row";
-      bossRow.innerHTML = `<span>Guardian defeated</span><span>${hero.score >= 30 ? 'Victory' : 'Keep training'}</span>`;
-      resultsList.appendChild(bossRow);
+    <div id="questionModal" class="question-modal hidden">
+      <div class="modal-box">
+        <div class="question-title">
+          <span id="questionTag">Math enemy</span>
+          <button class="close-btn" id="closeQuestionBtn">Close</button>
+        </div>
+        <div id="questionText" class="question-text">Question</div>
+        <div id="answerList" class="answer-list"></div>
+        <div id="feedback" class="feedback"></div>
+      </div>
+    </div>
 
-      showSection("resultsScreen");
-    }
-
-    function loadVillageStage() {
-      const stage = levelNames[state.villageStageIndex] || levelNames[0];
-      state.questions = getVillageStageQuestions(state.subject, state.villageStageIndex);
-      state.currentQuestionIndex = 0;
-      state.players = [{ name: state.selectedCharacter, score: state.players[0]?.score || 0 }];
-      state.currentPlayerIndex = 0;
-      state.gameMode = "village";
-      renderLevelMap();
-      showSection("quizScreen");
-      renderQuestion();
-      const nextButton = document.getElementById("nextQuestion");
-      nextButton.dataset.state = "idle";
-      nextButton.textContent = stage.title === "Boss" ? "Fight boss" : `Start ${stage.title}`;
-      nextButton.disabled = true;
-    }
-
-    function startVillageQuest(subject = "Math") {
-      state.subject = subject;
-      state.selectedPlayers = 1;
-      state.players = [{ name: state.selectedCharacter, score: 0 }];
-      state.currentPlayerIndex = 0;
-      state.villageStageIndex = 0;
-      state.levelUnlocked = 1;
-      state.levelCompleted = 0;
-      renderLevelMap();
-      loadVillageStage();
-    }
-
-    function startQuiz(subject = "Math") {
-      state.gameMode = "classic";
-      state.subject = subject;
-      state.players = createPlayers(state.selectedPlayers);
-      state.currentPlayerIndex = 0;
-      state.currentQuestionIndex = 0;
-      state.questions = getQuestionSet(subject);
-      showSection("quizScreen");
-      renderQuestion();
-      document.getElementById("nextQuestion").dataset.state = "idle";
-      document.getElementById("nextQuestion").textContent = "Check answer";
-      document.getElementById("nextQuestion").disabled = true;
-    }
-
-    function showResults() {
-      const ranked = [...state.players].sort((a, b) => b.score - a.score);
-      const resultsList = document.getElementById("resultsList");
-      resultsList.innerHTML = "";
-
-      ranked.forEach((player, index) => {
-        const row = document.createElement("div");
-        row.className = "result-row" + (index === 0 ? " winner" : "");
-        row.innerHTML = `<span>${index === 0 ? "🏆 " : ""}${player.name}</span><span>${player.score} pts</span>`;
-        resultsList.appendChild(row);
-      });
-
-      showSection("resultsScreen");
-    }
-
-    document.getElementById("startBtn").addEventListener("click", () => {
-      document.getElementById("characterSelectModal").classList.remove("hidden");
-    });
-
-    document.querySelectorAll(".character-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        document.querySelectorAll(".character-card").forEach((c) => c.classList.toggle("active", c === card));
-        state.selectedCharacter = card.dataset.character || 'Milo';
-        state.selectedCharacterAvatar = card.dataset.avatar || '🦊';
-      });
-    });
-
-    document.getElementById("startAdventureBtn").addEventListener("click", () => {
-      document.getElementById("characterSelectModal").classList.add("hidden");
-      const firstVillageCard = document.querySelector('.village-story-card.active');
-      const subject = firstVillageCard ? firstVillageCard.dataset.villageSubject : 'Math';
-      startVillageQuest(subject);
-    });
-
-    document.querySelectorAll(".start-choice-option").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.selectedPlayers = Number(button.dataset.players) || 1;
-        document.querySelectorAll(".start-choice-option").forEach((option) => {
-          option.classList.toggle("active", option === button);
-        });
-      });
-    });
-
-    document.getElementById("confirmPlayersBtn").addEventListener("click", () => {
-      document.getElementById("startChoiceModal").classList.add("hidden");
-      startQuiz(state.subject || "Math");
-    });
-
-    document.getElementById("homeCreatorBtn").addEventListener("click", () => {
-      document.getElementById("topic").focus();
-      window.scrollTo({ top: 500, behavior: "smooth" });
-    });
-
-    document.getElementById("createBtn").addEventListener("click", () => {
-      const customSubject = document.getElementById("customSubject").value;
-      const enteredTopic = document.getElementById("topic").value.trim() || customSubject;
-      const difficulty = document.getElementById("customDifficulty").value;
-      const quizSubject = enteredTopic || customSubject;
-      state.subject = quizSubject;
-      const baseQuestions = [
-        { q: `What is 8 + 7?`, a: ["14", "15", "16", "17"], correct: 3 },
-        { q: `Which answer is correct for ${quizSubject}?`, a: ["A", "B", "C", "D"], correct: 1 },
-        { q: `Which is the best choice for ${quizSubject}?`, a: ["Option 1", "Option 2", "Option 3", "Option 4"], correct: 2 },
-        { q: `What is 12 - 5?`, a: ["5", "6", "7", "8"], correct: 2 },
-        { q: `Which answer is closest to ${quizSubject}?`, a: ["1", "2", "3", "4"], correct: 0 }
+    <script>
+      const characters = [
+        { name: 'Milo', emoji: '🦊', title: 'Fast runner', subtitle: 'Brave explorer of the village', color: '#ffb347' },
+        { name: 'Ava', emoji: '🧙‍♀️', title: 'Smart mage', subtitle: 'Quick with clever answers', color: '#9b7bff' },
+        { name: 'Leo', emoji: '🛡️', title: 'Village knight', subtitle: 'Strong and steady defender', color: '#76d9a8' },
+        { name: 'Zee', emoji: '🏹', title: 'Quick archer', subtitle: 'Fast in motion and focus', color: '#85d7ff' }
       ];
-      const customQuestions = difficulty === "Hard" ? baseQuestions.reverse() : baseQuestions;
-      state.questions = shuffleArray(customQuestions).slice(0, difficulty === "Easy" ? 3 : difficulty === "Hard" ? 5 : 4);
-      state.players = createPlayers(state.selectedPlayers);
-      state.currentPlayerIndex = 0;
-      state.currentQuestionIndex = 0;
-      showSection("quizScreen");
-      renderQuestion();
-      document.getElementById("nextQuestion").dataset.state = "idle";
-      document.getElementById("nextQuestion").textContent = "Check answer";
-    });
 
-    document.getElementById("quitQuiz").addEventListener("click", () => {
-      showSection("home");
-    });
+      const subjects = [
+        { name: 'Math', emoji: '🔢', subtitle: 'Numbers, operations, and logic' },
+        { name: 'Science', emoji: '🧪', subtitle: 'Nature, planets, and experiments' },
+        { name: 'English', emoji: '📚', subtitle: 'Words, grammar, and spelling' },
+        { name: 'Arabic', emoji: '🔤', subtitle: 'Language, letters, and meaning' },
+        { name: 'Islamic Studies', emoji: '🕌', subtitle: 'Faith, values, and worship' },
+        { name: 'Geography', emoji: '🌍', subtitle: 'Places, maps, and countries' }
+      ];
 
-    document.getElementById("playAgainBtn").addEventListener("click", () => {
-      const firstVillageCard = document.querySelector('.village-story-card.active');
-      const subject = firstVillageCard ? firstVillageCard.dataset.villageSubject : (state.subject || 'Math');
-      if (state.gameMode === 'village') {
-        startVillageQuest(subject);
-      } else {
-        startQuiz(state.subject || "Math");
+      const levels = [
+        { name: 'Easy', subtitle: 'Village gate', enemies: 3 },
+        { name: 'Medium', subtitle: 'Market trail', enemies: 4 },
+        { name: 'Hard', subtitle: 'Stone bridge', enemies: 5 },
+        { name: 'Boss', subtitle: 'Final battle', enemies: 1 }
+      ];
+
+      const questionBank = {
+        Math: [
+          { q: 'What is 7 × 6?', a: ['42', '36', '48', '13'], correct: 0 },
+          { q: 'What is 45 + 28?', a: ['63', '73', '83', '72'], correct: 1 },
+          { q: 'Which fraction is equal to one half?', a: ['2/3', '3/8', '4/8', '1/4'], correct: 2 },
+          { q: 'What is 100 − 37?', a: ['73', '67', '63', '53'], correct: 2 },
+          { q: 'A triangle has how many sides?', a: ['2', '3', '4', '5'], correct: 1 },
+          { q: 'What is 9 × 8?', a: ['72', '64', '81', '69'], correct: 0 }
+        ],
+        Science: [
+          { q: 'Which planet is known as the Red Planet?', a: ['Venus', 'Mars', 'Jupiter', 'Mercury'], correct: 1 },
+          { q: 'What do plants absorb from the air?', a: ['Oxygen only', 'Helium', 'Carbon dioxide', 'Hydrogen'], correct: 2 },
+          { q: 'What is the chemical formula of water?', a: ['CO₂', 'O₂', 'NaCl', 'H₂O'], correct: 3 },
+          { q: 'Which part of the body pumps blood?', a: ['Lungs', 'Brain', 'Heart', 'Stomach'], correct: 2 },
+          { q: 'What force pulls objects to Earth?', a: ['Gravity', 'Sound', 'Light', 'Heat'], correct: 0 },
+          { q: 'Which state of matter has a fixed shape?', a: ['Gas', 'Liquid', 'Solid', 'Steam'], correct: 2 }
+        ],
+        English: [
+          { q: 'Which word is a noun?', a: ['Quickly', 'Happiness', 'Jump', 'Blue'], correct: 1 },
+          { q: 'What is the opposite of ancient?', a: ['Old', 'Historic', 'Modern', 'Past'], correct: 2 },
+          { q: 'Choose the correct spelling.', a: ['Beutiful', 'Beautifull', 'Beautiful', 'Butiful'], correct: 2 },
+          { q: 'Which word is a verb?', a: ['Swim', 'Table', 'Green', 'Soft'], correct: 0 },
+          { q: 'What is the plural of child?', a: ['Childs', 'Children', 'Childes', 'Childrens'], correct: 1 },
+          { q: 'Which sentence is a question?', a: ['Where are you?', 'I am here.', 'What a day!', 'Please sit.'], correct: 0 }
+        ],
+        Arabic: [
+          { q: 'ما معنى كلمة «كتاب»؟', a: ['Book', 'Pen', 'Door', 'School'], correct: 0 },
+          { q: 'أي حرف تبدأ به كلمة «أسد»؟', a: ['ب', 'أ', 'م', 'س'], correct: 1 },
+          { q: 'ما جمع كلمة «قلم»؟', a: ['أقلام', 'قلمان', 'قلمة', 'قلمات'], correct: 0 },
+          { q: 'أي كلمة تدل على فعل؟', a: ['مدرسة', 'يكتب', 'جميل', 'كتاب'], correct: 1 },
+          { q: 'ما ضد كلمة «كبير»؟', a: ['طويل', 'صغير', 'قريب', 'سريع'], correct: 1 },
+          { q: 'كم عدد حروف الهجاء العربية؟', a: ['26', '27', '28', '29'], correct: 2 }
+        ],
+        'Islamic Studies': [
+          { q: 'كم عدد أركان الإسلام؟', a: ['3', '4', '5', '6'], correct: 2 },
+          { q: 'ما اسم الكتاب المقدس في الإسلام؟', a: ['القرآن الكريم', 'الإنجيل', 'التوراة', 'الزبور'], correct: 0 },
+          { q: 'كم صلاة مفروضة في اليوم والليلة؟', a: ['3', '4', '5', '6'], correct: 2 },
+          { q: 'ما الشهر الذي يصوم فيه المسلمون؟', a: ['محرم', 'رمضان', 'شوال', 'رجب'], correct: 1 },
+          { q: 'ما التحية الإسلامية؟', a: ['صباح الخير', 'السلام عليكم', 'إلى اللقاء', 'شكراً'], correct: 1 },
+          { q: 'ما اسم قبلة المسلمين في الصلاة؟', a: ['المسجد النبوي', 'الكعبة', 'المسجد الأقصى', 'جبل عرفات'], correct: 1 }
+        ],
+        Geography: [
+          { q: 'What is the largest continent?', a: ['Africa', 'Asia', 'Europe', 'Australia'], correct: 1 },
+          { q: 'What is the capital city of the UAE?', a: ['Dubai', 'Sharjah', 'Abu Dhabi', 'Ajman'], correct: 2 },
+          { q: 'Which ocean is between Africa and Australia?', a: ['Atlantic', 'Arctic', 'Indian', 'Southern'], correct: 2 },
+          { q: 'What do maps use to show directions?', a: ['Compass rose', 'Scale bar', 'Legend only', 'Border'], correct: 0 },
+          { q: 'Which is a landform with a very high peak?', a: ['Valley', 'Mountain', 'Plain', 'Island'], correct: 1 },
+          { q: 'What is a group of islands called?', a: ['Archipelago', 'Peninsula', 'Desert', 'Plateau'], correct: 0 }
+        ]
+      };
+
+      const state = {
+        selectedCharacter: characters[0],
+        selectedSubject: subjects[0].name,
+        selectedLevel: 0,
+        score: 0,
+        lives: 3,
+        enemiesDefeated: 0,
+        totalEnemiesNeeded: 3,
+        questionOpen: false,
+        animationFrame: null,
+        enemyList: [],
+        lastSpawn: 0,
+        lastTick: 0,
+        currentQuestion: null,
+        currentEnemy: null,
+        showingResult: false,
+        running: false
+      };
+
+      const titleScreen = document.getElementById('titleScreen');
+      const selectionScreen = document.getElementById('selectionScreen');
+      const gameScreen = document.getElementById('gameScreen');
+      const questionModal = document.getElementById('questionModal');
+      const enemyLayer = document.getElementById('enemyLayer');
+      const playerNode = document.getElementById('player');
+      const hudSubject = document.getElementById('hudSubject');
+      const hudLevel = document.getElementById('hudLevel');
+      const hudScore = document.getElementById('hudScore');
+      const hudLives = document.getElementById('hudLives');
+
+      function renderCharacterCards() {
+        const grid = document.getElementById('characterGrid');
+        grid.innerHTML = '';
+
+        characters.forEach((character, index) => {
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'option-card' + (index === 0 ? ' active' : '');
+          card.innerHTML = `
+            <div class="option-emoji">${character.emoji}</div>
+            <div class="option-title">${character.name}</div>
+            <div class="option-sub">${character.title}<br />${character.subtitle}</div>
+          `;
+          card.addEventListener('click', () => {
+            document.querySelectorAll('#characterGrid .option-card').forEach((el) => el.classList.remove('active'));
+            card.classList.add('active');
+            state.selectedCharacter = character;
+            playerNode.textContent = character.emoji;
+            playerNode.style.background = character.color;
+          });
+          grid.appendChild(card);
+        });
       }
-    });
 
-    document.getElementById("backHomeBtn").addEventListener("click", () => {
-      showSection("home");
-    });
+      function renderSubjectCards() {
+        const grid = document.getElementById('subjectGrid');
+        grid.innerHTML = '';
 
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      const next = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      localStorage.setItem("learnquest_theme", next);
-      setTheme(next);
-    });
+        subjects.forEach((subject, index) => {
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'option-card' + (index === 0 ? ' active' : '');
+          card.innerHTML = `
+            <div class="option-emoji">${subject.emoji}</div>
+            <div class="option-title">${subject.name}</div>
+            <div class="option-sub">${subject.subtitle}</div>
+          `;
+          card.addEventListener('click', () => {
+            document.querySelectorAll('#subjectGrid .option-card').forEach((el) => el.classList.remove('active'));
+            card.classList.add('active');
+            state.selectedSubject = subject.name;
+          });
+          grid.appendChild(card);
+        });
+      }
 
-    document.getElementById("language").addEventListener("change", (event) => {
-      applyLanguage(event.target.value);
-    });
+      function renderLevelCards() {
+        const grid = document.getElementById('levelGrid');
+        grid.innerHTML = '';
 
-    document.querySelectorAll(".play-subject").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.subject = button.dataset.subject || "Math";
-        startQuiz(state.subject);
-      });
-    });
+        levels.forEach((level, index) => {
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'option-card' + (index === 0 ? ' active' : '');
+          card.innerHTML = `
+            <div class="option-title">${level.name}</div>
+            <div class="option-sub">${level.subtitle}</div>
+          `;
+          card.addEventListener('click', () => {
+            document.querySelectorAll('#levelGrid .option-card').forEach((el) => el.classList.remove('active'));
+            card.classList.add('active');
+            state.selectedLevel = index;
+          });
+          grid.appendChild(card);
+        });
+      }
 
-    document.querySelectorAll(".village-story-card").forEach((button) => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".village-story-card").forEach((card) => card.classList.toggle("active", card === button));
-        state.subject = button.dataset.villageSubject || "Math";
-        state.villageStageIndex = 0;
-        state.levelUnlocked = 1;
-        state.levelCompleted = 0;
-        renderLevelMap();
-      });
-    });
+      function updateHud() {
+        hudSubject.textContent = `${state.selectedSubject.toUpperCase()} VILLAGE`;
+        hudLevel.textContent = `LEVEL ${state.selectedLevel + 1}`;
+        hudScore.textContent = `SCORE ${state.score}`;
+        hudLives.textContent = state.lives;
+      }
 
-    document.querySelectorAll(".mode-btn").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.selectedPlayers = Number(button.dataset.players) || 1;
-        document.querySelectorAll(".mode-btn").forEach((b) => b.classList.toggle("active", b === button));
-      });
-    });
+      function startTitleScreen() {
+        titleScreen.classList.remove('hidden');
+        selectionScreen.classList.add('hidden');
+        gameScreen.classList.add('hidden');
+        questionModal.classList.add('hidden');
+      }
 
-    document.getElementById("nextQuestion").addEventListener("click", () => {
-      const nextButton = document.getElementById("nextQuestion");
-      if (nextButton.dataset.state === "review") {
-        if (state.gameMode === "village") {
-          const isLastQuestionInStage = state.currentQuestionIndex >= state.questions.length - 1;
-          if (isLastQuestionInStage) {
-            if (state.villageStageIndex < levelNames.length - 1) {
-              state.villageStageIndex += 1;
-              state.levelUnlocked = Math.min(state.levelUnlocked + 1, levelNames.length);
-              loadVillageStage();
-              return;
+      function startSelectionScreen() {
+        titleScreen.classList.add('hidden');
+        selectionScreen.classList.remove('hidden');
+      }
+
+      function startGame() {
+        state.score = 0;
+        state.lives = 3;
+        state.enemiesDefeated = 0;
+        state.totalEnemiesNeeded = levels[state.selectedLevel].enemies;
+        state.enemyList = [];
+        state.currentEnemy = null;
+        state.questionOpen = false;
+        state.running = true;
+
+        updateHud();
+        document.getElementById('enemyLayer').innerHTML = '';
+        titleScreen.classList.add('hidden');
+        selectionScreen.classList.add('hidden');
+        gameScreen.classList.remove('hidden');
+        questionModal.classList.add('hidden');
+
+        playerNode.style.left = '90px';
+        playerNode.style.bottom = '93px';
+
+        if (state.animationFrame) cancelAnimationFrame(state.animationFrame);
+        state.lastTick = performance.now();
+        state.animationFrame = requestAnimationFrame(gameLoop);
+      }
+
+      function getRandomQuestion() {
+        const pool = questionBank[state.selectedSubject] || questionBank.Math;
+        return pool[Math.floor(Math.random() * pool.length)];
+      }
+
+      function spawnEnemy() {
+        if (!state.running || state.questionOpen) return;
+
+        const enemyTypes = ['red', 'green', 'blue'];
+        const enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+        const enemy = document.createElement('div');
+        enemy.className = `enemy ${enemyType}`;
+        enemy.innerHTML = state.selectedLevel === 3 ? '👹' : '🦹';
+        enemy.style.left = `${980}px`;
+        enemyLayer.appendChild(enemy);
+
+        state.enemyList.push({
+          element: enemy,
+          x: 980,
+          speed: state.selectedLevel === 3 ? 220 : 180 + Math.random() * 60,
+          defeated: false,
+          type: state.selectedLevel === 3 ? 'boss' : enemyType
+        });
+      }
+
+      function openQuestion(enemyObj) {
+        if (state.questionOpen || state.showingResult) return;
+        state.questionOpen = true;
+        state.currentEnemy = enemyObj;
+
+        enemyObj.element.style.transform = 'scale(1.08)';
+        const q = getRandomQuestion();
+        state.currentQuestion = q;
+
+        const questionText = document.getElementById('questionText');
+        const answerList = document.getElementById('answerList');
+        const feedback = document.getElementById('feedback');
+        const tag = document.getElementById('questionTag');
+
+        tag.textContent = `${state.selectedSubject.toUpperCase()} enemy`;
+        questionText.textContent = q.q;
+        answerList.innerHTML = '';
+        feedback.textContent = '';
+
+        q.a.forEach((option, index) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'answer-btn';
+          btn.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+          btn.addEventListener('click', () => {
+            const isCorrect = index === q.correct;
+            document.querySelectorAll('.answer-btn').forEach((el) => el.disabled = true);
+
+            if (isCorrect) {
+              btn.classList.add('correct');
+              feedback.textContent = 'Correct! Enemy defeated!';
+              state.score += 50;
+              state.enemiesDefeated += 1;
+              updateHud();
+
+              setTimeout(() => {
+                enemyObj.element.remove();
+                state.enemyList = state.enemyList.filter((e) => e !== enemyObj);
+                state.questionOpen = false;
+                questionModal.classList.add('hidden');
+
+                if (state.enemiesDefeated >= state.totalEnemiesNeeded) {
+                  setTimeout(() => {
+                    if (state.selectedLevel < levels.length - 1) {
+                      alert('Level cleared! Choose the next challenge.');
+                      startSelectionScreen();
+                    } else {
+                      alert('Village saved! You won the game!');
+                      startTitleScreen();
+                    }
+                  }, 200);
+                }
+              }, 800);
+            } else {
+              btn.classList.add('wrong');
+              feedback.textContent = 'Wrong answer! You lost a life.';
+              state.lives -= 1;
+              updateHud();
+              setTimeout(() => {
+                questionModal.classList.add('hidden');
+                state.questionOpen = false;
+                if (state.lives <= 0) {
+                  alert('Game over! Try again.');
+                  startTitleScreen();
+                }
+              }, 900);
             }
-            finishVillageQuest();
-            return;
-          }
-        }
-
-        state.currentQuestionIndex += 1;
-        if (state.currentQuestionIndex >= state.questions.length) {
-          finishQuiz();
-          return;
-        }
-        state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
-        nextButton.dataset.state = "idle";
-        nextButton.textContent = "Check answer";
-        renderQuestion();
-        return;
-      }
-
-      if (!state.selectedAnswer) return;
-      const currentQuestion = state.questions[state.currentQuestionIndex];
-      const currentPlayer = state.players[state.currentPlayerIndex];
-      const correctAnswer = currentQuestion.a[currentQuestion.correct];
-      const buttons = document.querySelectorAll(".answer");
-      buttons.forEach((button) => {
-        const text = button.textContent;
-        if (text === correctAnswer) button.classList.add("correct");
-        else if (text === state.selectedAnswer) button.classList.add("wrong");
-      });
-
-      if (state.selectedAnswer === correctAnswer) {
-        currentPlayer.score += 10;
-        document.getElementById("feedback").textContent = `Correct! ${currentPlayer.name} +10 points`;
-      } else {
-        document.getElementById("feedback").textContent = `Wrong. Correct answer: ${correctAnswer}`;
-      }
-
-      nextButton.dataset.state = "review";
-      nextButton.textContent = state.currentQuestionIndex === state.questions.length - 1 ? "See results" : "Next question";
-      nextButton.disabled = false;
-    });
-
-    document.getElementById("aiTutorBtn").addEventListener("click", () => {
-      document.getElementById("aiTutorPanel").classList.toggle("hidden");
-    });
-
-    document.getElementById("closeAiPanel").addEventListener("click", () => {
-      document.getElementById("aiTutorPanel").classList.add("hidden");
-    });
-
-    document.getElementById("askAiBtn").addEventListener("click", async () => {
-      const prompt = document.getElementById("aiPrompt").value.trim();
-      const answerBox = document.getElementById("aiAnswer");
-      const askBtn = document.getElementById("askAiBtn");
-      const currentLang = document.documentElement.lang || 'en';
-      if (!prompt) {
-        answerBox.textContent = currentLang === 'ar' ? 'اكتب سؤالًا أولاً.' : 'Type a question first.';
-        return;
-      }
-
-      askBtn.disabled = true;
-      askBtn.textContent = '🐧 ' + (currentLang === 'ar' ? 'جارٍ السؤال...' : 'Asking...');
-      answerBox.textContent = '🐧 ' + (currentLang === 'ar' ? 'يعمل المعلم الذكي...' : 'The AI tutor is thinking...');
-
-      try {
-        const response = await fetch(AI_BACKEND_URL + "/api/ai-chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: prompt,
-            profile: {
-              name: "Student",
-              grade: 5,
-              subject: state.subject || "General"
-            }
-          })
+          });
+          answerList.appendChild(btn);
         });
 
-        const data = await response.json();
-        const output = data.answer || data.message || data.reply || "No answer returned.";
-        answerBox.textContent = output;
-      } catch (error) {
-        answerBox.textContent = currentLang === 'ar'
-          ? 'حدثت مشكلة أثناء الاتصال بالمعلم الذكي. حاول مرة أخرى.'
-          : 'There was a problem contacting the AI tutor. Please try again.';
-      } finally {
-        askBtn.disabled = false;
-        askBtn.textContent = currentLang === 'ar' ? 'اسأل الذكاء الاصطناعي' : 'Ask AI';
+        questionModal.classList.remove('hidden');
       }
-    });
 
-    initTheme();
-    applyLanguage(localStorage.getItem('learnquest_language') || 'en');
-    renderLevelMap();
-    document.getElementById("nextQuestion").dataset.state = "idle";
-    document.getElementById("nextQuestion").textContent = "Check answer";
-  </script>
-</body>
+      function gameLoop(now) {
+        if (!state.running) return;
+
+        const dt = (now - state.lastTick) / 1000;
+        state.lastTick = now;
+
+        if (!state.questionOpen) {
+          if (now - state.lastSpawn > 1700) {
+            spawnEnemy();
+            state.lastSpawn = now;
+          }
+
+          state.enemyList.forEach((enemy) => {
+            enemy.x -= enemy.speed * dt;
+            enemy.element.style.left = `${enemy.x}px`;
+
+            const playerX = 90;
+            const enemyRight = enemy.x + 54;
+            const nearPlayer = enemy.x < playerX + 56 && enemy.x + 52 > playerX;
+
+            if (nearPlayer) {
+              openQuestion(enemy);
+            }
+          });
+
+          state.enemyList = state.enemyList.filter((enemy) => {
+            const onScreen = enemy.x + 64 > -10;
+            if (!onScreen) enemy.element.remove();
+            return onScreen;
+          });
+        }
+
+        state.animationFrame = requestAnimationFrame(gameLoop);
+      }
+
+      document.getElementById('startGameBtn').addEventListener('click', startSelectionScreen);
+      document.getElementById('backBtn').addEventListener('click', startTitleScreen);
+      document.getElementById('startAdventureBtn').addEventListener('click', startGame);
+      document.getElementById('closeQuestionBtn').addEventListener('click', () => {
+        questionModal.classList.add('hidden');
+        state.questionOpen = false;
+      });
+
+      renderCharacterCards();
+      renderSubjectCards();
+      renderLevelCards();
+      updateHud();
+    </script>
+  </body>
 </html>
