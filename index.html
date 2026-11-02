@@ -458,6 +458,44 @@
         background: #ffd84a;
         z-index: 12;
         box-shadow: inset 0 -8px 0 rgba(0,0,0,0.09);
+        transform-origin: center bottom;
+        transition: transform 0.12s ease, filter 0.12s ease;
+      }
+
+      .player::before,
+      .player::after {
+        content: "";
+        position: absolute;
+        bottom: -12px;
+        width: 10px;
+        height: 18px;
+        background: rgba(17,16,16,0.8);
+        border-radius: 6px;
+      }
+
+      .player::before {
+        left: 8px;
+      }
+
+      .player::after {
+        right: 8px;
+      }
+
+      .player.running {
+        animation: runCycle 0.26s steps(2, end) infinite;
+      }
+
+      .player.stopped {
+        animation: none;
+        transform: scale(1.05);
+      }
+
+      @keyframes runCycle {
+        0%   { transform: translateY(0) rotate(-3deg); }
+        25%  { transform: translateY(-3px) rotate(2deg); }
+        50%  { transform: translateY(0) rotate(0deg); }
+        75%  { transform: translateY(-3px) rotate(-2deg); }
+        100% { transform: translateY(0) rotate(3deg); }
       }
 
       .enemy {
@@ -637,7 +675,7 @@
           <div class="house h1"></div>
           <div class="house h2"></div>
 
-          <div class="player" id="player">🧑</div>
+          <div class="player running" id="player">🧑</div>
           <div id="enemyLayer"></div>
           <div class="ground"></div>
         </div>
@@ -835,11 +873,18 @@
         hudLives.textContent = state.lives;
       }
 
+      function setPlayerRunningState(isRunning) {
+        playerNode.classList.toggle('running', isRunning);
+        playerNode.classList.toggle('stopped', !isRunning);
+      }
+
       function startTitleScreen() {
         titleScreen.classList.remove('hidden');
         selectionScreen.classList.add('hidden');
         gameScreen.classList.add('hidden');
         questionModal.classList.add('hidden');
+        state.running = false;
+        setPlayerRunningState(false);
       }
 
       function startSelectionScreen() {
@@ -866,6 +911,7 @@
 
         playerNode.style.left = '90px';
         playerNode.style.bottom = '93px';
+        setPlayerRunningState(true);
 
         if (state.animationFrame) cancelAnimationFrame(state.animationFrame);
         state.lastTick = performance.now();
@@ -901,6 +947,7 @@
         if (state.questionOpen || state.showingResult) return;
         state.questionOpen = true;
         state.currentEnemy = enemyObj;
+        setPlayerRunningState(false);
 
         enemyObj.element.style.transform = 'scale(1.08)';
         const q = getRandomQuestion();
@@ -937,6 +984,7 @@
                 state.enemyList = state.enemyList.filter((e) => e !== enemyObj);
                 state.questionOpen = false;
                 questionModal.classList.add('hidden');
+                setPlayerRunningState(true);
 
                 if (state.enemiesDefeated >= state.totalEnemiesNeeded) {
                   setTimeout(() => {
@@ -958,6 +1006,7 @@
               setTimeout(() => {
                 questionModal.classList.add('hidden');
                 state.questionOpen = false;
+                setPlayerRunningState(true);
                 if (state.lives <= 0) {
                   alert('Game over! Try again.');
                   startTitleScreen();
@@ -988,7 +1037,6 @@
             enemy.element.style.left = `${enemy.x}px`;
 
             const playerX = 90;
-            const enemyRight = enemy.x + 54;
             const nearPlayer = enemy.x < playerX + 56 && enemy.x + 52 > playerX;
 
             if (nearPlayer) {
@@ -1012,12 +1060,14 @@
       document.getElementById('closeQuestionBtn').addEventListener('click', () => {
         questionModal.classList.add('hidden');
         state.questionOpen = false;
+        setPlayerRunningState(true);
       });
 
       renderCharacterCards();
       renderSubjectCards();
       renderLevelCards();
       updateHud();
+      setPlayerRunningState(true);
     </script>
   </body>
 </html>
