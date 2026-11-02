@@ -734,8 +734,6 @@
         scrollX: 0,
         classicQuestions: [],
         classicIndex: 0,
-        currentQuestion: null,
-        currentEnemy: null,
         running: false
       };
 
@@ -762,11 +760,6 @@
         state.mode = mode;
         document.querySelectorAll('.mode-btn').forEach((btn) => {
           btn.classList.toggle('active', btn.dataset.mode === mode);
-        });
-        document.querySelectorAll('[data-mode]').forEach((btn) => {
-          if (btn.id === 'villageModeBtn' || btn.id === 'classicModeBtn' || btn.id === 'selectVillageMode' || btn.id === 'selectClassicMode') {
-            btn.classList.toggle('active', btn.dataset.mode === mode && (btn.id === 'selectVillageMode' || btn.id === 'selectClassicMode' || true));
-          }
         });
       }
 
@@ -855,8 +848,8 @@
       }
 
       function updateBackgroundScroll() {
-        backgroundItems.forEach((item, index) => {
-          const factor = Number(item.dataset.speed || (0.2 + index * 0.06));
+        backgroundItems.forEach((item) => {
+          const factor = Number(item.dataset.speed || 0.2);
           item.style.transform = `translateX(${-state.scrollX * factor}px)`;
         });
       }
@@ -932,13 +925,12 @@
         state.enemiesDefeated = 0;
         state.totalEnemiesNeeded = levels[state.selectedLevel].enemies;
         state.enemyList = [];
-        state.currentEnemy = null;
         state.questionOpen = false;
         state.running = true;
         state.scrollX = 0;
-
         updateHud();
         document.getElementById('enemyLayer').innerHTML = '';
+
         titleScreen.classList.add('hidden');
         selectionScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
@@ -961,6 +953,7 @@
 
         if (state.animationFrame) cancelAnimationFrame(state.animationFrame);
         state.lastTick = performance.now();
+        state.lastSpawn = performance.now();
         state.animationFrame = requestAnimationFrame(gameLoop);
       }
 
@@ -983,19 +976,16 @@
           element: enemy,
           x: 980,
           speed: state.selectedLevel === 3 ? 220 : 180 + Math.random() * 60,
-          defeated: false,
-          type: state.selectedLevel === 3 ? 'boss' : enemyType
+          defeated: false
         });
       }
 
       function openQuestion(enemyObj) {
         if (state.questionOpen) return;
         state.questionOpen = true;
-        state.currentEnemy = enemyObj;
         setPlayerRunningState(false);
 
         const q = getRandomQuestion();
-        state.currentQuestion = q;
         enemyObj.element.style.transform = 'scale(1.08)';
 
         const questionText = document.getElementById('questionText');
@@ -1066,12 +1056,13 @@
       }
 
       function gameLoop(now) {
-        if (!state.running) return;
+        if (!state.running || state.mode !== 'village') return;
+
         const dt = (now - state.lastTick) / 1000;
         state.lastTick = now;
 
-        if (!state.questionOpen && state.mode === 'village') {
-          state.scrollX += 160 * dt;
+        if (!state.questionOpen) {
+          state.scrollX += 180 * dt;
           updateBackgroundScroll();
 
           if (now - state.lastSpawn > 1700) {
@@ -1079,18 +1070,21 @@
             state.lastSpawn = now;
           }
 
-          state.enemyList.forEach((enemy) => {
+          for (const enemy of state.enemyList) {
             enemy.x -= enemy.speed * dt;
             enemy.element.style.left = `${enemy.x}px`;
+
             const playerX = 90;
-            const nearPlayer = enemy.x < playerX + 56 && enemy.x + 52 > playerX;
-            if (nearPlayer) openQuestion(enemy);
-          });
+            const touching = enemy.x < playerX + 56 && enemy.x + 52 > playerX;
+            if (touching) {
+              openQuestion(enemy);
+            }
+          }
 
           state.enemyList = state.enemyList.filter((enemy) => {
-            const onScreen = enemy.x + 64 > -10;
-            if (!onScreen) enemy.element.remove();
-            return onScreen;
+            const stillVisible = enemy.x + 64 > -10;
+            if (!stillVisible) enemy.element.remove();
+            return stillVisible;
           });
         }
 
