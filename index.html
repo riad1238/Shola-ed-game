@@ -205,6 +205,25 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; border: none;
     }
 
+    .village-panel { margin-top: 28px; }
+    .village-story-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 18px;
+    }
+    .village-story-card {
+      background: linear-gradient(135deg, rgba(255,225,138,.18), rgba(101,88,232,.08));
+      border: 1px solid var(--line); border-radius: 18px; padding: 18px 14px; color: var(--ink);
+      font-weight: 800; text-align: left; min-height: 110px; transition: .2s ease;
+    }
+    body[dir="rtl"] .village-story-card { text-align: right; }
+    .village-story-card:hover { transform: translateY(-2px); }
+    .village-story-card strong { display: block; font-size: 1.05rem; margin-bottom: 8px; }
+    .village-story-card span { color: var(--muted); font-size: 0.9rem; }
+    .village-story-card.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; border: none;
+      box-shadow: 0 16px 24px rgba(101,88,232,.2);
+    }
+    .village-story-card.active span { color: rgba(255,255,255,.85); }
+
     .results { margin-top: 24px; }
     .results-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
     .results-head h2 { margin: 0; }
@@ -387,6 +406,12 @@
           <p data-i18n="geographyText">Explore countries, maps, continents, and oceans.</p>
           <button class="primary play-subject" data-subject="Geography" data-i18n="playBtn">Play</button>
         </article>
+        <article class="card">
+          <div class="subject-icon">🏛️</div>
+          <h3>Countries &amp; Cultures</h3>
+          <p>Travel across traditions, landmarks, and world cultures.</p>
+          <button class="primary play-subject" data-subject="Countries &amp; Cultures">Play</button>
+        </article>
       </div>
 
       <div class="mode-panel panel">
@@ -401,6 +426,46 @@
           <button class="mode-btn" data-players="2">2P</button>
           <button class="mode-btn" data-players="3">3P</button>
           <button class="mode-btn" data-players="4">4P</button>
+        </div>
+      </div>
+
+      <div class="panel village-panel">
+        <div class="section-title">
+          <div>
+            <h2>Village Story Mode</h2>
+            <p>Restore the village by clearing Easy, Medium, Hard, then defeating the guardian boss.</p>
+          </div>
+          <span class="pill">Quest journey</span>
+        </div>
+        <div class="village-story-grid">
+          <button class="village-story-card active" data-village-subject="Math">
+            <strong>🔢 Math Village</strong>
+            <span>Easy → Medium → Hard → Boss</span>
+          </button>
+          <button class="village-story-card" data-village-subject="Science">
+            <strong>🧪 Science Village</strong>
+            <span>Easy → Medium → Hard → Boss</span>
+          </button>
+          <button class="village-story-card" data-village-subject="English">
+            <strong>📚 English Village</strong>
+            <span>Easy → Medium → Hard → Boss</span>
+          </button>
+          <button class="village-story-card" data-village-subject="Arabic">
+            <strong>🔤 Arabic Village</strong>
+            <span>Easy → Medium → Hard → Boss</span>
+          </button>
+          <button class="village-story-card" data-village-subject="Islamic Studies">
+            <strong>🕌 Islamic Village</strong>
+            <span>Easy → Medium → Hard → Boss</span>
+          </button>
+          <button class="village-story-card" data-village-subject="Geography">
+            <strong>🌍 Geography Village</strong>
+            <span>Easy → Medium → Hard → Boss</span>
+          </button>
+          <button class="village-story-card" data-village-subject="Countries &amp; Cultures">
+            <strong>🏛️ World Village</strong>
+            <span>Easy → Medium → Hard → Boss</span>
+          </button>
         </div>
       </div>
 
@@ -427,6 +492,7 @@
               <option>Arabic</option>
               <option>Islamic Studies</option>
               <option>Geography</option>
+              <option>Countries &amp; Cultures</option>
             </select>
           </div>
           <button class="primary" id="createBtn" data-i18n="createQuizBtn">✨ Create my quiz</button>
@@ -690,8 +756,23 @@
         { q: "What do maps use to show north, south, east, and west?", a: ["Compass rose", "Scale bar", "Legend only", "Border"], correct: 0 },
         { q: "Which is a landform with a very high peak?", a: ["Valley", "Mountain", "Plain", "Island"], correct: 1 },
         { q: "What is a group of islands called?", a: ["Archipelago", "Peninsula", "Desert", "Plateau"], correct: 0 }
+      ],
+      "Countries & Cultures": [
+        { q: "Which country is famous for the pyramids of Giza?", a: ["Mexico", "Egypt", "India", "Italy"], correct: 1 },
+        { q: "Which festival is celebrated by many people in the UAE?", a: ["Halloween", "Eid", "Christmas", "Diwali"], correct: 1 },
+        { q: "What is a traditional way to greet people in many Arab cultures?", a: ["Shaking hands with a smile", "Saying 'goodbye' first", "Ignoring them", "Running away"], correct: 0 },
+        { q: "Which country is home to the city of Tokyo?", a: ["Japan", "Brazil", "Germany", "Canada"], correct: 0 },
+        { q: "Which language is widely spoken in Brazil?", a: ["French", "Spanish", "Portuguese", "Arabic"], correct: 2 },
+        { q: "Which country is known for the Great Wall?", a: ["China", "Kenya", "France", "Australia"], correct: 0 }
       ]
     };
+
+    const villageStageNames = [
+      { difficulty: "Easy", title: "Lantern Square", story: "The village gate glows with warm lantern light. The villagers need you to solve the easy questions to open the path." },
+      { difficulty: "Medium", title: "Market Path", story: "The friendly market is busy again. You must complete the medium challenge to win the trust of the town." },
+      { difficulty: "Hard", title: "Stone Bridge", story: "The bridge is broken and the road grows harder. Answer the hard questions to reach the village heart." },
+      { difficulty: "Boss", title: "Village Guardian", story: "The guardian blocks the final gate. Defeat the boss by answering the final wisdom questions." }
+    ];
 
     const state = {
       selectedPlayers: 1,
@@ -700,7 +781,10 @@
       currentQuestionIndex: 0,
       questions: [],
       selectedAnswer: null,
-      subject: "Math"
+      subject: "Math",
+      gameMode: "classic",
+      villageStageIndex: 0,
+      villageStages: villageStageNames
     };
 
     function shuffleArray(arr) {
@@ -722,6 +806,15 @@
     function getQuestionSet(subject) {
       const source = questionBank[subject] || questionBank.Math;
       return shuffleArray(source).slice(0, 5);
+    }
+
+    function getVillageStageQuestions(subject, stageIndex) {
+      const source = questionBank[subject] || questionBank.Math;
+      const pool = shuffleArray(source);
+      if (stageIndex === 0) return pool.slice(0, 3);
+      if (stageIndex === 1) return pool.slice(0, 4);
+      if (stageIndex === 2) return pool.slice(0, 5);
+      return pool.slice(0, 5);
     }
 
     function showSection(sectionName) {
@@ -781,6 +874,15 @@
 
     function updateQuizInfo() {
       const currentPlayer = state.players[state.currentPlayerIndex];
+      if (state.gameMode === 'village') {
+        const stage = state.villageStages[state.villageStageIndex] || { difficulty: 'Easy', title: 'Village' };
+        document.getElementById("quizSubject").textContent = `${stage.title.toUpperCase()} • ${String(state.subject || 'MATH').toUpperCase()}`;
+        document.getElementById("questionCount").textContent = `Stage ${state.villageStageIndex + 1} • Question ${state.currentQuestionIndex + 1} of ${state.questions.length}`;
+        document.getElementById("progressBar").style.width = `${((state.currentQuestionIndex + 1) / state.questions.length) * 100}%`;
+        document.getElementById("feedback").textContent = stage.story;
+        return;
+      }
+
       document.getElementById("quizSubject").textContent = (state.subject || "MATH").toUpperCase() + " MISSION";
       document.getElementById("questionCount").textContent = `Question ${state.currentQuestionIndex + 1} of ${state.questions.length}`;
       document.getElementById("progressBar").style.width = `${((state.currentQuestionIndex) / state.questions.length) * 100}%`;
@@ -814,6 +916,69 @@
       updateQuizInfo();
     }
 
+    function finishQuiz() {
+      showResults();
+    }
+
+    function finishVillageQuest() {
+      const hero = state.players[0] || { name: "Village Hero", score: 0 };
+      state.players = [{ name: "Village Hero", score: hero.score }];
+
+      const resultsList = document.getElementById("resultsList");
+      resultsList.innerHTML = "";
+
+      const row = document.createElement("div");
+      row.className = "result-row winner";
+      row.innerHTML = `<span>🏆 Village Hero</span><span>${hero.score} pts</span>`;
+      resultsList.appendChild(row);
+
+      const bossRow = document.createElement("div");
+      bossRow.className = "result-row";
+      bossRow.innerHTML = `<span>Guardian defeated</span><span>${hero.score >= 30 ? 'Victory' : 'Keep training'}</span>`;
+      resultsList.appendChild(bossRow);
+
+      showSection("resultsScreen");
+    }
+
+    function loadVillageStage() {
+      const stage = state.villageStages[state.villageStageIndex] || state.villageStages[0];
+      state.questions = getVillageStageQuestions(state.subject, state.villageStageIndex);
+      state.currentQuestionIndex = 0;
+      state.players = [{ name: "Village Hero", score: state.players[0]?.score || 0 }];
+      state.currentPlayerIndex = 0;
+      showSection("quizScreen");
+      renderQuestion();
+      const nextButton = document.getElementById("nextQuestion");
+      nextButton.dataset.state = "idle";
+      nextButton.textContent = stage.difficulty === "Boss" ? "Answer boss" : `Start ${stage.difficulty}`;
+      nextButton.disabled = true;
+    }
+
+    function startVillageQuest(subject = "Math") {
+      state.gameMode = "village";
+      state.subject = subject;
+      state.selectedPlayers = 1;
+      state.players = [{ name: "Village Hero", score: 0 }];
+      state.currentPlayerIndex = 0;
+      state.villageStageIndex = 0;
+      state.villageStages = villageStageNames;
+      loadVillageStage();
+    }
+
+    function startQuiz(subject = "Math") {
+      state.gameMode = "classic";
+      state.subject = subject;
+      state.players = createPlayers(state.selectedPlayers);
+      state.currentPlayerIndex = 0;
+      state.currentQuestionIndex = 0;
+      state.questions = getQuestionSet(subject);
+      showSection("quizScreen");
+      renderQuestion();
+      document.getElementById("nextQuestion").dataset.state = "idle";
+      document.getElementById("nextQuestion").textContent = "Check answer";
+      document.getElementById("nextQuestion").disabled = true;
+    }
+
     function showResults() {
       const ranked = [...state.players].sort((a, b) => b.score - a.score);
       const resultsList = document.getElementById("resultsList");
@@ -827,23 +992,6 @@
       });
 
       showSection("resultsScreen");
-    }
-
-    function finishQuiz() {
-      showResults();
-    }
-
-    function startQuiz(subject = "Math") {
-      state.subject = subject;
-      state.players = createPlayers(state.selectedPlayers);
-      state.currentPlayerIndex = 0;
-      state.currentQuestionIndex = 0;
-      state.questions = getQuestionSet(subject);
-      showSection("quizScreen");
-      renderQuestion();
-      document.getElementById("nextQuestion").dataset.state = "idle";
-      document.getElementById("nextQuestion").textContent = "Check answer";
-      document.getElementById("nextQuestion").disabled = true;
     }
 
     document.getElementById("startBtn").addEventListener("click", () => {
@@ -922,6 +1070,14 @@
       });
     });
 
+    document.querySelectorAll(".village-story-card").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".village-story-card").forEach((card) => card.classList.toggle("active", card === button));
+        state.subject = button.dataset.villageSubject || "Math";
+        startVillageQuest(state.subject);
+      });
+    });
+
     document.querySelectorAll(".mode-btn").forEach((button) => {
       button.addEventListener("click", () => {
         state.selectedPlayers = Number(button.dataset.players) || 1;
@@ -932,6 +1088,19 @@
     document.getElementById("nextQuestion").addEventListener("click", () => {
       const nextButton = document.getElementById("nextQuestion");
       if (nextButton.dataset.state === "review") {
+        if (state.gameMode === "village") {
+          const isLastQuestionInStage = state.currentQuestionIndex >= state.questions.length - 1;
+          if (isLastQuestionInStage) {
+            if (state.villageStageIndex < state.villageStages.length - 1) {
+              state.villageStageIndex += 1;
+              loadVillageStage();
+              return;
+            }
+            finishVillageQuest();
+            return;
+          }
+        }
+
         state.currentQuestionIndex += 1;
         if (state.currentQuestionIndex >= state.questions.length) {
           finishQuiz();
@@ -998,32 +1167,28 @@
             profile: {
               name: "Student",
               grade: 5,
-              language: currentLang,
-              weakAreas: ["fractions", "multiplication"],
-              strengths: ["science"],
-              learningStyle: "simple explanations"
+              subject: state.subject || "General"
             }
           })
         });
 
         const data = await response.json();
-        answerBox.textContent = data.answer || (currentLang === 'ar' ? 'لا توجد إجابة.' : 'No answer returned.');
+        const output = data.answer || data.message || data.reply || "No answer returned.";
+        answerBox.textContent = output;
       } catch (error) {
-        console.error(error);
         answerBox.textContent = currentLang === 'ar'
-          ? 'المعلم الذكي غير متاح حاليًا. حاول مرة أخرى.'
-          : 'The AI tutor is unavailable right now. Please try again.';
+          ? 'حدثت مشكلة أثناء الاتصال بالمعلم الذكي. حاول مرة أخرى.'
+          : 'There was a problem contacting the AI tutor. Please try again.';
       } finally {
         askBtn.disabled = false;
-        askBtn.textContent = translations[currentLang].askAiBtnPrimary;
+        askBtn.textContent = currentLang === 'ar' ? 'اسأل الذكاء الاصطناعي' : 'Ask AI';
       }
     });
 
-    const savedLanguage = localStorage.getItem('learnquest_language') || 'en';
-    document.getElementById('language').value = savedLanguage;
-    applyLanguage(savedLanguage);
     initTheme();
-    showSection("home");
+    applyLanguage(localStorage.getItem('learnquest_language') || 'en');
+    document.getElementById("nextQuestion").dataset.state = "idle";
+    document.getElementById("nextQuestion").textContent = "Check answer";
   </script>
 </body>
 </html>
