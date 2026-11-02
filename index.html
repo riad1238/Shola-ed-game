@@ -23,10 +23,7 @@
         --text: #18314a;
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
+      * { box-sizing: border-box; }
       html, body {
         margin: 0;
         background: linear-gradient(#dff9ff 0%, #dff9ff 65%, #7edb58 65%, #5ac93e 100%);
@@ -34,23 +31,17 @@
         font-family: 'Press Start 2P', monospace;
         image-rendering: pixelated;
       }
-
       body {
         min-height: 100vh;
         display: grid;
         place-items: center;
         overflow: hidden;
       }
-
       button {
         font: inherit;
         cursor: pointer;
       }
-
-      .hidden {
-        display: none !important;
-      }
-
+      .hidden { display: none !important; }
       .screen {
         width: 100vw;
         min-height: 100vh;
@@ -63,7 +54,6 @@
         position: relative;
         overflow: hidden;
       }
-
       .title-screen::before,
       .title-screen::after {
         content: "";
@@ -71,20 +61,14 @@
         left: 0;
         right: 0;
         height: 12px;
-        background: repeating-linear-gradient(
-          90deg,
-          #d4b058 0 16px,
-          #8e6a2a 16px 32px
-        );
+        background: repeating-linear-gradient(90deg, #d4b058 0 16px, #8e6a2a 16px 32px);
         bottom: 52px;
       }
-
       .title-screen::after {
         bottom: 0;
         height: 48px;
         background: linear-gradient(#d4a55a, #b87a31);
       }
-
       .pixel-box {
         position: relative;
         width: min(980px, 92vw);
@@ -94,7 +78,6 @@
         box-shadow: 0 0 0 8px #c08d4a, 0 14px 0 rgba(72, 53, 32, 0.5);
         overflow: hidden;
       }
-
       .cloud {
         position: absolute;
         width: 88px;
@@ -104,11 +87,9 @@
         border-radius: 20px;
         box-shadow: 30px 0 0 rgba(255,255,255,0.75), 60px 0 0 rgba(255,255,255,0.7);
       }
-
       .cloud.c1 { top: 40px; left: 120px; }
       .cloud.c2 { top: 70px; right: 180px; transform: scale(1.3); }
       .cloud.c3 { top: 110px; left: 450px; transform: scale(0.8); }
-
       .hill {
         position: absolute;
         bottom: 54px;
@@ -118,10 +99,8 @@
         border-radius: 50% 50% 0 0;
         border: 5px solid rgba(52, 132, 62, 0.5);
       }
-
       .hill.h1 { left: -40px; }
       .hill.h2 { right: -30px; width: 500px; }
-
       .title-block {
         position: absolute;
         left: 50%;
@@ -129,36 +108,30 @@
         transform: translateX(-50%);
         text-align: center;
       }
-
       .super {
         font-size: clamp(20px, 3vw, 42px);
         color: #7ed1ff;
-        text-shadow: 4px 0 0 #f0f7ff, -4px 0 0 #f0f7ff, 0 4px 0 #f0f7ff, 0 -4px 0 #f0f7ff,
-          4px 4px 0 #000;
+        text-shadow: 4px 0 0 #f0f7ff, -4px 0 0 #f0f7ff, 0 4px 0 #f0f7ff, 0 -4px 0 #f0f7ff, 4px 4px 0 #000;
         letter-spacing: 2px;
       }
-
       .mario-world {
         margin-top: 8px;
         font-size: clamp(30px, 5vw, 86px);
         line-height: 0.9;
         letter-spacing: 2px;
         color: #ffec4a;
-        text-shadow: 4px 0 0 #ff774d, -4px 0 0 #ff774d, 0 4px 0 #ff774d, 0 -4px 0 #ff774d,
-          4px 4px 0 #000;
+        text-shadow: 4px 0 0 #ff774d, -4px 0 0 #ff774d, 0 4px 0 #ff774d, 0 -4px 0 #ff774d, 4px 4px 0 #000;
         transform: scaleY(1.3);
       }
-
       .menu {
         position: absolute;
         left: 50%;
-        bottom: 120px;
+        bottom: 110px;
         transform: translateX(-50%);
         display: grid;
         gap: 14px;
         justify-items: center;
       }
-
       .menu-btn {
         min-width: 410px;
         padding: 18px 26px;
@@ -171,19 +144,12 @@
         text-transform: uppercase;
         transition: transform 0.12s ease;
       }
-
-      .menu-btn:hover {
-        transform: translateY(-2px);
-      }
-
-      .menu-btn.small {
-        min-width: 250px;
-      }
-
+      .menu-btn:hover { transform: translateY(-2px); }
+      .menu-btn.small { min-width: 250px; }
       .copyright {
         position: absolute;
         left: 50%;
-        bottom: 30px;
+        bottom: 28px;
         transform: translateX(-50%);
         font-size: 12px;
         color: var(--text);
@@ -193,7 +159,6 @@
       .selection-screen {
         background: linear-gradient(#d9f8ff, #a5e8ff 58%, #d9f0ff 58%, #d5f2a5 100%);
       }
-
       .panel {
         width: min(980px, 93vw);
         background: linear-gradient(#fff9dd, #f5e4a8);
@@ -201,7 +166,6 @@
         box-shadow: 0 0 0 8px rgba(123, 100, 58, 0.3), 0 14px 0 rgba(86, 64, 33, 0.44);
         padding: 28px 24px 20px;
       }
-
       .panel-header {
         margin: 0 0 18px;
         text-align: center;
@@ -209,20 +173,35 @@
         color: var(--text);
         text-transform: uppercase;
       }
-
+      .mode-row {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 22px;
+      }
+      .mode-btn {
+        padding: 14px 18px;
+        border: 5px solid #7f4a2d;
+        background: linear-gradient(#fef7d6, #ebd79d);
+        color: var(--text);
+        box-shadow: 0 8px 0 rgba(83, 56, 35, 0.5);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .mode-btn.active {
+        background: linear-gradient(#ff9a72, #ff5d5d);
+        color: white;
+      }
       .selector-grid {
         display: grid;
         gap: 18px;
       }
-
-      .character-grid,
-      .subject-grid,
-      .level-grid {
+      .character-grid, .subject-grid, .level-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(190px, 1fr));
         gap: 18px;
       }
-
       .option-card {
         background: linear-gradient(#fdfdf7, #f1ebd0);
         border: 5px solid #8aa1be;
@@ -235,52 +214,36 @@
         color: var(--text);
         transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
       }
-
       .option-card.active {
         border-color: #ff5d5d;
         box-shadow: 0 0 0 4px rgba(255, 92, 92, 0.1);
         background: linear-gradient(#fff3bb, #ffd884);
       }
-
-      .option-card:hover {
-        transform: translateY(-2px);
-      }
-
-      .option-emoji {
-        font-size: 42px;
-      }
-
-      .option-title {
-        font-size: clamp(14px, 1.7vw, 24px);
-      }
-
+      .option-card:hover { transform: translateY(-2px); }
+      .option-emoji { font-size: 42px; }
+      .option-title { font-size: clamp(14px, 1.7vw, 24px); }
       .option-sub {
         font-size: 10px;
         line-height: 1.7;
         color: #35536f;
       }
-
       .selection-actions {
         display: flex;
         justify-content: center;
         gap: 18px;
         margin-top: 22px;
       }
-
-      .primary-btn,
-      .secondary-btn {
+      .primary-btn, .secondary-btn {
         padding: 18px 26px;
         border: 5px solid #7f4a2d;
         box-shadow: 0 8px 0 rgba(83, 56, 35, 0.5);
         font-size: 12px;
         text-transform: uppercase;
       }
-
       .primary-btn {
         background: linear-gradient(#ff9a72, #ff5d5d);
         color: white;
       }
-
       .secondary-btn {
         background: linear-gradient(#fef7d6, #ebd79d);
         color: var(--text);
@@ -291,7 +254,6 @@
         background: linear-gradient(#89dfff 0%, #97e5ff 62%, #7ee46b 62%, #53c948 100%);
         overflow: hidden;
       }
-
       .game-shell {
         width: min(980px, 94vw);
         height: min(620px, 84vh);
@@ -301,7 +263,6 @@
         background: linear-gradient(#7ad7ff 0%, #bdf6ff 58%, #7be36e 58%, #57ce57 100%);
         overflow: hidden;
       }
-
       .hud {
         position: absolute;
         top: 14px;
@@ -314,31 +275,24 @@
         gap: 12px;
         font-size: 12px;
       }
-
       .hud-box {
         background: rgba(255,255,255,0.18);
         border: 4px solid rgba(31, 58, 84, 0.4);
         padding: 8px 12px;
         color: var(--text);
       }
-
       .hud-right {
         display: flex;
         align-items: center;
         gap: 14px;
       }
-
-      .heart {
-        font-size: 20px;
-        color: #ff4b5e;
-      }
+      .heart { font-size: 20px; color: #ff4b5e; }
 
       .world {
         position: absolute;
         inset: 0;
         overflow: hidden;
       }
-
       .cloud-sm {
         position: absolute;
         width: 90px;
@@ -347,11 +301,9 @@
         border-radius: 18px;
         box-shadow: 26px 0 0 rgba(255,255,255,0.75), 52px 0 0 rgba(255,255,255,0.7);
       }
-
       .cloud-sm.one { left: 80px; top: 70px; }
       .cloud-sm.two { left: 450px; top: 92px; }
       .cloud-sm.three { right: 130px; top: 70px; }
-
       .hill-large {
         position: absolute;
         bottom: 70px;
@@ -361,17 +313,14 @@
         border-radius: 50% 50% 0 0;
         border: 5px solid rgba(48, 120, 58, 0.5);
       }
-
       .hill-large.left { left: -60px; }
       .hill-large.right { right: -80px; width: 540px; }
-
       .tree {
         position: absolute;
         bottom: 90px;
         width: 56px;
         height: 86px;
       }
-
       .tree::before {
         content: "";
         position: absolute;
@@ -381,7 +330,6 @@
         height: 34px;
         background: #7a4c2b;
       }
-
       .tree::after {
         content: "";
         position: absolute;
@@ -393,11 +341,9 @@
         border-radius: 50%;
         border: 4px solid rgba(38, 118, 52, 0.5);
       }
-
       .tree.t1 { left: 250px; }
       .tree.t2 { left: 650px; }
       .tree.t3 { right: 230px; }
-
       .house {
         position: absolute;
         bottom: 90px;
@@ -406,7 +352,6 @@
         background: linear-gradient(#d9bc7a, #b58d54);
         border: 4px solid rgba(88, 60, 35, 0.6);
       }
-
       .house::before {
         content: "";
         position: absolute;
@@ -417,10 +362,8 @@
         background: #c3ac7f;
         clip-path: polygon(0 100%, 50% 0, 100% 100%);
       }
-
       .house.h1 { left: 410px; }
       .house.h2 { right: 410px; }
-
       .ground {
         position: absolute;
         left: 0;
@@ -430,7 +373,6 @@
         background: linear-gradient(#8ad95a, #57c93f 55%, #4f9e33 100%);
         border-top: 8px solid rgba(46, 121, 54, 0.72);
       }
-
       .ground::before {
         content: "";
         position: absolute;
@@ -438,13 +380,8 @@
         right: 0;
         top: 0;
         height: 18px;
-        background: repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,0.18) 0 18px,
-          rgba(255,255,255,0.02) 18px 32px
-        );
+        background: repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0 18px, rgba(255,255,255,0.02) 18px 32px);
       }
-
       .player {
         position: absolute;
         left: 90px;
@@ -461,9 +398,7 @@
         transform-origin: center bottom;
         transition: transform 0.12s ease, filter 0.12s ease;
       }
-
-      .player::before,
-      .player::after {
+      .player::before, .player::after {
         content: "";
         position: absolute;
         bottom: -12px;
@@ -472,29 +407,15 @@
         background: rgba(17,16,16,0.8);
         border-radius: 6px;
       }
-
-      .player::before {
-        left: 8px;
-      }
-
-      .player::after {
-        right: 8px;
-      }
-
-      .player.running {
-        animation: runCycle 0.26s steps(2, end) infinite;
-      }
-
-      .player.stopped {
-        animation: none;
-        transform: scale(1.05);
-      }
-
+      .player::before { left: 8px; }
+      .player::after { right: 8px; }
+      .player.running { animation: runCycle 0.26s steps(2, end) infinite; }
+      .player.stopped { animation: none; transform: scale(1.05); }
       @keyframes runCycle {
-        0%   { transform: translateY(0) rotate(-3deg); }
-        25%  { transform: translateY(-3px) rotate(2deg); }
-        50%  { transform: translateY(0) rotate(0deg); }
-        75%  { transform: translateY(-3px) rotate(-2deg); }
+        0% { transform: translateY(0) rotate(-3deg); }
+        25% { transform: translateY(-3px) rotate(2deg); }
+        50% { transform: translateY(0) rotate(0deg); }
+        75% { transform: translateY(-3px) rotate(-2deg); }
         100% { transform: translateY(0) rotate(3deg); }
       }
 
@@ -510,11 +431,53 @@
         background: #f7f7f7;
         z-index: 11;
       }
-
       .enemy.red { background: #ff8a8a; }
       .enemy.green { background: #a0eb8e; }
       .enemy.blue { background: #8fc9ff; }
       .enemy.boss { width: 82px; height: 82px; font-size: 44px; background: #d3a0ff; }
+
+      .classic-panel {
+        width: min(840px, 92vw);
+        background: linear-gradient(#fffbd7, #f1e499);
+        border: 8px solid #c99a3d;
+        box-shadow: 0 0 0 8px rgba(94, 70, 42, 0.2), 0 16px 0 rgba(87, 68, 37, 0.35);
+        padding: 24px 22px 18px;
+      }
+      .classic-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+        font-size: 12px;
+      }
+      .classic-question {
+        font-size: clamp(18px, 2vw, 32px);
+        line-height: 1.5;
+        margin: 0 0 20px;
+      }
+      .classic-answers {
+        display: grid;
+        gap: 12px;
+      }
+      .classic-answer {
+        width: 100%;
+        text-align: left;
+        padding: 18px 16px;
+        background: rgba(255,255,255,0.75);
+        border: 4px solid #6c87a0;
+        color: var(--text);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .classic-answer.correct { border-color: #1ea85b; background: rgba(59, 180, 110, 0.18); }
+      .classic-answer.wrong { border-color: #e94848; background: rgba(230, 80, 80, 0.15); }
+      .classic-feedback {
+        min-height: 32px;
+        margin-top: 18px;
+        font-size: 12px;
+        line-height: 1.8;
+      }
 
       .question-modal {
         position: fixed;
@@ -525,7 +488,6 @@
         place-items: center;
         padding: 20px;
       }
-
       .modal-box {
         width: min(760px, 92vw);
         background: linear-gradient(#fffbd7, #f1e499);
@@ -533,7 +495,6 @@
         box-shadow: 0 0 0 8px rgba(94, 70, 42, 0.2), 0 16px 0 rgba(87, 68, 37, 0.35);
         padding: 26px 22px 20px;
       }
-
       .question-title {
         display: flex;
         justify-content: space-between;
@@ -542,18 +503,12 @@
         margin-bottom: 20px;
         font-size: 12px;
       }
-
       .question-text {
         font-size: clamp(16px, 2vw, 30px);
         line-height: 1.5;
         margin: 0 0 20px;
       }
-
-      .answer-list {
-        display: grid;
-        gap: 12px;
-      }
-
+      .answer-list { display: grid; gap: 12px; }
       .answer-btn {
         width: 100%;
         text-align: left;
@@ -564,24 +519,14 @@
         font-size: 12px;
         line-height: 1.5;
       }
-
-      .answer-btn.correct {
-        border-color: #1ea85b;
-        background: rgba(59, 180, 110, 0.18);
-      }
-
-      .answer-btn.wrong {
-        border-color: #e94848;
-        background: rgba(230, 80, 80, 0.15);
-      }
-
+      .answer-btn.correct { border-color: #1ea85b; background: rgba(59, 180, 110, 0.18); }
+      .answer-btn.wrong { border-color: #e94848; background: rgba(230, 80, 80, 0.15); }
       .feedback {
         min-height: 32px;
         margin-top: 18px;
         font-size: 12px;
         line-height: 1.8;
       }
-
       .close-btn {
         border: 4px solid rgba(34, 50, 59, 0.45);
         background: rgba(255,255,255,0.55);
@@ -590,19 +535,9 @@
       }
 
       @media (max-width: 760px) {
-        .character-grid,
-        .subject-grid,
-        .level-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .menu-btn {
-          min-width: 280px;
-        }
-
-        .selection-actions {
-          flex-direction: column;
-        }
+        .character-grid, .subject-grid, .level-grid { grid-template-columns: 1fr; }
+        .menu-btn { min-width: 280px; }
+        .selection-actions { flex-direction: column; }
       }
     </style>
   </head>
@@ -621,8 +556,8 @@
         </div>
 
         <div class="menu">
-          <button class="menu-btn" id="startGameBtn">1 Player Game</button>
-          <button class="menu-btn small">2 Player Game</button>
+          <button class="menu-btn" data-mode="village" id="villageModeBtn">Village Mode</button>
+          <button class="menu-btn small" data-mode="classic" id="classicModeBtn">Classic Mode</button>
         </div>
 
         <div class="copyright">© 1990 Nintendo</div>
@@ -631,8 +566,12 @@
 
     <div id="selectionScreen" class="screen selection-screen hidden">
       <div class="panel">
-        <h2 class="panel-header">Choose your hero</h2>
+        <div class="mode-row">
+          <button class="mode-btn active" data-mode="village" id="selectVillageMode">Village Runner</button>
+          <button class="mode-btn" data-mode="classic" id="selectClassicMode">Classic Quiz</button>
+        </div>
 
+        <h2 class="panel-header">Choose your hero</h2>
         <div class="selector-grid">
           <div id="characterGrid" class="character-grid"></div>
 
@@ -651,7 +590,7 @@
     </div>
 
     <div id="gameScreen" class="screen game-screen hidden">
-      <div class="game-shell">
+      <div class="game-shell" id="villageGameShell">
         <div class="hud">
           <div class="hud-box" id="hudSubject">MATH VILLAGE</div>
           <div class="hud-right">
@@ -678,6 +617,16 @@
           <div id="enemyLayer"></div>
           <div class="ground"></div>
         </div>
+      </div>
+
+      <div class="classic-panel hidden" id="classicPanel">
+        <div class="classic-header">
+          <span id="classicSubject">Math</span>
+          <span id="classicStatus">Question 1/3</span>
+        </div>
+        <div id="classicQuestion" class="classic-question">Question</div>
+        <div id="classicAnswers" class="classic-answers"></div>
+        <div id="classicFeedback" class="classic-feedback"></div>
       </div>
     </div>
 
@@ -774,6 +723,7 @@
         selectedLevel: 0,
         score: 0,
         lives: 3,
+        mode: 'village',
         enemiesDefeated: 0,
         totalEnemiesNeeded: 3,
         questionOpen: false,
@@ -782,9 +732,10 @@
         lastSpawn: 0,
         lastTick: 0,
         scrollX: 0,
+        classicQuestions: [],
+        classicIndex: 0,
         currentQuestion: null,
         currentEnemy: null,
-        showingResult: false,
         running: false
       };
 
@@ -798,12 +749,30 @@
       const hudLevel = document.getElementById('hudLevel');
       const hudScore = document.getElementById('hudScore');
       const hudLives = document.getElementById('hudLives');
+      const villageGameShell = document.getElementById('villageGameShell');
+      const classicPanel = document.getElementById('classicPanel');
+      const classicQuestion = document.getElementById('classicQuestion');
+      const classicAnswers = document.getElementById('classicAnswers');
+      const classicFeedback = document.getElementById('classicFeedback');
+      const classicStatus = document.getElementById('classicStatus');
+      const classicSubject = document.getElementById('classicSubject');
       const backgroundItems = Array.from(document.querySelectorAll('.cloud-sm, .hill-large, .tree, .house'));
+
+      function setMode(mode) {
+        state.mode = mode;
+        document.querySelectorAll('.mode-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.mode === mode);
+        });
+        document.querySelectorAll('[data-mode]').forEach((btn) => {
+          if (btn.id === 'villageModeBtn' || btn.id === 'classicModeBtn' || btn.id === 'selectVillageMode' || btn.id === 'selectClassicMode') {
+            btn.classList.toggle('active', btn.dataset.mode === mode && (btn.id === 'selectVillageMode' || btn.id === 'selectClassicMode' || true));
+          }
+        });
+      }
 
       function renderCharacterCards() {
         const grid = document.getElementById('characterGrid');
         grid.innerHTML = '';
-
         characters.forEach((character, index) => {
           const card = document.createElement('button');
           card.type = 'button';
@@ -827,7 +796,6 @@
       function renderSubjectCards() {
         const grid = document.getElementById('subjectGrid');
         grid.innerHTML = '';
-
         subjects.forEach((subject, index) => {
           const card = document.createElement('button');
           card.type = 'button';
@@ -849,7 +817,6 @@
       function renderLevelCards() {
         const grid = document.getElementById('levelGrid');
         grid.innerHTML = '';
-
         levels.forEach((level, index) => {
           const card = document.createElement('button');
           card.type = 'button';
@@ -882,17 +849,15 @@
       function resetBackgroundScroll() {
         state.scrollX = 0;
         backgroundItems.forEach((item, index) => {
-          const speedFactor = 0.20 + index * 0.06;
-          item.style.transform = `translateX(${0}px)`;
-          item.dataset.speed = String(speedFactor);
+          item.dataset.speed = String(0.20 + index * 0.06);
+          item.style.transform = 'translateX(0px)';
         });
       }
 
       function updateBackgroundScroll() {
         backgroundItems.forEach((item, index) => {
           const factor = Number(item.dataset.speed || (0.2 + index * 0.06));
-          const shift = -(state.scrollX * factor);
-          item.style.transform = `translateX(${shift}px)`;
+          item.style.transform = `translateX(${-state.scrollX * factor}px)`;
         });
       }
 
@@ -908,6 +873,57 @@
       function startSelectionScreen() {
         titleScreen.classList.add('hidden');
         selectionScreen.classList.remove('hidden');
+      }
+
+      function prepareClassicQuestions() {
+        const pool = questionBank[state.selectedSubject] || questionBank.Math;
+        state.classicQuestions = [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
+        state.classicIndex = 0;
+      }
+
+      function renderClassicQuestion() {
+        const q = state.classicQuestions[state.classicIndex];
+        if (!q) {
+          alert('Classic mode complete!');
+          startTitleScreen();
+          return;
+        }
+
+        classicSubject.textContent = state.selectedSubject;
+        classicStatus.textContent = `Question ${state.classicIndex + 1}/${state.classicQuestions.length}`;
+        classicQuestion.textContent = q.q;
+        classicFeedback.textContent = '';
+        classicAnswers.innerHTML = '';
+
+        q.a.forEach((answer, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'classic-answer';
+          btn.textContent = `${String.fromCharCode(65 + idx)}. ${answer}`;
+          btn.addEventListener('click', () => {
+            const isCorrect = idx === q.correct;
+            document.querySelectorAll('.classic-answer').forEach((el) => el.disabled = true);
+            if (isCorrect) {
+              btn.classList.add('correct');
+              classicFeedback.textContent = 'Correct!';
+              state.score += 50;
+            } else {
+              btn.classList.add('wrong');
+              classicFeedback.textContent = 'Wrong answer!';
+              state.lives = Math.max(0, state.lives - 1);
+            }
+            setTimeout(() => {
+              state.classicIndex += 1;
+              if (state.classicIndex < state.classicQuestions.length) {
+                renderClassicQuestion();
+              } else {
+                alert('Classic mode finished!');
+                startTitleScreen();
+              }
+            }, 800);
+          });
+          classicAnswers.appendChild(btn);
+        });
       }
 
       function startGame() {
@@ -928,6 +944,16 @@
         gameScreen.classList.remove('hidden');
         questionModal.classList.add('hidden');
 
+        if (state.mode === 'classic') {
+          villageGameShell.classList.add('hidden');
+          classicPanel.classList.remove('hidden');
+          prepareClassicQuestions();
+          renderClassicQuestion();
+          return;
+        }
+
+        villageGameShell.classList.remove('hidden');
+        classicPanel.classList.add('hidden');
         playerNode.style.left = '90px';
         playerNode.style.bottom = '93px';
         setPlayerRunningState(true);
@@ -945,13 +971,12 @@
 
       function spawnEnemy() {
         if (!state.running || state.questionOpen) return;
-
         const enemyTypes = ['red', 'green', 'blue'];
         const enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
         const enemy = document.createElement('div');
         enemy.className = `enemy ${enemyType}`;
         enemy.innerHTML = state.selectedLevel === 3 ? '👹' : '🦹';
-        enemy.style.left = `${980}px`;
+        enemy.style.left = '980px';
         enemyLayer.appendChild(enemy);
 
         state.enemyList.push({
@@ -964,14 +989,14 @@
       }
 
       function openQuestion(enemyObj) {
-        if (state.questionOpen || state.showingResult) return;
+        if (state.questionOpen) return;
         state.questionOpen = true;
         state.currentEnemy = enemyObj;
         setPlayerRunningState(false);
 
-        enemyObj.element.style.transform = 'scale(1.08)';
         const q = getRandomQuestion();
         state.currentQuestion = q;
+        enemyObj.element.style.transform = 'scale(1.08)';
 
         const questionText = document.getElementById('questionText');
         const answerList = document.getElementById('answerList');
@@ -1042,11 +1067,10 @@
 
       function gameLoop(now) {
         if (!state.running) return;
-
         const dt = (now - state.lastTick) / 1000;
         state.lastTick = now;
 
-        if (!state.questionOpen) {
+        if (!state.questionOpen && state.mode === 'village') {
           state.scrollX += 160 * dt;
           updateBackgroundScroll();
 
@@ -1058,13 +1082,9 @@
           state.enemyList.forEach((enemy) => {
             enemy.x -= enemy.speed * dt;
             enemy.element.style.left = `${enemy.x}px`;
-
             const playerX = 90;
             const nearPlayer = enemy.x < playerX + 56 && enemy.x + 52 > playerX;
-
-            if (nearPlayer) {
-              openQuestion(enemy);
-            }
+            if (nearPlayer) openQuestion(enemy);
           });
 
           state.enemyList = state.enemyList.filter((enemy) => {
@@ -1077,7 +1097,16 @@
         state.animationFrame = requestAnimationFrame(gameLoop);
       }
 
-      document.getElementById('startGameBtn').addEventListener('click', startSelectionScreen);
+      document.getElementById('villageModeBtn').addEventListener('click', () => {
+        setMode('village');
+        startSelectionScreen();
+      });
+      document.getElementById('classicModeBtn').addEventListener('click', () => {
+        setMode('classic');
+        startSelectionScreen();
+      });
+      document.getElementById('selectVillageMode').addEventListener('click', () => setMode('village'));
+      document.getElementById('selectClassicMode').addEventListener('click', () => setMode('classic'));
       document.getElementById('backBtn').addEventListener('click', startTitleScreen);
       document.getElementById('startAdventureBtn').addEventListener('click', startGame);
       document.getElementById('closeQuestionBtn').addEventListener('click', () => {
@@ -1091,6 +1120,7 @@
       renderLevelCards();
       updateHud();
       resetBackgroundScroll();
+      setMode('village');
       setPlayerRunningState(true);
     </script>
   </body>
