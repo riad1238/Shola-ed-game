@@ -205,6 +205,27 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; border: none;
     }
 
+    .character-choice {
+      position: fixed; inset: 0; background: rgba(15,23,42,.7); display: grid; place-items: center; z-index: 80; padding: 20px;
+    }
+    .character-panel {
+      width: min(760px, 100%); background: var(--panel); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow); padding: 26px;
+    }
+    .character-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(200px, 1fr)); gap: 16px; margin-top: 18px;
+    }
+    .character-card {
+      background: var(--panel-strong); border: 2px solid var(--line); border-radius: 22px; padding: 18px 16px; text-align: left; transition: .2s ease;
+    }
+    body[dir="rtl"] .character-card { text-align: right; }
+    .character-card.active {
+      border-color: var(--primary); background: linear-gradient(135deg, rgba(101,88,232,.12), rgba(75,157,248,.10));
+      box-shadow: 0 0 0 3px rgba(101,88,232,.12);
+    }
+    .character-avatar { font-size: 3rem; margin-bottom: 10px; }
+    .character-card h4 { margin: 0 0 8px; font-size: 1.35rem; }
+    .character-card p { margin: 0; color: var(--muted); }
+
     .village-panel { margin-top: 28px; }
     .village-story-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 18px;
@@ -223,6 +244,22 @@
       box-shadow: 0 16px 24px rgba(101,88,232,.2);
     }
     .village-story-card.active span { color: rgba(255,255,255,.85); }
+
+    .level-map {
+      display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: 16px; margin-top: 18px;
+    }
+    .level-box {
+      background: linear-gradient(180deg, rgba(101,88,232,.10), rgba(75,157,248,.08));
+      border: 2px solid var(--line); border-radius: 18px; padding: 18px 10px; text-align: center; font-weight: 800; color: var(--ink);
+      min-height: 120px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px;
+    }
+    .level-box.current {
+      border-color: var(--primary); background: linear-gradient(180deg, rgba(101,88,232,.18), rgba(75,157,248,.16));
+      box-shadow: 0 0 0 3px rgba(101,88,232,.12);
+    }
+    .level-box.locked { opacity: .45; }
+    .level-box .level-number { font-size: 2rem; }
+    .level-box small { font-size: .75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 
     .results { margin-top: 24px; }
     .results-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
@@ -316,12 +353,15 @@
       .topbar { align-items: flex-start; flex-direction: column; }
       .top-actions { justify-content: flex-start; }
       .ai-btn { width: 100%; }
+      .character-grid { grid-template-columns: 1fr 1fr; }
+      .level-map { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
     }
     @media (max-width: 560px) {
       .cards { grid-template-columns: 1fr; }
       .section-title, .quiz-actions { flex-direction: column; align-items: stretch; }
       .quiz-top { flex-direction: column; align-items: flex-start; }
-      .start-choice-grid { grid-template-columns: 1fr 1fr; }
+      .start-choice-grid, .character-grid { grid-template-columns: 1fr 1fr; }
+      .level-map { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -433,10 +473,18 @@
         <div class="section-title">
           <div>
             <h2>Village Story Mode</h2>
-            <p>Restore the village by clearing Easy, Medium, Hard, then defeating the guardian boss.</p>
+            <p>Choose your hero, enter the village, clear the stages, and defeat the boss.</p>
           </div>
           <span class="pill">Quest journey</span>
         </div>
+
+        <div class="level-map" id="levelMap">
+          <div class="level-box current"><span class="level-number">1</span><small>Easy</small></div>
+          <div class="level-box locked"><span class="level-number">2</span><small>Medium</small></div>
+          <div class="level-box locked"><span class="level-number">3</span><small>Hard</small></div>
+          <div class="level-box locked"><span class="level-number">Boss</span><small>Final</small></div>
+        </div>
+
         <div class="village-story-grid">
           <button class="village-story-card active" data-village-subject="Math">
             <strong>🔢 Math Village</strong>
@@ -585,6 +633,38 @@
         <button class="start-choice-option" data-players="4" data-i18n="playerCount4">4 Players</button>
       </div>
       <button id="confirmPlayersBtn" class="primary full-width" data-i18n="confirmPlayersBtn">Start quiz</button>
+    </div>
+  </div>
+
+  <div id="characterSelectModal" class="character-choice">
+    <div class="character-panel">
+      <span class="pill">Choose Your Hero</span>
+      <h3 style="margin:14px 0 0; font-size:clamp(24px,4vw,34px); letter-spacing:-0.05em;">Pick a character</h3>
+      <div class="character-grid">
+        <button class="character-card active" data-character="Milo" data-avatar="🦊">
+          <div class="character-avatar">🦊</div>
+          <h4>Milo</h4>
+          <p>Fast runner and brave explorer.</p>
+        </button>
+        <button class="character-card" data-character="Ava" data-avatar="🧙‍♀️">
+          <div class="character-avatar">🧙‍♀️</div>
+          <h4>Ava</h4>
+          <p>Smart mage with powerful answers.</p>
+        </button>
+        <button class="character-card" data-character="Leo" data-avatar="🛡️">
+          <div class="character-avatar">🛡️</div>
+          <h4>Leo</h4>
+          <p>Strong knight who protects the village.</p>
+        </button>
+        <button class="character-card" data-character="Zee" data-avatar="🏹">
+          <div class="character-avatar">🏹</div>
+          <h4>Zee</h4>
+          <p>Quick archer with perfect timing.</p>
+        </button>
+      </div>
+      <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+        <button id="startAdventureBtn" class="primary">Start adventure</button>
+      </div>
     </div>
   </div>
 
@@ -767,15 +847,17 @@
       ]
     };
 
-    const villageStageNames = [
-      { difficulty: "Easy", title: "Lantern Square", story: "The village gate glows with warm lantern light. The villagers need you to solve the easy questions to open the path." },
-      { difficulty: "Medium", title: "Market Path", story: "The friendly market is busy again. You must complete the medium challenge to win the trust of the town." },
-      { difficulty: "Hard", title: "Stone Bridge", story: "The bridge is broken and the road grows harder. Answer the hard questions to reach the village heart." },
-      { difficulty: "Boss", title: "Village Guardian", story: "The guardian blocks the final gate. Defeat the boss by answering the final wisdom questions." }
+    const levelNames = [
+      { title: "Easy", label: "Village Gate" },
+      { title: "Medium", label: "Market Trail" },
+      { title: "Hard", label: "Stone Bridge" },
+      { title: "Boss", label: "Guardian Arena" }
     ];
 
     const state = {
       selectedPlayers: 1,
+      selectedCharacter: 'Milo',
+      selectedCharacterAvatar: '🦊',
       players: [],
       currentPlayerIndex: 0,
       currentQuestionIndex: 0,
@@ -784,7 +866,8 @@
       subject: "Math",
       gameMode: "classic",
       villageStageIndex: 0,
-      villageStages: villageStageNames
+      levelUnlocked: 1,
+      levelCompleted: 0
     };
 
     function shuffleArray(arr) {
@@ -798,7 +881,7 @@
 
     function createPlayers(count) {
       return Array.from({ length: count }, (_, index) => ({
-        name: index === 0 ? "Player 1" : `Player ${index + 1}`,
+        name: index === 0 ? `${state.selectedCharacter || 'Player 1'}` : `Player ${index + 1}`,
         score: 0
       }));
     }
@@ -872,14 +955,29 @@
       localStorage.setItem('learnquest_language', language);
     }
 
+    function renderLevelMap() {
+      const boxes = document.querySelectorAll('.level-box');
+      boxes.forEach((box, index) => {
+        const unlocked = index < state.levelUnlocked;
+        const current = index === state.villageStageIndex;
+        box.classList.toggle('locked', !unlocked);
+        box.classList.toggle('current', current && unlocked);
+        const label = levelNames[index]?.title || 'Level';
+        const sub = levelNames[index]?.label || 'Stage';
+        box.innerHTML = `<span class="level-number">${index === 3 ? 'Boss' : index + 1}</span><small>${label}</small>`;
+        box.title = sub;
+      });
+    }
+
     function updateQuizInfo() {
       const currentPlayer = state.players[state.currentPlayerIndex];
       if (state.gameMode === 'village') {
-        const stage = state.villageStages[state.villageStageIndex] || { difficulty: 'Easy', title: 'Village' };
-        document.getElementById("quizSubject").textContent = `${stage.title.toUpperCase()} • ${String(state.subject || 'MATH').toUpperCase()}`;
+        const stage = levelNames[state.villageStageIndex] || levelNames[0];
+        const stageLabel = `${stage.title} • ${state.subject}`.toUpperCase();
+        document.getElementById("quizSubject").textContent = `${state.selectedCharacterAvatar} ${stageLabel}`;
         document.getElementById("questionCount").textContent = `Stage ${state.villageStageIndex + 1} • Question ${state.currentQuestionIndex + 1} of ${state.questions.length}`;
         document.getElementById("progressBar").style.width = `${((state.currentQuestionIndex + 1) / state.questions.length) * 100}%`;
-        document.getElementById("feedback").textContent = stage.story;
+        document.getElementById("feedback").textContent = `${state.selectedCharacter} enters the ${stage.label}. ${state.currentPlayerIndex === 0 ? 'Ready to win!' : 'Keep going!'}`;
         return;
       }
 
@@ -921,15 +1019,17 @@
     }
 
     function finishVillageQuest() {
-      const hero = state.players[0] || { name: "Village Hero", score: 0 };
-      state.players = [{ name: "Village Hero", score: hero.score }];
+      const hero = state.players[0] || { name: state.selectedCharacter, score: 0 };
+      state.levelCompleted = 4;
+      state.levelUnlocked = 4;
+      renderLevelMap();
 
       const resultsList = document.getElementById("resultsList");
       resultsList.innerHTML = "";
 
       const row = document.createElement("div");
       row.className = "result-row winner";
-      row.innerHTML = `<span>🏆 Village Hero</span><span>${hero.score} pts</span>`;
+      row.innerHTML = `<span>🏆 ${hero.name} wins the village</span><span>${hero.score} pts</span>`;
       resultsList.appendChild(row);
 
       const bossRow = document.createElement("div");
@@ -941,27 +1041,30 @@
     }
 
     function loadVillageStage() {
-      const stage = state.villageStages[state.villageStageIndex] || state.villageStages[0];
+      const stage = levelNames[state.villageStageIndex] || levelNames[0];
       state.questions = getVillageStageQuestions(state.subject, state.villageStageIndex);
       state.currentQuestionIndex = 0;
-      state.players = [{ name: "Village Hero", score: state.players[0]?.score || 0 }];
+      state.players = [{ name: state.selectedCharacter, score: state.players[0]?.score || 0 }];
       state.currentPlayerIndex = 0;
+      state.gameMode = "village";
+      renderLevelMap();
       showSection("quizScreen");
       renderQuestion();
       const nextButton = document.getElementById("nextQuestion");
       nextButton.dataset.state = "idle";
-      nextButton.textContent = stage.difficulty === "Boss" ? "Answer boss" : `Start ${stage.difficulty}`;
+      nextButton.textContent = stage.title === "Boss" ? "Fight boss" : `Start ${stage.title}`;
       nextButton.disabled = true;
     }
 
     function startVillageQuest(subject = "Math") {
-      state.gameMode = "village";
       state.subject = subject;
       state.selectedPlayers = 1;
-      state.players = [{ name: "Village Hero", score: 0 }];
+      state.players = [{ name: state.selectedCharacter, score: 0 }];
       state.currentPlayerIndex = 0;
       state.villageStageIndex = 0;
-      state.villageStages = villageStageNames;
+      state.levelUnlocked = 1;
+      state.levelCompleted = 0;
+      renderLevelMap();
       loadVillageStage();
     }
 
@@ -995,7 +1098,22 @@
     }
 
     document.getElementById("startBtn").addEventListener("click", () => {
-      document.getElementById("startChoiceModal").classList.remove("hidden");
+      document.getElementById("characterSelectModal").classList.remove("hidden");
+    });
+
+    document.querySelectorAll(".character-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".character-card").forEach((c) => c.classList.toggle("active", c === card));
+        state.selectedCharacter = card.dataset.character || 'Milo';
+        state.selectedCharacterAvatar = card.dataset.avatar || '🦊';
+      });
+    });
+
+    document.getElementById("startAdventureBtn").addEventListener("click", () => {
+      document.getElementById("characterSelectModal").classList.add("hidden");
+      const firstVillageCard = document.querySelector('.village-story-card.active');
+      const subject = firstVillageCard ? firstVillageCard.dataset.villageSubject : 'Math';
+      startVillageQuest(subject);
     });
 
     document.querySelectorAll(".start-choice-option").forEach((button) => {
@@ -1046,7 +1164,13 @@
     });
 
     document.getElementById("playAgainBtn").addEventListener("click", () => {
-      startQuiz(state.subject || "Math");
+      const firstVillageCard = document.querySelector('.village-story-card.active');
+      const subject = firstVillageCard ? firstVillageCard.dataset.villageSubject : (state.subject || 'Math');
+      if (state.gameMode === 'village') {
+        startVillageQuest(subject);
+      } else {
+        startQuiz(state.subject || "Math");
+      }
     });
 
     document.getElementById("backHomeBtn").addEventListener("click", () => {
@@ -1074,7 +1198,10 @@
       button.addEventListener("click", () => {
         document.querySelectorAll(".village-story-card").forEach((card) => card.classList.toggle("active", card === button));
         state.subject = button.dataset.villageSubject || "Math";
-        startVillageQuest(state.subject);
+        state.villageStageIndex = 0;
+        state.levelUnlocked = 1;
+        state.levelCompleted = 0;
+        renderLevelMap();
       });
     });
 
@@ -1091,8 +1218,9 @@
         if (state.gameMode === "village") {
           const isLastQuestionInStage = state.currentQuestionIndex >= state.questions.length - 1;
           if (isLastQuestionInStage) {
-            if (state.villageStageIndex < state.villageStages.length - 1) {
+            if (state.villageStageIndex < levelNames.length - 1) {
               state.villageStageIndex += 1;
+              state.levelUnlocked = Math.min(state.levelUnlocked + 1, levelNames.length);
               loadVillageStage();
               return;
             }
@@ -1187,6 +1315,7 @@
 
     initTheme();
     applyLanguage(localStorage.getItem('learnquest_language') || 'en');
+    renderLevelMap();
     document.getElementById("nextQuestion").dataset.state = "idle";
     document.getElementById("nextQuestion").textContent = "Check answer";
   </script>
