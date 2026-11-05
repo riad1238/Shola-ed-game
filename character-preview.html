@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Village Heroes — Character Preview</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    :root {
+      color-scheme: light;
+      --ink: #19334a;
+      --outline: #382a35;
+      --skin: #f2b98e;
+      --cape: #ef5c55;
+      --gold: #ffd84b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 36px 20px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      background: linear-gradient(#a8e8ff 0 58%, #b8ed91 58% 100%);
+      font-family: 'Press Start 2P', monospace;
+    }
+    main {
+      width: min(940px, 100%);
+      padding: clamp(20px, 4vw, 40px);
+      background: #fff7d9;
+      border: 8px solid #bd8741;
+      box-shadow: 0 12px 0 #75512f;
+    }
+    h1 { margin: 0; text-align: center; font-size: clamp(18px, 4vw, 32px); line-height: 1.6; }
+    .intro { margin: 14px auto 30px; max-width: 620px; text-align: center; font-size: 10px; line-height: 1.8; }
+    .heroes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .hero-card {
+      min-width: 0;
+      min-height: 255px;
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      color: var(--ink);
+      text-align: center;
+      background: linear-gradient(#fff, #f3edda);
+      border: 4px solid #8aa1be;
+      font: inherit;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .hero-card:hover { transform: translateY(-4px); }
+    .hero-card[aria-pressed="true"] { border-color: #ef5c55; box-shadow: 0 0 0 4px #ef5c5526; background: #fff1bd; }
+    .hero-card:focus-visible { outline: 4px solid #19334a; outline-offset: 4px; }
+    .hero-name { font-size: 13px; }
+    .hero-role { font-size: 8px; line-height: 1.8; color: #35536f; }
+
+    /* Tiny layered CSS sprites: these are original shapes, not platform-dependent emoji. */
+    .sprite {
+      --hair: #713e2e;
+      --shirt: #e85c4a;
+      --trim: #ffd84b;
+      --skin: #f2b98e;
+      position: relative;
+      width: 86px;
+      height: 126px;
+      flex: 0 0 auto;
+      image-rendering: pixelated;
+      filter: drop-shadow(4px 5px 0 #382a3528);
+    }
+    .sprite .head {
+      position: absolute;
+      z-index: 3;
+      left: 25px;
+      top: 20px;
+      width: 38px;
+      height: 34px;
+      background: var(--skin);
+      border: 4px solid var(--outline);
+      border-radius: 12px 12px 9px 9px;
+      box-shadow: inset 0 -5px #d99270;
+    }
+    .sprite .hair {
+      position: absolute;
+      z-index: 4;
+      left: 21px;
+      top: 13px;
+      width: 46px;
+      height: 18px;
+      background: var(--hair);
+      border: 4px solid var(--outline);
+      border-bottom: 0;
+      border-radius: 12px 12px 2px 2px;
+    }
+    .sprite .hair::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 7px;
+      width: 12px;
+      height: 10px;
+      background: var(--hair);
+      border-left: 4px solid var(--outline);
+    }
+    .sprite .eyes {
+      position: absolute;
+      z-index: 5;
+      left: 35px;
+      top: 34px;
+      width: 5px;
+      height: 7px;
+      background: var(--outline);
+      box-shadow: 14px 0 var(--outline);
+    }
+    .sprite .smile {
+      position: absolute;
+      z-index: 5;
+      left: 39px;
+      top: 48px;
+      width: 12px;
+      height: 5px;
+      border-bottom: 3px solid #9a4a46;
+      border-radius: 50%;
+    }
+    .sprite .neck {
+      position: absolute;
+      z-index: 2;
+      left: 38px;
+      top: 50px;
+      width: 14px;
+      height: 12px;
+      background: var(--skin);
+      border-left: 3px solid var(--outline);
+      border-right: 3px solid var(--outline);
+    }
+    .sprite .body {
+      position: absolute;
+      z-index: 2;
+      left: 19px;
+      top: 57px;
+      width: 50px;
+      height: 40px;
+      background: var(--shirt);
+      border: 4px solid var(--outline);
+      border-radius: 12px 12px 5px 5px;
+      box-shadow: inset 0 -8px color-mix(in srgb, var(--shirt), black 16%);
+    }
+    .sprite .body::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 0;
+      width: 6px;
+      height: 32px;
+      background: var(--trim);
+      border-left: 2px solid var(--outline);
+      border-right: 2px solid var(--outline);
+    }
+    .sprite .arm {
+      position: absolute;
+      z-index: 1;
+      top: 62px;
+      width: 15px;
+      height: 34px;
+      background: var(--shirt);
+      border: 4px solid var(--outline);
+      border-radius: 8px;
+    }
+    .sprite .arm.left { left: 8px; transform: rotate(12deg); }
+    .sprite .arm.right { right: 8px; transform: rotate(-12deg); }
+    .sprite .leg {
+      position: absolute;
+      z-index: 1;
+      top: 91px;
+      width: 17px;
+      height: 24px;
+      background: #405d91;
+      border: 4px solid var(--outline);
+    }
+    .sprite .leg.left { left: 24px; }
+    .sprite .leg.right { right: 24px; }
+    .sprite .boot {
+      position: absolute;
+      z-index: 2;
+      top: 108px;
+      width: 24px;
+      height: 13px;
+      background: #68412e;
+      border: 3px solid var(--outline);
+      border-radius: 4px 7px 3px 3px;
+    }
+    .sprite .boot.left { left: 16px; }
+    .sprite .boot.right { right: 16px; }
+    .sprite .gear {
+      position: absolute;
+      z-index: 6;
+      display: block;
+    }
+    .sprite.milo { --hair: #a64b27; --shirt: #ef7041; --trim: #ffd84b; }
+    .sprite.milo .hair { height: 20px; }
+    .sprite.milo .gear {
+      left: 28px; top: 4px; width: 33px; height: 25px;
+      background: #d76632; border: 4px solid var(--outline);
+      clip-path: polygon(0 100%, 15% 0, 42% 52%, 70% 0, 100% 100%);
+    }
+    .sprite.ava { --hair: #4a2d68; --shirt: #7655c8; --trim: #f6c95d; }
+    .sprite.ava .gear {
+      left: 20px; top: -1px; width: 46px; height: 31px;
+      background: #8d68e5; border: 4px solid var(--outline);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+    .sprite.ava .gear::after {
+      content: ""; position: absolute; left: 14px; top: 13px;
+      width: 10px; height: 10px; background: #ffe477; border: 3px solid var(--outline); border-radius: 50%;
+    }
+    .sprite.leo { --hair: #593927; --shirt: #3d9d78; --trim: #e9f2f0; }
+    .sprite.leo .body { border-radius: 6px; }
+    .sprite.leo .gear {
+      right: 2px; top: 56px; width: 27px; height: 36px;
+      background: linear-gradient(90deg, #dce8e7 0 45%, #829ca8 46%);
+      border: 4px solid var(--outline); border-radius: 7px 7px 12px 12px;
+      clip-path: polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%);
+    }
+    .sprite.zee { --hair: #263d55; --shirt: #3f8dc6; --trim: #f2d470; }
+    .sprite.zee .hair { height: 16px; border-radius: 12px 12px 5px 5px; }
+    .sprite.zee .gear {
+      right: 0; top: 29px; width: 24px; height: 31px;
+      border: 4px solid #70452b; border-left-width: 3px;
+      border-radius: 0 100% 0 0; transform: rotate(-15deg);
+    }
+    .sprite.zee .gear::before {
+      content: ""; position: absolute; width: 4px; height: 35px;
+      left: 9px; top: -6px; background: #70452b; transform: rotate(28deg);
+    }
+    .sprite.mini { transform: scale(.78); transform-origin: center top; margin-bottom: -24px; }
+
+    .selection-note {
+      min-height: 44px;
+      margin: 24px 0 0;
+      padding: 14px;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1.8;
+      color: #35536f;
+      background: #dff3fa;
+      border: 3px solid #98bfd0;
+    }
+    @media (max-width: 700px) { .heroes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 380px) { .heroes { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Choose your hero</h1>
+    <p class="intro">Meet the village crew! Each hero has their own outfit and gear. Choose one to see them ready for adventure.</p>
+    <section class="heroes" aria-label="Hero choices">
+      <button class="hero-card" type="button" aria-pressed="true" data-name="Milo">
+        <span class="sprite milo mini" aria-hidden="true"><i class="gear"></i><i class="arm left"></i><i class="arm right"></i><i class="leg left"></i><i class="leg right"></i><i class="boot left"></i><i class="boot right"></i><i class="body"></i><i class="neck"></i><i class="head"></i><i class="hair"></i><i class="eyes"></i><i class="smile"></i></span>
+        <span class="hero-name">Milo</span><span class="hero-role">FOX SCOUT<br />Fast runner</span>
+      </button>
+      <button class="hero-card" type="button" aria-pressed="false" data-name="Ava">
+        <span class="sprite ava mini" aria-hidden="true"><i class="gear"></i><i class="arm left"></i><i class="arm right"></i><i class="leg left"></i><i class="leg right"></i><i class="boot left"></i><i class="boot right"></i><i class="body"></i><i class="neck"></i><i class="head"></i><i class="hair"></i><i class="eyes"></i><i class="smile"></i></span>
+        <span class="hero-name">Ava</span><span class="hero-role">STAR MAGE<br />Clever spellcaster</span>
+      </button>
+      <button class="hero-card" type="button" aria-pressed="false" data-name="Leo">
+        <span class="sprite leo mini" aria-hidden="true"><i class="gear"></i><i class="arm left"></i><i class="arm right"></i><i class="leg left"></i><i class="leg right"></i><i class="boot left"></i><i class="boot right"></i><i class="body"></i><i class="neck"></i><i class="head"></i><i class="hair"></i><i class="eyes"></i><i class="smile"></i></span>
+        <span class="hero-name">Leo</span><span class="hero-role">VILLAGE KNIGHT<br />Shield defender</span>
+      </button>
+      <button class="hero-card" type="button" aria-pressed="false" data-name="Zee">
+        <span class="sprite zee mini" aria-hidden="true"><i class="gear"></i><i class="arm left"></i><i class="arm right"></i><i class="leg left"></i><i class="leg right"></i><i class="boot left"></i><i class="boot right"></i><i class="body"></i><i class="neck"></i><i class="head"></i><i class="hair"></i><i class="eyes"></i><i class="smile"></i></span>
+        <span class="hero-name">Zee</span><span class="hero-role">QUICK ARCHER<br />Sharp-eyed explorer</span>
+      </button>
+    </section>
+    <p class="selection-note" id="selectionNote" aria-live="polite">Milo is ready to run through the village!</p>
+  </main>
+  <script>
+    const heroMessages = {
+      Milo: 'Milo is ready to run through the village!',
+      Ava: 'Ava is ready to light the way with a little magic!',
+      Leo: 'Leo is ready to protect the village!',
+      Zee: 'Zee is ready to scout the trail!'
+    };
+    const cards = [...document.querySelectorAll('.hero-card')];
+    const note = document.getElementById('selectionNote');
+    cards.forEach((card) => card.addEventListener('click', () => {
+      cards.forEach((item) => item.setAttribute('aria-pressed', String(item === card)));
+      note.textContent = heroMessages[card.dataset.name];
+    }));
+  </script>
+</body>
+</html>
