@@ -557,7 +557,7 @@
         </div>
 
         <div class="menu">
-          <button class="menu-btn" data-mode="village" id="villageModeBtn">Village Mode</button>
+          <button class="menu-btn" data-mode="village" id="villageModeBtn">Village Run</button>
           <button class="menu-btn small" data-mode="classic" id="classicModeBtn">Classic Mode</button>
         </div>
 
@@ -764,6 +764,29 @@
         });
       }
 
+      function showModePage(mode) {
+        const isVillage = mode === 'village';
+        titleScreen.classList.add('hidden');
+        selectionScreen.classList.add('hidden');
+        gameScreen.classList.remove('hidden');
+        villageGameShell.classList.toggle('hidden', !isVillage);
+        classicPanel.classList.toggle('hidden', isVillage);
+
+        if (isVillage) {
+          playerNode.style.left = '90px';
+          playerNode.style.bottom = '93px';
+          setPlayerRunningState(true);
+          resetBackgroundScroll();
+          if (state.animationFrame) cancelAnimationFrame(state.animationFrame);
+          state.lastTick = performance.now();
+          state.lastSpawn = performance.now();
+          state.animationFrame = requestAnimationFrame(gameLoop);
+        } else {
+          prepareClassicQuestions();
+          renderClassicQuestion();
+        }
+      }
+
       function renderCharacterCards() {
         const grid = document.getElementById('characterGrid');
         grid.innerHTML = '';
@@ -867,6 +890,7 @@
       function startSelectionScreen() {
         titleScreen.classList.add('hidden');
         selectionScreen.classList.remove('hidden');
+        gameScreen.classList.add('hidden');
       }
 
       function prepareClassicQuestions() {
@@ -999,55 +1023,44 @@
         answerList.innerHTML = '';
         feedback.textContent = '';
 
-        q.a.forEach((option, index) => {
+        q.a.forEach((answer, idx) => {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'answer-btn';
-          btn.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+          btn.textContent = `${String.fromCharCode(65 + idx)}. ${answer}`;
           btn.addEventListener('click', () => {
-            const isCorrect = index === q.correct;
+            const isCorrect = idx === q.correct;
             document.querySelectorAll('.answer-btn').forEach((el) => el.disabled = true);
-
             if (isCorrect) {
               btn.classList.add('correct');
               feedback.textContent = 'Correct! Enemy defeated!';
-              state.score += 50;
+              state.score += 25;
               state.enemiesDefeated += 1;
-              updateHud();
-
+              enemyObj.defeated = true;
               setTimeout(() => {
-                enemyObj.element.remove();
-                state.enemyList = state.enemyList.filter((e) => e !== enemyObj);
-                state.questionOpen = false;
-                questionModal.classList.add('hidden');
-                setPlayerRunningState(true);
-
                 if (state.enemiesDefeated >= state.totalEnemiesNeeded) {
-                  setTimeout(() => {
-                    if (state.selectedLevel < levels.length - 1) {
-                      alert('Level cleared! Choose the next challenge.');
-                      startSelectionScreen();
-                    } else {
-                      alert('Village saved! You won the game!');
-                      startTitleScreen();
-                    }
-                  }, 200);
+                  alert('Village run complete!');
+                  startTitleScreen();
+                  return;
                 }
-              }, 800);
+                questionModal.classList.add('hidden');
+                state.questionOpen = false;
+                setPlayerRunningState(true);
+                enemyObj.element.remove();
+              }, 700);
             } else {
               btn.classList.add('wrong');
-              feedback.textContent = 'Wrong answer! You lost a life.';
-              state.lives -= 1;
-              updateHud();
+              feedback.textContent = 'Wrong answer! Enemy still stands.';
+              state.lives = Math.max(0, state.lives - 1);
               setTimeout(() => {
                 questionModal.classList.add('hidden');
                 state.questionOpen = false;
                 setPlayerRunningState(true);
                 if (state.lives <= 0) {
-                  alert('Game over! Try again.');
+                  alert('Game over!');
                   startTitleScreen();
                 }
-              }, 900);
+              }, 700);
             }
           });
           answerList.appendChild(btn);
