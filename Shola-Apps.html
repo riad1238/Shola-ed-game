@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shola Apps</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f7fc;color:#172a45}.topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;padding:12px 18px;background:#17345b;color:#fff;box-shadow:0 3px 12px #11264144}.brand{font-weight:700;margin-right:auto}.tab{border:1px solid #ffffff66;border-radius:9px;padding:10px 14px;background:#ffffff16;color:white;font:inherit;font-weight:700;cursor:pointer}.tab:hover,.tab[aria-current="page"]{background:#fff;color:#17345b}.app-frame{display:block;width:100%;height:calc(100vh - 60px);min-height:480px;border:0;background:#f3f7fc}@media(max-width:520px){.topbar{gap:7px;padding:10px}.brand{width:100%;margin-bottom:3px}.tab{flex:1;padding:9px 7px;font-size:.86rem}.app-frame{height:calc(100vh - 100px)}}
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Switch between Shola apps">
+    <span class="brand">📚 Shola Apps</span>
+    <button class="tab" type="button" data-page="index.html" aria-current="page">Village Run / Classic</button>
+    <button class="tab" type="button" data-page="Shola-Learning-App.html">Learning App</button>
+  </nav>
+  <iframe class="app-frame" id="appFrame" title="Shola app" src="index.html"></iframe>
+  <script>
+    const frame = document.getElementById('appFrame');
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    tabs.forEach((tab) => tab.addEventListener('click', () => {
+      if (frame.getAttribute('src') !== tab.dataset.page) frame.src = tab.dataset.page;
+      tabs.forEach((item) => {
+        if (item === tab) item.setAttribute('aria-current', 'page');
+        else item.removeAttribute('aria-current');
+      });
+    }));
+  </script>
+</body>
+</html>
