@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17345b">
+  <title>Ask Shola AI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; padding: 24px; color: #172a45; background: #f3f7fc; font: 16px/1.5 Arial, sans-serif; }
+    main { width: min(760px, 100%); margin: 0 auto; padding: clamp(20px, 5vw, 36px); background: white; border: 1px solid #d5e0ee; border-radius: 16px; box-shadow: 0 10px 30px #17345b14; }
+    h1 { margin-top: 0; color: #17345b; }
+    .hint { color: #52677e; }
+    label { display: block; margin: 16px 0 6px; font-weight: 700; }
+    input, select, textarea { width: 100%; padding: 12px; border: 1px solid #9aacc0; border-radius: 8px; font: inherit; }
+    textarea { min-height: 130px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    button { margin-top: 18px; padding: 12px 18px; border: 0; border-radius: 8px; color: white; background: #1769aa; font: inherit; font-weight: 700; cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; }
+    .answer { min-height: 56px; margin-top: 20px; padding: 16px; white-space: pre-wrap; overflow-wrap: anywhere; background: #eef5fc; border-radius: 8px; }
+    .answer:empty { display: none; }
+    @media (max-width: 560px) { body { padding: 12px; } .row { grid-template-columns: 1fr; gap: 0; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>💡 Ask Shola AI</h1>
+    <p class="hint">Ask for a simple explanation or study help. Do not enter private information.</p>
+    <form id="askForm">
+      <label for="question">What would you like help with?</label>
+      <textarea id="question" maxlength="1000" required placeholder="For example: Explain fractions with a simple example."></textarea>
+      <div class="row">
+        <div><label for="grade">Grade</label><select id="grade"><option value="1">Grade 1</option><option value="2">Grade 2</option><option value="3">Grade 3</option><option value="4">Grade 4</option><option value="5" selected>Grade 5</option></select></div>
+        <div><label for="language">Language</label><select id="language"><option value="en">English</option><option value="ar">العربية</option></select></div>
+      </div>
+      <button id="submitButton" type="submit">Ask a question</button>
+    </form>
+    <div id="answer" class="answer" role="status" aria-live="polite"></div>
+  </main>
+  <script src="config.js"></script>
+  <script>
+    const form = document.getElementById('askForm');
+    const question = document.getElementById('question');
+    const answer = document.getElementById('answer');
+    const submitButton = document.getElementById('submitButton');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const message = question.value.trim();
+      if (!message) { question.focus(); return; }
+      submitButton.disabled = true;
+      answer.textContent = 'Thinking…';
+      try {
+        const baseUrl = (window.AI_BACKEND_URL || '').replace(/\/$/, '');
+        if (!baseUrl) throw new Error('The AI service is not configured.');
+        const response = await fetch(`${baseUrl}/api/ai-chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, profile: { name: 'Student', grade: Number(document.getElementById('grade').value), language: document.getElementById('language').value, learningStyle: 'simple explanations' } })
+        });
+        if (!response.ok) throw new Error(`The AI service returned status ${response.status}. Please try again later.`);
+        const data = await response.json();
+        const text = typeof data.answer === 'string' ? data.answer : typeof data.message === 'string' ? data.message : '';
+        if (!text) throw new Error('The AI service returned an unexpected response.');
+        answer.textContent = text;
+      } catch (error) {
+        answer.textContent = `${error.message || 'Could not reach the AI service.'} Check your connection and try again.`;
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
