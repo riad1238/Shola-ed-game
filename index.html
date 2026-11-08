@@ -1166,23 +1166,15 @@
         setPlayerRunningState(false);
         titleScreen.classList.add('hidden'); selectionScreen.classList.add('hidden');
         gameScreen.classList.add('hidden'); questionModal.classList.add('hidden');
-        schoolModeScreen.classList.add('hidden'); resultsScreen.classList.remove('hidden');
+         resultsScreen.classList.remove('hidden');
         document.getElementById('resultsTitle').textContent = title;
         document.getElementById('resultsMessage').textContent = message || 'Great effort. Here are your results.';
         document.getElementById('resultsScore').textContent = state.mode === 'classic' ? score + ' pts' : score + ' pts';
         document.getElementById('resultsDetails').textContent = total ? (score + ' points • ' + total + ' questions / challenges') : (state.enemiesDefeated + ' challenges completed');
         document.getElementById('resultsReplay').onclick = () => { resultsScreen.classList.add('hidden'); startSelectionScreen(); };
       }
-      function showSchoolMode() {
-        state.running = false;
-        if (state.animationFrame) cancelAnimationFrame(state.animationFrame);
-        titleScreen.classList.add('hidden'); selectionScreen.classList.add('hidden');
-        gameScreen.classList.add('hidden'); questionModal.classList.add('hidden');
-        resultsScreen.classList.add('hidden'); schoolModeScreen.classList.remove('hidden');
-        setNavActive('school');
-      }
       function setNavActive(which) {
-        [['village','navVillage'],['classic','navClassic'],['school','navSchool']].forEach(([key,id]) => document.getElementById(id).classList.toggle('active',key===which));
+        [['village','navVillage'],['classic','navClassic']].forEach(([key,id]) => document.getElementById(id).classList.toggle('active',key===which));
       }
       document.getElementById('navVillage').onclick = () => { setMode('village'); resultsScreen.classList.add('hidden'); schoolModeScreen.classList.add('hidden'); startSelectionScreen(); setNavActive('village'); };
       document.getElementById('navClassic').onclick = () => { window.location.href = 'Learning-Mode.html'; };
@@ -1197,8 +1189,6 @@
         document.getElementById('navClassic').textContent = ar ? '📚 وضع التعلّم' : '📚 Learning Mode';
         
         document.getElementById('themeToggle').textContent = document.documentElement.classList.contains('dark-theme') ? (ar ? '☀ فاتح' : '☀ Light') : (ar ? '🌙 داكن' : '🌙 Dark');
-        const frame = document.getElementById('schoolLearningFrame');
-        try { frame.contentDocument.getElementById('language').value = ar ? 'ar' : 'en'; frame.contentDocument.getElementById('language').dispatchEvent(new Event('change')); } catch(e) {}
       };
       try {
         const savedTheme = localStorage.getItem('learnquest-theme');
@@ -1210,15 +1200,7 @@
         document.documentElement.classList.toggle('dark-theme', dark);
         try { localStorage.setItem('learnquest-theme', dark ? 'dark' : 'light'); } catch(e) {}
         document.getElementById('themeToggle').textContent = dark ? '☀ Light' : '🌙 Dark';
-        const frame = document.getElementById('schoolLearningFrame');
-        try { frame.contentDocument.documentElement.classList.toggle('dark-theme', dark); } catch(e) {}
       };
-      document.getElementById('schoolLearningFrame').addEventListener('load', () => {
-        try {
-          const frame = document.getElementById('schoolLearningFrame');
-          frame.contentDocument.documentElement.classList.toggle('dark-theme', document.documentElement.classList.contains('dark-theme'));
-        } catch(e) {}
-      });
       renderCharacterCards();
       renderSubjectCards();
       renderLevelCards();
