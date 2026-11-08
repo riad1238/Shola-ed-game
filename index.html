@@ -1204,6 +1204,11 @@
         const frame = document.getElementById('schoolLearningFrame');
         try { frame.contentDocument.getElementById('language').value = ar ? 'ar' : 'en'; frame.contentDocument.getElementById('language').dispatchEvent(new Event('change')); } catch(e) {}
       };
+      try {
+        const savedTheme = localStorage.getItem('learnquest-theme');
+        document.documentElement.classList.toggle('dark-theme', savedTheme === 'dark');
+      } catch(e) {}
+      document.getElementById('themeToggle').textContent = document.documentElement.classList.contains('dark-theme') ? '☀ Light' : '🌙 Dark';
       document.getElementById('themeToggle').onclick = () => {
         const dark = !document.documentElement.classList.contains('dark-theme');
         document.documentElement.classList.toggle('dark-theme', dark);
@@ -1228,6 +1233,5 @@
       document.getElementById('navVillage').classList.add('active');
     </script>
     <script src="level-lock.js"></script>
-  <script src="theme.js"></script>
 </body>
 </html>
