@@ -1165,7 +1165,7 @@
       function setNavActive(which) {
         [['village','navVillage'],['classic','navClassic']].forEach(([key,id]) => document.getElementById(id).classList.toggle('active',key===which));
       }
-      document.getElementById('navVillage').onclick = () => { setMode('village'); resultsScreen.classList.add('hidden'); schoolModeScreen.classList.add('hidden'); startSelectionScreen(); setNavActive('village'); };
+      document.getElementById('navVillage').onclick = () => { setMode('village'); resultsScreen.classList.add('hidden'); startSelectionScreen(); setNavActive('village'); };
       document.getElementById('navClassic').onclick = () => { window.location.href = 'Learning-Mode.html'; };
       
       document.getElementById('resultsHome').onclick = () => { resultsScreen.classList.add('hidden'); startTitleScreen(); setNavActive('village'); };
