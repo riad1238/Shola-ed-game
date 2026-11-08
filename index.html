@@ -45,7 +45,7 @@
       .hidden { display: none !important; }
       .global-bar{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:110;display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:center;width:min(96vw,1000px);padding:8px 10px;background:#17345beF;border:2px solid #f2d77e;border-radius:14px;box-shadow:0 5px 18px #10243d55}
       .global-bar button{font:inherit;font-size:10px;padding:9px 12px;border:2px solid #f2d77e;border-radius:8px;background:#fff7d6;color:#18314a}
-      .global-bar button.active{background:#ff9a72;color:#fff}
+      .global-bar button.active{background:#ff9a72;color:#fff} #navSchool{display:none}
       .global-bar .spacer{flex:1}
       .school-screen{display:block;position:fixed;inset:0;padding:74px 0 0;background:#f3f7fc}
       .school-screen iframe{width:100%;height:calc(100% - 0px);border:0;background:#f3f7fc}
@@ -563,8 +563,8 @@
   <body>
     <nav class="global-bar" aria-label="App controls">
       <button id="navVillage" class="active" type="button">🏃 Village Run</button>
-      <button id="navClassic" type="button">📝 Classic Quiz</button>
-      <button id="navSchool" type="button">📚 School Learning</button>
+      <button id="navClassic" type="button">📚 Learning Mode</button>
+      
       <span class="spacer"></span>
       <button id="languageToggle" type="button" aria-label="Switch language">العربية</button>
       <button id="themeToggle" type="button" aria-label="Toggle light and dark mode">🌙 Dark</button>
@@ -584,8 +584,8 @@
 
         <div class="menu">
           <button class="menu-btn" data-mode="village" id="villageModeBtn">Village Run</button>
-          <button class="menu-btn small" data-mode="classic" id="classicModeBtn">Classic Mode</button>
-          <button class="menu-btn small" id="schoolModeBtn">School Learning</button>
+          <button class="menu-btn small" id="classicModeBtn">Learning Mode</button>
+          
         </div>
 
         <div class="copyright">© Shola Learning</div>
@@ -596,7 +596,7 @@
       <div class="panel">
         <div class="mode-row">
           <button class="mode-btn active" data-mode="village" id="selectVillageMode">Village Runner</button>
-          <button class="mode-btn" data-mode="classic" id="selectClassicMode">Classic Quiz</button>
+          
         </div>
 
         <h2 class="panel-header">Choose your hero</h2>
@@ -658,7 +658,7 @@
       </div>
     </div>
 
-    <div id="schoolModeScreen" class="school-screen hidden"><iframe id="schoolLearningFrame" title="Shola School Learning mode" src="Shola-Learning-App.html"></iframe></div>
+    
     <div id="resultsScreen" class="screen results-screen hidden">
       <section class="results-card">
         <div style="font-size:56px">🏆</div>
@@ -1148,10 +1148,7 @@
         setMode('village');
         startSelectionScreen();
       });
-      document.getElementById('classicModeBtn').addEventListener('click', () => {
-        setMode('classic');
-        startSelectionScreen();
-      });
+      document.getElementById('classicModeBtn').addEventListener('click', () => { window.location.href = 'Learning-Mode.html'; });
       document.getElementById('selectVillageMode').addEventListener('click', () => setMode('village'));
       document.getElementById('selectClassicMode').addEventListener('click', () => setMode('classic'));
       document.getElementById('backBtn').addEventListener('click', startTitleScreen);
@@ -1188,9 +1185,8 @@
         [['village','navVillage'],['classic','navClassic'],['school','navSchool']].forEach(([key,id]) => document.getElementById(id).classList.toggle('active',key===which));
       }
       document.getElementById('navVillage').onclick = () => { setMode('village'); resultsScreen.classList.add('hidden'); schoolModeScreen.classList.add('hidden'); startSelectionScreen(); setNavActive('village'); };
-      document.getElementById('navClassic').onclick = () => { setMode('classic'); resultsScreen.classList.add('hidden'); schoolModeScreen.classList.add('hidden'); startSelectionScreen(); setNavActive('classic'); };
-      document.getElementById('navSchool').onclick = showSchoolMode;
-      document.getElementById('schoolModeBtn').onclick = showSchoolMode;
+      document.getElementById('navClassic').onclick = () => { window.location.href = 'Learning-Mode.html'; };
+      
       document.getElementById('resultsHome').onclick = () => { resultsScreen.classList.add('hidden'); startTitleScreen(); setNavActive('village'); };
       document.getElementById('languageToggle').onclick = () => {
         const ar = document.documentElement.lang !== 'ar';
@@ -1198,8 +1194,8 @@
         document.documentElement.dir = ar ? 'rtl' : 'ltr';
         document.getElementById('languageToggle').textContent = ar ? 'English' : 'العربية';
         document.getElementById('navVillage').textContent = ar ? '🏃 جولة القرية' : '🏃 Village Run';
-        document.getElementById('navClassic').textContent = ar ? '📝 الاختبار' : '📝 Classic Quiz';
-        document.getElementById('navSchool').textContent = ar ? '📚 التعلّم المدرسي' : '📚 School Learning';
+        document.getElementById('navClassic').textContent = ar ? '📚 وضع التعلّم' : '📚 Learning Mode';
+        
         document.getElementById('themeToggle').textContent = document.documentElement.classList.contains('dark-theme') ? (ar ? '☀ فاتح' : '☀ Light') : (ar ? '🌙 داكن' : '🌙 Dark');
         const frame = document.getElementById('schoolLearningFrame');
         try { frame.contentDocument.getElementById('language').value = ar ? 'ar' : 'en'; frame.contentDocument.getElementById('language').dispatchEvent(new Event('change')); } catch(e) {}
