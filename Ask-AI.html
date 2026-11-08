@@ -57,11 +57,14 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, profile: { name: 'Student', grade: Number(document.getElementById('grade').value), language: document.getElementById('language').value, learningStyle: 'simple explanations' } })
         });
-        if (!response.ok) throw new Error(`The AI service returned status ${response.status}. Please try again later.`);
-        const data = await response.json();
-        const text = typeof data.answer === 'string' ? data.answer : typeof data.message === 'string' ? data.message : '';
-        if (!text) throw new Error('The AI service returned an unexpected response.');
-        answer.textContent = text;
+        const data = await response.json().catch(() => ({}));
+        const reply = typeof data.answer === 'string' ? data.answer : typeof data.message === 'string' ? data.message : '';
+        if (!response.ok) {
+          const detail = reply || 'No error details were returned by the server.';
+          throw new Error(`AI request failed (HTTP ${response.status}): ${detail}`);
+        }
+        if (!reply) throw new Error('The AI service returned an unexpected response. Please check the backend logs.');
+        answer.textContent = reply;
       } catch (error) {
         answer.textContent = `${error.message || 'Could not reach the AI service.'} Check your connection and try again.`;
       } finally {
