@@ -54,7 +54,7 @@
       .results-score{font-size:clamp(30px,6vw,56px);color:#e85c4a;margin:20px 0}
       .results-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
       .player .avatar-face{font-size:28px;line-height:1}
-      .hero-avatar{width:72px;height:82px;display:grid;place-items:center;font-size:42px;border:4px solid #382a35;border-radius:18px 18px 12px 12px;box-shadow:inset 0 -10px #0002,4px 5px #382a3528;background:var(--hero-color,#ffd84b);position:relative}
+      .hero-avatar{width:76px;height:88px;display:grid;place-items:center;font-size:42px;border:4px solid #382a35;border-radius:42% 42% 24% 24%;box-shadow:inset 0 -12px #0002,4px 5px #382a3528;background:linear-gradient(145deg,#fff,var(--hero-color,#ffd84b));position:relative}
       .hero-avatar:before{content:"";position:absolute;top:-12px;left:9px;right:9px;height:19px;border:4px solid #382a35;border-radius:12px 12px 3px 3px;background:var(--hero-accent,#ef7041)}
       .hero-avatar:after{content:"••";position:absolute;top:26px;left:18px;letter-spacing:10px;font:16px Arial;color:#382a35}
       .option-card .hero-avatar{margin:4px auto}
@@ -402,20 +402,11 @@
         background: repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0 18px, rgba(255,255,255,0.02) 18px 32px);
       }
       .player {
-        position: absolute;
-        left: 90px;
-        bottom: 93px;
-        width: 48px;
-        height: 48px;
-        border: 4px solid rgba(0,0,0,0.15);
-        display: grid;
-        place-items: center;
-        font-size: 24px;
-        background: #ffd84a;
-        z-index: 12;
-        box-shadow: inset 0 -8px 0 rgba(0,0,0,0.09);
-        transform-origin: center bottom;
-        transition: transform 0.12s ease, filter 0.12s ease;
+        position: absolute; left: 90px; bottom: 93px; width: 58px; height: 62px;
+        border: 4px solid #382a35; border-radius: 46% 46% 28% 28%; display:grid; place-items:center;
+        font-size:30px; background:linear-gradient(145deg,#fff0a4,#ffb83f); z-index:12;
+        box-shadow:inset 0 -10px #0002,0 6px 0 #382a3533; transform-origin:center bottom;
+        transition:transform .12s ease,filter .12s ease;
       }
       .player::before, .player::after {
         content: "";
@@ -439,21 +430,19 @@
       }
 
       .enemy {
-        position: absolute;
-        bottom: 90px;
-        width: 54px;
-        height: 54px;
-        display: grid;
-        place-items: center;
-        font-size: 26px;
-        border: 4px solid rgba(0,0,0,0.15);
-        background: #f7f7f7;
-        z-index: 11;
+        position:absolute; bottom:90px; width:58px; height:62px; display:grid; place-items:center;
+        font-size:30px; border:4px solid #283b52; border-radius:48% 48% 30% 30%;
+        background:linear-gradient(145deg,#fff,#b9d9f5); z-index:11;
+        box-shadow:inset 0 -9px #0002,0 6px 0 #283b5233;
       }
-      .enemy.red { background: #ff8a8a; }
-      .enemy.green { background: #a0eb8e; }
-      .enemy.blue { background: #8fc9ff; }
-      .enemy.boss { width: 82px; height: 82px; font-size: 44px; background: #d3a0ff; }
+      .enemy::before{content:"";position:absolute;top:-13px;left:5px;width:18px;height:23px;background:inherit;border:4px solid #283b52;border-radius:90% 10% 60% 10%;transform:rotate(-24deg)}
+      .enemy::after{content:"•  •";position:absolute;top:15px;left:10px;font:900 15px Arial;color:#26384b;letter-spacing:3px}
+      .enemy.red { background:linear-gradient(145deg,#ffb0a8,#e45b68); }
+      .enemy.green { background:linear-gradient(145deg,#c4f5a4,#54b982); }
+      .enemy.blue { background:linear-gradient(145deg,#b8e4ff,#548fc8); }
+      .enemy.boss { width:88px;height:94px;font-size:42px;border-radius:48% 48% 24% 24%;background:linear-gradient(145deg,#d9b4ff,#8655bb);box-shadow:inset 0 -13px #0002,0 8px 0 #57378a; }
+      .enemy.boss::before{width:26px;height:36px;top:-20px;left:7px;box-shadow:42px 0 0 -4px #9a6acb,42px 0 0 0 #283b52}
+      .enemy.boss::after{top:25px;left:15px;font-size:19px;letter-spacing:5px;color:#251c38}
 
       .classic-panel {
         width: min(840px, 92vw);
