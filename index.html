@@ -1022,7 +1022,7 @@
         const enemyTypes = ['red', 'green', 'blue'];
         const enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
         const enemy = document.createElement('div');
-        enemy.className = `enemy ${enemyType}`;
+        enemy.className = `enemy ${enemyType}${state.selectedLevel === 3 ? ' boss' : ''}`;
         enemy.innerHTML = state.selectedLevel === 3 ? '👹' : '🦹';
         enemy.style.left = '980px';
         enemyLayer.appendChild(enemy);
