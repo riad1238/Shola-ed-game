@@ -547,7 +547,28 @@
         .menu-btn { min-width: 280px; }
         .selection-actions { flex-direction: column; }
       }
-    </style>
+    
+/* Village Run visual refresh: retain the original platform game and its controls */
+html,body{font-family:ui-rounded,"Avenir Next",system-ui,sans-serif;letter-spacing:.1px}
+body{background:linear-gradient(145deg,#e6f8ff,#dff6e8)}
+.global-bar{backdrop-filter:blur(14px);background:#15385beF;border:1px solid #ffffff45;border-radius:999px;padding:9px 12px;box-shadow:0 12px 34px #10243d30}
+.global-bar button{font-family:inherit;font-weight:800;font-size:12px;border:1px solid #ffffff55;border-radius:999px;padding:10px 16px;transition:transform .16s,filter .16s}
+.global-bar button:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.pixel-box{border:5px solid #fff;border-radius:30px;box-shadow:0 0 0 2px #7e9bb1,0 24px 55px #24476b35}
+.menu-btn{font-family:inherit;border:2px solid #ffffffa0;border-radius:17px;box-shadow:0 7px 0 #79542d55,0 12px 24px #24476b18;font-weight:900;letter-spacing:.4px}
+.panel,.classic-panel,.modal-box,.results-card{border:2px solid #ffffffd9;border-radius:24px;box-shadow:0 16px 42px #24476b24}
+.panel-header,.classic-header,.question-title{letter-spacing:-.4px}
+.mode-btn,.primary-btn,.secondary-btn{border:2px solid #ffffffb5;border-radius:15px;box-shadow:0 5px 0 #53382355;font-family:inherit;font-weight:900}
+.option-card{border:2px solid #d3e1ec;border-radius:19px;box-shadow:0 8px 20px #24476b10}
+.option-card.active{border-color:#ff805e;box-shadow:0 0 0 4px #ff805e20,0 10px 24px #24476b12}
+.game-shell{border:5px solid #fff;border-radius:26px;box-shadow:0 0 0 2px #7e9bb1,0 22px 50px #24476b30}
+.hud-box{border:1px solid #ffffffaa;border-radius:13px;background:#ffffffb8;backdrop-filter:blur(8px);font-family:inherit;font-weight:900}
+.classic-answer,.answer-btn{border:2px solid #b7cde0;border-radius:14px;font-family:inherit;font-weight:750;transition:transform .15s,border-color .15s}
+.classic-answer:hover,.answer-btn:hover{transform:translateY(-2px);border-color:#4387d9}
+.results-score{letter-spacing:-2px}
+@media(max-width:600px){.global-bar{border-radius:20px}.global-bar .spacer{display:none}}
+
+</style>
   </head>
   <body>
     <nav class="global-bar" aria-label="App controls">
