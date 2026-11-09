@@ -57,7 +57,20 @@ html.dark body{background:radial-gradient(ellipse at 12% 0%,#263c57 0,#111d2d 65
 html.dark .top{background:linear-gradient(115deg,#101f35,#1d3955 58%,#20534f)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 
+
+.ask-ai-fab{position:fixed;right:22px;bottom:22px;z-index:150;border:0;border-radius:999px;padding:14px 20px;background:linear-gradient(135deg,#ffbd59,#ff825e);color:#17304b;font-weight:950;box-shadow:0 8px 24px #18314a40;cursor:pointer}
+.ai-chat-panel{position:fixed;right:20px;bottom:88px;z-index:151;width:min(370px,calc(100vw - 28px));height:min(520px,calc(100vh - 125px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #b8cce0;border-radius:22px;background:#fff;color:#18314a;box-shadow:0 18px 55px #10243d45;font:14px system-ui,Arial,sans-serif}
+.ai-chat-panel.hidden{display:none!important}.ai-chat-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(120deg,#17385e,#347b79);color:#fff}.ai-chat-head span{font-size:18px}.ai-chat-head small{display:block;font-size:11px;opacity:.8;margin-left:27px}.ai-chat-head button{border:0;border-radius:9px;padding:7px 10px;background:#ffffff25;color:white}
+.ai-chat-log{flex:1;overflow:auto;padding:14px;background:#f4f8fc}.ai-chat-log p{padding:10px 12px;border-radius:14px;line-height:1.5;max-width:92%;white-space:pre-wrap}.ai-chat-welcome,.ai-chat-bot{background:#e1efff;margin:0 auto 10px 0}.ai-chat-user{background:#dff5e9;margin:0 0 10px auto}.ai-chat-compose{display:flex;gap:8px;padding:10px;border-top:1px solid #d8e4ef}.ai-chat-compose textarea{resize:none;flex:1;min-width:0;border:1px solid #c5d9ec;border-radius:12px;padding:10px;font:14px system-ui}.ai-chat-compose button{border:0;border-radius:12px;background:#286bc5;color:white;padding:0 14px;font-weight:800}.ai-chat-thinking{padding:8px 14px;color:#36536f;font-weight:750;display:flex;align-items:center;gap:8px}.ai-chat-thinking.hidden{display:none}.mini-penguin{font-size:25px;animation:miniPenguin .8s ease-in-out infinite alternate}.chat-dots{animation:chatDots 1s steps(3,end) infinite;overflow:hidden;width:22px}@keyframes miniPenguin{to{transform:translateY(-5px) rotate(8deg)}}@keyframes chatDots{0%{opacity:.2}100%{opacity:1}}
+@media(max-width:560px){.ask-ai-fab{right:12px;bottom:12px}.ai-chat-panel{right:10px;bottom:72px}}
+
+.mode-switch{position:sticky;top:0;z-index:100;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:10px 14px;background:#17385e;box-shadow:0 5px 18px #102a4930}
+.mode-switch a{display:inline-flex;align-items:center;justify-content:center;padding:10px 17px;border:1px solid #ffffff65;border-radius:999px;color:#fff;text-decoration:none;font-weight:850;background:#ffffff18}
+.mode-switch a.selected{background:#ffbd59;color:#17304b;border-color:#fff}
+.top{position:relative;top:auto}
+@media(max-width:560px){.mode-switch{position:sticky}.mode-switch a{flex:1}}
 </style></head><body>
+<nav class="mode-switch" aria-label="Switch game mode"><a href="index.html">🏃 Village Run</a><a class="selected" href="Learning-Mode.html" aria-current="page">📚 Learning Mode</a></nav>
 <header class="top"><div class="brand">✨ Shola Learning World</div><div class="tools"><button id="langBtn">العربية</button><button id="themeBtn">🌙 Dark</button></div></header>
 <main>
 <section id="mapScreen">
@@ -108,4 +121,27 @@ function chooseAnswer(pick){if(state.answered)return;state.answered=true;const q
 function showResult(){const passed=state.score>=3;if(passed){state.completed[state.subject]=Math.max(unlocked(),Math.min(8,state.level+2));saveProgress()}$("quizScreen").classList.add("hidden");$("resultScreen").classList.remove("hidden");$("resultTitle").textContent=passed?t("result"):(state.lang==="ar"?"واصل التدريب!":"Keep practising!");$("resultText").textContent=passed?(state.lang==="ar"?"لقد فتحت المستوى التالي!":"You unlocked the next level!"):(state.lang==="ar"?"تحتاج إلى 3 إجابات صحيحة لفتح المستوى التالي.":"Get at least 3 correct answers to unlock the next level.");$("resultScore").textContent=state.score+" / "+state.questions.length;$("resultExtra").textContent=state.score+" "+t("points");$("continueBtn").textContent=t("continue");}
 $("grade").onchange=e=>state.grade=+e.target.value;$("difficulty").onchange=e=>state.difficulty=e.target.value;$("startLevel").onclick=()=>{if(state.level>=unlocked())return;startLevel()};$("backToMap").onclick=()=>{$("quizScreen").classList.add("hidden");$("mapScreen").classList.remove("hidden");render()};$("nextBtn").onclick=()=>{if(!state.answered)return;if(state.index<state.questions.length-1){state.index++;renderQuestion()}else showResult()};$("hintBtn").onclick=()=>{$("hint").hidden=!$("hint").hidden};$("continueBtn").onclick=()=>{$("resultScreen").classList.add("hidden");$("mapScreen").classList.remove("hidden");render()};$("langBtn").onclick=()=>{state.lang=state.lang==="en"?"ar":"en";render()};$("themeBtn").onclick=()=>{document.documentElement.classList.toggle("dark");localStorage.setItem("shola-world-theme",document.documentElement.classList.contains("dark")?"dark":"light");render()};
 if(localStorage.getItem("shola-world-theme")==="dark")document.documentElement.classList.add("dark");render();
-</script></body></html>
+</script>
+<button class="ask-ai-fab" id="askAiOpen" type="button">🐧 Ask Shola AI</button>
+<section class="ai-chat-panel hidden" id="aiChatPanel" aria-label="Ask Shola AI">
+ <header class="ai-chat-head"><span>🐧 <strong>Shola AI</strong><small>Your learning helper</small></span><button type="button" id="askAiClose" aria-label="Close chat">✕</button></header>
+ <div class="ai-chat-log" id="aiChatLog" aria-live="polite"><p class="ai-chat-welcome">Hi! Ask me anything about your school subjects, homework, or the game.</p></div>
+ <div class="ai-chat-compose"><textarea id="askAiInput" rows="2" placeholder="Ask me a question…"></textarea><button type="button" id="askAiSend">Send ➤</button></div>
+ <div class="ai-chat-thinking hidden" id="askAiThinking"><span class="mini-penguin">🐧</span> Shola is thinking<span class="chat-dots">•••</span></div>
+</section>
+<script>
+(function(){
+ const $ai=id=>document.getElementById(id);
+ const open=$ai("askAiOpen"),panel=$ai("aiChatPanel"),close=$ai("askAiClose"),send=$ai("askAiSend"),input=$ai("askAiInput"),log=$ai("aiChatLog"),thinking=$ai("askAiThinking");
+ if(!open||!panel||!send||!input||!log||!thinking)return;
+ open.addEventListener("click",()=>{panel.classList.remove("hidden");input.focus()});
+ close.addEventListener("click",()=>panel.classList.add("hidden"));
+ function bubble(text,kind){const p=document.createElement("p");p.className=kind==="user"?"ai-chat-user":"ai-chat-bot";p.textContent=text;log.appendChild(p);log.scrollTop=log.scrollHeight}
+ async function ask(){const message=input.value.trim();if(!message)return;input.value="";bubble(message,"user");send.disabled=true;thinking.classList.remove("hidden");
+  try{const res=await fetch((window.AI_BACKEND_URL||"https://rt-ai-bk-1.onrender.com")+"/api/ai-chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message,profile:{language:document.documentElement.lang||"en",learningStyle:"friendly, age-appropriate school help"}})});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.answer||"AI request failed (HTTP "+res.status+")");bubble(String(data.answer||"I couldn't create a reply. Please try again."),"bot")}
+  catch(e){bubble("Sorry, I couldn't reach Shola AI. "+e.message,"bot")}
+  finally{thinking.classList.add("hidden");send.disabled=false;input.focus()}
+ }
+ send.addEventListener("click",ask);input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();ask()}});
+})();</script>
+</body></html>
