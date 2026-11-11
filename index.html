@@ -576,6 +576,29 @@ body{background:linear-gradient(145deg,#e6f8ff,#dff6e8)}
 @media(max-width:560px){.ask-ai-fab{right:12px;bottom:12px}.ai-chat-panel{right:10px;bottom:72px}}
 
 .ask-ai-nav{background:#ffbd59!important;color:#17304b!important;border-color:#fff!important}
+
+/* Character redesign: illustrated adventurer cards and matching in-game hero */
+.hero-avatar{width:94px;height:104px;display:grid;place-items:center;margin:7px auto 10px!important;position:relative;border:4px solid #25384d;border-radius:44% 44% 34% 34%;font-size:48px;line-height:1;background:radial-gradient(circle at 50% 28%,#fff9 0 12%,transparent 13%),linear-gradient(145deg,var(--hero-color),var(--hero-accent));box-shadow:inset 0 -13px #17263b25,0 8px 0 #26384d25,0 12px 22px #26384d18;overflow:visible;transition:transform .2s}
+.hero-avatar:before{content:"";position:absolute;top:-14px;left:12px;right:12px;height:24px;border:4px solid #25384d;border-radius:16px 16px 7px 7px;background:linear-gradient(120deg,var(--hero-accent),var(--hero-color));box-shadow:0 4px 0 #25384d20}
+.hero-avatar:after{content:"";position:absolute;bottom:-13px;left:16px;right:16px;height:17px;border:3px solid #25384d;border-radius:6px 6px 12px 12px;background:linear-gradient(90deg,#26384d 0 35%,#fff 35% 65%,#26384d 65%)}
+.option-card{border-radius:22px!important;overflow:visible!important;min-height:190px!important;text-align:center!important;background:linear-gradient(155deg,#fff,#edf5ff)!important;box-shadow:0 9px 0 #8ca5bd40,0 15px 26px #24476b12!important}
+.option-card.active{transform:translateY(-5px)!important;border-color:#ff9b59!important;background:linear-gradient(155deg,#fff7d9,#ffe3a6)!important;box-shadow:0 7px 0 #d99a4a,0 0 0 4px #ff9b5930!important}
+.option-card:hover .hero-avatar{transform:translateY(-5px) rotate(-3deg)}
+.option-title{font-size:15px!important;font-weight:950!important;color:#1e3854}
+.option-sub{font-size:11px!important;line-height:1.6;color:#647b91}
+.player{width:66px;height:72px;border-width:4px;border-radius:44% 44% 32% 32%;font-size:35px;box-shadow:inset 0 -12px #17263b25,0 7px 0 #26384d40,0 10px 18px #26384d25}
+.player::before,.player::after{bottom:-13px;width:13px;height:19px;background:#26384d;border:2px solid #fff}
+.player::before{left:7px}.player::after{right:7px}
+.player.running{animation:runCycle .24s steps(2,end) infinite,heroBob .48s ease-in-out infinite alternate}
+@keyframes heroBob{to{filter:brightness(1.1);margin-bottom:3px}}
+.enemy{border-radius:42% 42% 28% 28%;box-shadow:inset 0 -10px #17263b25,0 7px 0 #26384d35,0 10px 15px #26384d20}
+.enemy::before{border-radius:80% 10% 60% 15%;transform:rotate(-28deg)}
+.enemy::after{content:"◉  ◉";top:15px;left:8px;font:900 12px Arial;letter-spacing:2px;color:#24374d;text-shadow:0 9px 0 #fff}
+.enemy.red{background:linear-gradient(145deg,#ffb4a6,#e84c64)}
+.enemy.green{background:linear-gradient(145deg,#d3f7a8,#48aa75)}
+.enemy.blue{background:linear-gradient(145deg,#b8eaff,#478bc6)}
+.enemy.boss{border-radius:43% 43% 25% 25%;border-width:5px;box-shadow:inset 0 -14px #17263b30,0 9px 0 #57378a,0 14px 24px #26384d30}
+
 </style>
   </head>
   <body>
@@ -1109,15 +1132,20 @@ body{background:linear-gradient(145deg,#e6f8ff,#dff6e8)}
               }, 700);
             } else {
               btn.classList.add('wrong');
-              feedback.textContent = 'Wrong answer! Enemy still stands.';
+              feedback.textContent = 'Wrong answer! You lost a heart. The next enemy is coming!';
               state.lives = Math.max(0, state.lives - 1);
+              updateHud();
               setTimeout(() => {
                 questionModal.classList.add('hidden');
                 state.questionOpen = false;
-                setPlayerRunningState(true);
+                enemyObj.element.remove();
+                state.enemyList = state.enemyList.filter(enemy => enemy !== enemyObj);
                 if (state.lives <= 0) {
-                  showResults('Game over', state.score, state.enemiesDefeated, 'Good try! Practise and come back stronger.');
+                  showResults('Level failed!', state.score, state.enemiesDefeated, 'You ran out of hearts. Try the level again and keep going!');
+                  return;
                 }
+                setPlayerRunningState(true);
+                state.lastSpawn = performance.now();
               }, 700);
             }
           });
